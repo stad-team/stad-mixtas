@@ -5,7 +5,7 @@ class Hello extends React.Component{
 	render(){
 		return (
 			<h1>
-				Hello, React Component!! Canin hola
+				canin es el perro
 			</h1>
 		);
 	}
