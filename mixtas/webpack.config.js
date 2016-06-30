@@ -9,7 +9,14 @@ module.exports = {
 	//the entry point we created earlier. Note that './' means
 	//your current directory. You don't have to specify the extension  now,
 	//because you will specify extensions later in the `resolve` section
-	entry: './mixtas/app/assets/js/index',
+	entry: {
+        login:
+        	[
+        		'./mixtas/login/assets/js/components/login',
+        		// './mixtas/login/assets/js/components/registration',
+        	]
+        // page2: [./entry1", "./entry2"]
+    },
 
 	output: {
 		//where you want your compiled bundle to be stored

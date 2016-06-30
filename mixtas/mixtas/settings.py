@@ -39,8 +39,17 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'webpack_loader',
-    'mixtas.app',
+    'mixtas.login',
+    'rest_framework',
 )
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -58,7 +67,7 @@ ROOT_URLCONF = 'mixtas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['templates', 'mixtas/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,6 +110,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
+
+BASE_TEMPLATE = 'base.html'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'static'))

@@ -7,5 +7,6 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^app/', include('mixtas.app.urls')),
+    url(r'^login/', include('mixtas.login.urls')),
+    # url(r'^login/$', 'django.contrib.auth.views.login'),
 ]
