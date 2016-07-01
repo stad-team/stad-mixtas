@@ -28,6 +28,7 @@
     "webpack-bundle-tracker": "0.0.93"
   },
   "dependencies": {
+    "axios": "^0.12.0",
     "babel-eslint": "^6.1.0",
     "eslint": "^2.13.1",
     "eslint-plugin-react": "^5.2.2",
