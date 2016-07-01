@@ -10,7 +10,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 **/mixtas/assets/bundles/*
-*/mixtas/webpack-stats.json
+**/mixtas/webpack-stats.json
 env/
 build/
 develop-eggs/
