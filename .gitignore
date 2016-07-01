@@ -9,6 +9,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+/mixtas/assets/bundles/*
 env/
 build/
 develop-eggs/
