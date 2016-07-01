@@ -69,26 +69,6 @@ class Login extends React.Component{
 }
 
 
-// export const GET_USER = 'GET_USER';
-// const loginReducer = (state={}, action) => {
-// 	switch(action.type){
-// 	case GET_USER:
-// 		return Object.assign({}, state, action.payload.data);
-// 	default:
-// 		return state;
-// 	}
-// };
-
-// // Store para el formulario
-// const store = createStore(
-// 	loginReducer,
-// 	compose(
-// 		applyMiddleware(
-// 			promiseMiddleware
-// 		)
-// 	)
-// );
-
 ReactDOM.render(
 	<Login />,
 	document.getElementById('react-login')
