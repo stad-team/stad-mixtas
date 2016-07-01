@@ -1,18 +1,99 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect, Provider } from 'react-redux';
+import { reduxForm } from 'redux-form';
+import { createStore, applyMiddleware, combineReducers, compose} from 'redux';
+import promiseMiddleware from 'redux-promise';
+import thunkMiddleware from 'redux-thunk';
+import {reducer as formReducer} from 'redux-form';
+import axios from 'axios';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
-class Hello extends React.Component{
+
+class Login extends React.Component{
+
+	constructor(props){
+		super(props);
+
+		this.state = {
+			username: ''
+		};
+	}
+
+	handleChange(event){
+		this.setState({
+			username: event.target.value
+		});
+	}
+
+	submit(){
+		const request = axios.get(
+			`http://127.0.0.1:8000/login/api/users/${ this.state.username }`
+		).then(respuesta => {
+
+			if (respuesta.status == 200 && respuesta.data.username === this.state.username) {
+				NotificationManager.info('Acceso Correcto');
+			}
+		}).catch((errors) => {
+			NotificationManager.error('Acceso Incorrecto');
+		});
+	}
+
 	render(){
+
 		return (
 			<div>
 				<h1>
 					Login
 				</h1>
-				<form>
-				</form>
+
+				<input
+					type='text'
+					placeholder='Nombre'
+					onChange={ this.handleChange.bind(this) }
+				/>
+				<button onClick={ this.submit.bind(this) }
+					id='create-business-button'
+					type="btn"
+					className="btn btn-primary"
+				>
+					Acceder
+				</button>
+
+				{ this.state.username }
+
+				<NotificationContainer />
 			</div>
 		);
 	}
 }
 
-ReactDOM.render(<Hello />, document.getElementById('react-login'));
+
+// export const GET_USER = 'GET_USER';
+// const loginReducer = (state={}, action) => {
+// 	switch(action.type){
+// 	case GET_USER:
+// 		return Object.assign({}, state, action.payload.data);
+// 	default:
+// 		return state;
+// 	}
+// };
+
+// // Store para el formulario
+// const store = createStore(
+// 	loginReducer,
+// 	compose(
+// 		applyMiddleware(
+// 			promiseMiddleware
+// 		)
+// 	)
+// );
+
+ReactDOM.render(
+	<Login />,
+	document.getElementById('react-login')
+);
+
+
+
+
