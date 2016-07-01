@@ -6,11 +6,11 @@ __pycache__/
 # C extensions
 *.so
 *.pyc
-*-stats.json
 
 # Distribution / packaging
 .Python
 **/mixtas/assets/bundles/*
+*/mixtas/webpack-stats.json
 env/
 build/
 develop-eggs/
