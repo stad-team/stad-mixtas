@@ -13,7 +13,7 @@ __pycache__/
 **/mixtas/webpack-stats.json
 **/mixtas/db.sqlite3
 **/node_modules/*
-**/static/bundles/*
+
 
 env/
 build/
