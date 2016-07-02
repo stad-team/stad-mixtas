@@ -10,10 +10,6 @@ module.exports = {
 	//your current directory. You don't have to specify the extension  now,
 	//because you will specify extensions later in the `resolve` section
 	entry: {
-		login:
-		[
-			'./mixtas/login/assets/js/components/login',
-		],
 		menu:
 		[
 			'./mixtas/menu/assets/js/components/menu',
