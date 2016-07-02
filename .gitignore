@@ -12,6 +12,7 @@ __pycache__/
 **/mixtas/assets/bundles/*
 **/mixtas/webpack-stats.json
 **/mixtas/db.sqlite3
+**/node_modules/*
 env/
 build/
 develop-eggs/
