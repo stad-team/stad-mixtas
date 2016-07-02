@@ -16,8 +16,19 @@
     "url": "https://github.com/stad-team/stad-mixtas/issues"
   },
   "homepage": "https://github.com/stad-team/stad-mixtas#readme",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
+    "babel-core": "^6.10.4",
+    "babel-eslint": "^6.1.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "eslint": "^3.0.0",
+    "eslint-plugin-react": "^5.2.2",
+    "jquery": "^3.0.0",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0",
+    "webpack": "^1.13.1",
+    "webpack-bundle-tracker": "0.0.93"
   }
 }
