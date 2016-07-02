@@ -10,6 +10,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 **/mixtas/assets/bundles/*
+**/mixtas/node_modules/*
 **/mixtas/webpack-stats.json
 **/mixtas/db.sqlite3
 **/node_modules/*
