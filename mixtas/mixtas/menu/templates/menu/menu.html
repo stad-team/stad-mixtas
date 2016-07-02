@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+
+{% block content %}
+
+	<div
+		id="react-menu"
+		data-user={{ request.user }}
+		super-user={{ request.user.is_superuser }}
+	>
+	</div>
+	{% render_bundle 'menu' %}
+
+{% endblock content %}
