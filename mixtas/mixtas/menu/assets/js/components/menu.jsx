@@ -30,10 +30,9 @@ class Menu extends React.Component {
 			return(
 				<div>
 					<h1>
-						Bienvenido a Restaurante Mixtas
+						<p className="bienvenida"> Bienvenido  { user }</p>
 					</h1>
 					<div>
-						Hola { user }
 						{ crearUsuarios }
 					</div>
 				</div>
