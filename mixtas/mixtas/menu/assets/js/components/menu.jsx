@@ -32,7 +32,7 @@ class Menu extends React.Component {
 					<h1>
 						<p className="bienvenida"> Bienvenido  { user }</p>
 					</h1>
-					<div>
+					<div className="crear-usr-btn btn btn-primary btn-outline btn-lg">
 						{ crearUsuarios }
 					</div>
 				</div>
