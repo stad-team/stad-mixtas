@@ -15,7 +15,8 @@ __pycache__/
 **/mixtas/db.sqlite3
 **/node_modules/*
 **/mixtas/static/bundles/*
-**mixtas/static/rest_framework/*
+
+
 
 
 env/
