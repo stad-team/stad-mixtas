@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load render_bundle from webpack_loader %}
+{% load staticfiles %}
 
 {% block content %}
 
@@ -9,6 +10,32 @@
 		super-user={{ request.user.is_superuser }}
 	>
 	</div>
-	{% render_bundle 'menu' %}
+
+	{% render_bundle 'menu'%}
+
+<style>
+	body{
+	background: url("{% static "src/img/tacos.png" %}") no-repeat;
+	background-size: cover;
+}
+
+.bienvenida{
+	color: #fff;
+	font-family: 'HelveticaNeue-Light';
+	font-weight: light;
+	font-size: 40px;
+}
+
+.logo{
+	background: url("{% static "src/img/logo.png" %}") no-repeat;
+}
+
+.crear-usr{
+	
+}
+
+</style>
 
 {% endblock content %}
+
+
