@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
     url(r'^menu/', include('mixtas.menu.urls')),
+    url(r'^pedidos/', include('mixtas.pedidos.urls')),
 ]
