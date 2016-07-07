@@ -33,11 +33,32 @@ class Simbolos extends React.Component {
 			</button>
 		);
 
+		const sin = (
+			<button onClick={ this.sin }>
+				Sin
+			</button>
+		);
+
+		const con = (
+			<button onClick={ this.con }>
+				Con
+			</button>
+		);
+
+		const extra = (
+			<button onClick={ this.extra }>
+				Extra
+			</button>
+		);
+
 		return (
 			<div>
 				{ mitad }
 				{ dosPlatos }
 				{ ahogada }
+				{ sin }
+				{ con }
+				{ extra }
 			</div>
 		);
 	}
