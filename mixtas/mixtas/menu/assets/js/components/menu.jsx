@@ -11,6 +11,10 @@ class Menu extends React.Component {
 		window.moveTo(0,0);
 	}
 
+	pedidos() {
+		window.location = '/pedidos';
+	}
+
 	render() {
 		const { user, superUser } = this.props;
 
@@ -22,6 +26,14 @@ class Menu extends React.Component {
 				</div>
 			);
 		}
+
+		let pedidos = (
+				<div>
+					<button className="crear-usr-btn btn-primary btn-outline btn-lg" onClick={ this.pedidos }>
+						Pedidos
+					</button>
+				</div>
+			);
 
 		if (user === 'AnonymousUser') {
 			window.location = '/auth/login';
@@ -35,6 +47,7 @@ class Menu extends React.Component {
 					<div className="crear-usr-btn btn btn-primary btn-outline btn-lg">
 						{ crearUsuarios }
 					</div>
+					{ pedidos }
 				</div>
 			);
 		}
