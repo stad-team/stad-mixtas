@@ -13,6 +13,10 @@ module.exports = {
 		menu:
 		[
 			'./mixtas/menu/assets/js/components/menu',
+		],
+		pedidos:
+		[
+			'./mixtas/pedidos/assets/js/components/pedidos',
 		]
 	},
 
