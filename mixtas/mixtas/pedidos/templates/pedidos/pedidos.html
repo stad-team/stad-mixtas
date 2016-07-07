@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
+
+{% block content %}
+
+	<div id='pedidos'></div>
+
+	{% render_bundle 'pedidos' %}
+
+{% endblock content %}
