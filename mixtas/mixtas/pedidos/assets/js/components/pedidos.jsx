@@ -1,13 +1,55 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class OrdenPersonal extends React.Component {
+class LevantarOrden extends React.Component {
 	render() {
-		const { ordenCompuesta } = this.props;
+		const { orden } = this.props;
+
+		return (
+			<div>
+				Componente levantar orden
+				<div>
+					{ orden }
+				</div>
+			</div>
+		);
+	}
+}
+
+class OrdenPersonal extends React.Component {
+
+	enviarOrden() {
+		const { ordenCompuesta, listaOrdenes } = this.props;
+
+		alert(listaOrdenes);
+	}
+
+	render() {
+		const { ordenCompuesta, listaOrdenes } = this.props;
+
+		let ordenes = listaOrdenes.map((orden, index) => {
+			return (
+				<p key={index}>
+					{ orden + ` - orden numero ${index}` }
+					--------------------------------------
+				</p>
+			);
+		});
 
 		return (
 			<div>
 				{ ordenCompuesta }
+
+				<p> Arreglo de Ordenes</p>
+				<hr />
+				{ ordenes }
+
+				<div>
+					<button onClick={ this.enviarOrden.bind(this) }>
+						FINALIZAR ORDEN
+					</button>
+				</div>
+
 			</div>
 		);
 	}
@@ -18,49 +60,66 @@ class Simbolos extends React.Component {
 		super(props);
 
 		this.state = {
-			ordenCompuesta: ''
+			ordenCompuesta: '',
+			ordenLista: false,
+			listaOrdenes: []
 		};
 
 	}
 	mitad() {
 		const simboloMitad = '/';
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloMitad
+			ordenCompuesta: this.state.ordenCompuesta + simboloMitad,
+			ordenLista: false
 		});
 	}
 
 	dosPlatos() {
 		const simboloPlatos = '1/2';
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloPlatos
+			ordenCompuesta: this.state.ordenCompuesta + simboloPlatos,
+			ordenLista: false
 		});
 	}
 
 	ahogada() {
 		const simboloAhogada = 'Ahogada';
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloAhogada
+			ordenCompuesta: this.state.ordenCompuesta + simboloAhogada,
+			ordenLista: false
 		});
 	}
 
 	sin() {
-		const simboloSin = 'Ahogada';
+		const simboloSin = 'Sin';
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloSin
+			ordenCompuesta: this.state.ordenCompuesta + simboloSin,
+			ordenLista: false
 		});
 	}
 
 	con() {
-		const simboloCon = 'Ahogada';
+		const simboloCon = 'Con';
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloCon
+			ordenCompuesta: this.state.ordenCompuesta + simboloCon,
+			ordenLista: false
 		});
 	}
 
 	extra() {
-		const simboloExtra = 'Ahogada';
+		const simboloExtra = 'Extra';
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloExtra
+			ordenCompuesta: this.state.ordenCompuesta + simboloExtra,
+			ordenLista: false
+		});
+	}
+
+	agregarOrden() {
+		const { ordenCompuesta } = this.props;
+
+		this.setState({
+			listaOrdenes: this.state.listaOrdenes.concat(this.state.ordenCompuesta),
+			ordenCompuesta: ''
 		});
 	}
 
@@ -101,6 +160,7 @@ class Simbolos extends React.Component {
 			</button>
 		);
 
+
 		return (
 			<div>
 				{ mitad }
@@ -110,21 +170,19 @@ class Simbolos extends React.Component {
 				{ con }
 				{ extra }
 
-				<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta }/>
+				<div>
+					<button onClick={ this.agregarOrden.bind(this) }>
+						Agregar
+					</button>
+				</div>
+
+				<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
+				<hr />
 			</div>
 		);
 	}
 }
 
-class LevantarOrden extends React.Component {
-	render() {
-		return (
-			<div>
-				Componente levantar orden
-			</div>
-		);
-	}
-}
 
 
 class Platillos extends React.Component {
@@ -162,8 +220,7 @@ class Pedidos extends React.Component {
 				<p> Simbología </p>
 				{ <Simbolos /> }
 
-				<hr />
-				{ <LevantarOrden /> }
+				{ <LevantarOrden />}
 
 				{ <Platillos /> }
 			</div>
