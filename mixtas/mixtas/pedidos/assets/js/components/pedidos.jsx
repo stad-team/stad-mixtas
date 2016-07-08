@@ -125,37 +125,37 @@ class Simbolos extends React.Component {
 
 	render() {
 		const mitad = (
-			<button onClick={ this.mitad.bind(this) }>
+			<button className='btn btn-primary' onClick={ this.mitad.bind(this) }>
 				/
 			</button>
 		);
 
 		const dosPlatos = (
-			<button onClick={ this.dosPlatos.bind(this) }>
+			<button className='btn btn-primary' onClick={ this.dosPlatos.bind(this) }>
 				1/2
 			</button>
 		);
 
 		const ahogada = (
-			<button onClick={ this.ahogada.bind(this) }>
+			<button className='btn btn-primary' onClick={ this.ahogada.bind(this) }>
 				Ahogada
 			</button>
 		);
 
 		const sin = (
-			<button onClick={ this.sin.bind(this) }>
+			<button className='btn btn-primary' onClick={ this.sin.bind(this) }>
 				Sin
 			</button>
 		);
 
 		const con = (
-			<button onClick={ this.con.bind(this) }>
+			<button className='btn btn-primary' onClick={ this.con.bind(this) }>
 				Con
 			</button>
 		);
 
 		const extra = (
-			<button onClick={ this.extra.bind(this) }>
+			<button className='btn btn-primary' onClick={ this.extra.bind(this) }>
 				Extra
 			</button>
 		);
