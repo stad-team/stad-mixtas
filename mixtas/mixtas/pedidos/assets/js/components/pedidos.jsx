@@ -29,23 +29,26 @@ class OrdenPersonal extends React.Component {
 
 		let ordenes = listaOrdenes.map((orden, index) => {
 			return (
-				<p key={index}>
+				<p className='plato' key={index}>
 					{ orden + ` - orden numero ${index}` }
-					--------------------------------------
 				</p>
+
 			);
 		});
 
 		return (
 			<div>
-				{ ordenCompuesta }
-
-				<p> Arreglo de Ordenes</p>
+				<div className="platillox">
+					{ ordenCompuesta }
+				</div>
+				<div className='order-list'>
+				<h3>  Ordenes</h3>
 				<hr />
 				{ ordenes }
+				</div>
 
 				<div>
-					<button onClick={ this.enviarOrden.bind(this) }>
+					<button className='btn btn-success' onClick={ this.enviarOrden.bind(this) }>
 						FINALIZAR ORDEN
 					</button>
 				</div>
@@ -125,37 +128,37 @@ class Simbolos extends React.Component {
 
 	render() {
 		const mitad = (
-			<button className='btn btn-primary' onClick={ this.mitad.bind(this) }>
+			<button className='btn simbols btn-primary ' onClick={ this.mitad.bind(this) }>
 				/
 			</button>
 		);
 
 		const dosPlatos = (
-			<button className='btn btn-primary' onClick={ this.dosPlatos.bind(this) }>
+			<button className='btn simbols btn-info' onClick={ this.dosPlatos.bind(this) }>
 				1/2
 			</button>
 		);
 
 		const ahogada = (
-			<button className='btn btn-primary' onClick={ this.ahogada.bind(this) }>
+			<button className='btn simbols btn-warning' onClick={ this.ahogada.bind(this) }>
 				Ahogada
 			</button>
 		);
 
 		const sin = (
-			<button className='btn btn-primary' onClick={ this.sin.bind(this) }>
+			<button className='btn simbols btn-danger' onClick={ this.sin.bind(this) }>
 				Sin
 			</button>
 		);
 
 		const con = (
-			<button className='btn btn-primary' onClick={ this.con.bind(this) }>
+			<button className='btn simbols btn-con' onClick={ this.con.bind(this) }>
 				Con
 			</button>
 		);
 
 		const extra = (
-			<button className='btn btn-primary' onClick={ this.extra.bind(this) }>
+			<button className='btn simbols btn-extra' onClick={ this.extra.bind(this) }>
 				Extra
 			</button>
 		);
@@ -163,21 +166,21 @@ class Simbolos extends React.Component {
 
 		return (
 			<div>
-				{ mitad }
-				{ dosPlatos }
-				{ ahogada }
-				{ sin }
-				{ con }
-				{ extra }
-
-				<div>
-					<button onClick={ this.agregarOrden.bind(this) }>
-						Agregar
-					</button>
+				<div className='simbology'>
+					<h3> Simbología </h3>
+					{ mitad }
+					{ dosPlatos }
+					{ ahogada }
+					{ sin }
+					{ con }
+					{ extra }
 				</div>
 
+				<button  className='btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
+					Agregar Plato
+				</button>
 				<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
-				<hr />
+
 			</div>
 		);
 	}
@@ -214,10 +217,9 @@ class Pedidos extends React.Component {
 	render() {
 
 		return (
-			<div>
-				Bienvenido a Pedidos
+			<div className='container'>
+				<h1> Bienvenido a Pedidos </h1>
 
-				<p> Simbología </p>
 				{ <Simbolos /> }
 
 				{ <LevantarOrden />}
