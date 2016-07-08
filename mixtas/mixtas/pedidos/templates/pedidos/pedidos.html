@@ -3,9 +3,53 @@
 {% load staticfiles %}
 
 {% block content %}
+<style>
+	.simbols{
+		margin-left: 1em;
+	    font-size: 1.3em;
+	}
+	.btn-con{
+		background: yellow;
+	    color: black;
+	    border: 1px solid #FFEB3B;
+	}
+	.btn-extra{
+		background: orange;
+	    color: black;
+	    border: 1px solid #FFB33A;
+	}
+
+	.order-list{
+	background-color: #FBFBE4;
+	}
+
+	.platillox{
+		background-color: #FFBBA1;
+		font-size: 1.5em;
+	}
+
+	.simbology{
+		border: 2px solid #DCDCDC;
+	    margin: 1em;
+	    margin-top: 0em;
+	    padding: 1em;
+	}
+
+	.plato{
+		border: 2px solid #DCDCDC;
+	    margin: 1em;
+	    padding: 1em;
+	    border-radius: 5px;
+	}
+
+
+
+</style>
 
 	<div id='pedidos'></div>
 
 	{% render_bundle 'pedidos' %}
+
+
 
 {% endblock content %}
