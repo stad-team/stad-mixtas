@@ -15,6 +15,10 @@ class Menu extends React.Component {
 		window.location = '/pedidos';
 	}
 
+	usuarios() {
+		window.location = '/usuarios';
+	}
+
 	render() {
 		const { user, superUser } = this.props;
 
@@ -22,7 +26,7 @@ class Menu extends React.Component {
 		if (superUser === 'True') {
 			crearUsuarios = (
 				<div>
-					<button className="btn btn-warning btn-outline btn-lg">
+					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.usuarios }>
 						CREAR  USUARIOS
 					</button>
 				</div>

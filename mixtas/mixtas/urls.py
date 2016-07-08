@@ -8,4 +8,5 @@ urlpatterns = [
                                namespace='rest_framework')),
     url(r'^menu/', include('mixtas.menu.urls')),
     url(r'^pedidos/', include('mixtas.pedidos.urls')),
+    url(r'^usuarios/', include('mixtas.usuarios.urls')),
 ]

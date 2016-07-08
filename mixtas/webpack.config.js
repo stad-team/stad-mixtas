@@ -17,6 +17,10 @@ module.exports = {
 		pedidos:
 		[
 			'./mixtas/pedidos/assets/js/components/pedidos',
+		],
+		usuarios:
+		[
+			'./mixtas/usuarios/assets/js/components/usuarios',
 		]
 	},
 

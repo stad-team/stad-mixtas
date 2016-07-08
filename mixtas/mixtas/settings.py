@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'webpack_loader',
     'mixtas.menu',
     'mixtas.pedidos',
+    'mixtas.usuarios',
     'rest_framework',
 )
 
