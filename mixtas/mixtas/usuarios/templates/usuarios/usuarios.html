@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
+
+{% block content %}
+
+	<div
+		id="react-usuarios"
+		data-user={{ request.user }}
+		super-user={{ request.user.is_superuser }}
+	>
+	</div>
+
+	{% render_bundle 'usuarios'%}
+
+{% endblock content %}
