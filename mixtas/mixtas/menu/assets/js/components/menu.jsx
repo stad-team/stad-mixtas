@@ -22,15 +22,55 @@ class Menu extends React.Component {
 		if (superUser === 'True') {
 			crearUsuarios = (
 				<div>
-					Creación de Usuarios
+					<button className="btn btn-warning btn-outline btn-lg">
+						CREAR  USUARIOS
+					</button>
+				</div>
+			);
+		}
+
+		let corteCaja = undefined;
+		if (superUser === 'True') {
+			corteCaja = (
+				<div>
+					<button className="btn btn-warning btn-outline btn-lg">
+						CORTE DE CAJA
+					</button>
+				</div>
+			);
+		}
+
+		let caja = undefined;
+		if (superUser === 'True') {
+			caja = (
+				<div>
+					<button className="btn btn-warning btn-outline btn-lg">
+						CAJA
+					</button>
 				</div>
 			);
 		}
 
 		let pedidos = (
 				<div>
-					<button className="crear-usr-btn btn-primary btn-outline btn-lg" onClick={ this.pedidos }>
-						Pedidos
+					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.pedidos }>
+						ALTA DE PEDIDOS
+					</button>
+				</div>
+			);
+
+		let altaMesa = (
+				<div>
+					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.altaMesa }>
+						ALTA DE MESA
+					</button>
+				</div>
+			);
+
+		let miMenu = (
+				<div>
+					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.miMenu }>
+						MI MENU
 					</button>
 				</div>
 			);
@@ -44,10 +84,14 @@ class Menu extends React.Component {
 					<h1>
 						<p className="bienvenida"> Bienvenido  { user }</p>
 					</h1>
-					<div className="crear-usr-btn btn btn-primary btn-outline btn-lg">
+					<div className="options-buttons">
 						{ crearUsuarios }
+						{ pedidos }
+						{ caja }
+						{ corteCaja }
+						{ altaMesa }
+						{ miMenu }
 					</div>
-					{ pedidos }
 				</div>
 			);
 		}
