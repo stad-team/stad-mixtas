@@ -15,37 +15,35 @@
 
 <style>
 	body{
-	background: url("{% static "src/img/tacos.png" %}") no-repeat;
+	background: url("{% static "src/img/menu_bg.jpg" %}") no-repeat;
 	background-size: cover;
+
 }
 
 .bienvenida{
-	color: #fff;
-	font-family: 'HelveticaNeue-Light';
-	font-weight: light;
-	font-size: 40px;
-}
 
-.logo{
-	background: url("{% static "src/img/logo.png" %}") no-repeat;
+	font-family: 'HelveticaNeue-Light';
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-left: 30%;
+    color: #FFF;
+    text-shadow: 3px 3px 5px #332929;
 }
 
 .btn-outline {
     background-color: transparent;
     color: inherit;
-    transition: all .5s;
+    width: 13em;
+    height: 5em;
+    margin: 1em;
+    opacity: 0.9;
+    font-size: 1.5em;
+    float:left;
 }
 
-.btn-primary.btn-outline {
-    color: #428bca;
-}
-
-.btn-primary.btn-outline:hover,
-.btn-success.btn-outline:hover,
-.btn-info.btn-outline:hover,
-.btn-warning.btn-outline:hover,
-.btn-danger.btn-outline:hover {
-    color: #fff;
+.options-buttons{
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 </style>
