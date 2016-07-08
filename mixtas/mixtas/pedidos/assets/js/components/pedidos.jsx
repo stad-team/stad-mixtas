@@ -218,13 +218,17 @@ class Pedidos extends React.Component {
 
 		return (
 			<div className='container'>
-				<h1> Bienvenido a Pedidos </h1>
+				<div className='col-md-6'>
+					<h1> Bienvenido a Pedidos </h1>
 
-				{ <Simbolos /> }
+					{ <Simbolos /> }
 
-				{ <LevantarOrden />}
+					{ <LevantarOrden />}
+				</div>
+				<div className='col-md-6'>
+					{ <Platillos /> }
+				</div>
 
-				{ <Platillos /> }
 			</div>
 		);
 	}
