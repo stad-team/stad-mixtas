@@ -1,0 +1,15 @@
+{% extends "rest_framework/login_base.html" %}
+{% load staticfiles %}
+
+{# Override this template in your own templates directory to customize #}
+{% block branding %}
+	<style>
+	  	body{
+			background: url("{% static "src/img/login_mixtas.jpg" %}") no-repeat;
+			background-size: cover;
+		}
+	</style>
+
+	<h3 style="margin: 0 0 20px;">Restaurante Mixtas LOGIN NUEVO</h3>
+
+{% endblock %}
