@@ -6,12 +6,9 @@ class LevantarOrden extends React.Component {
 		const { orden } = this.props;
 
 		return (
-			<div>
-				Componente levantar orden
 				<div>
 					{ orden }
 				</div>
-			</div>
 		);
 	}
 }
@@ -42,13 +39,12 @@ class OrdenPersonal extends React.Component {
 					{ ordenCompuesta }
 				</div>
 				<div className='order-list'>
-				<h3>  Ordenes</h3>
-				<hr />
-				{ ordenes }
+					<h3>  Ordenes</h3>
+					<hr />
+					{ ordenes }
 				</div>
-
 				<div>
-					<button className='btn btn-success' onClick={ this.enviarOrden.bind(this) }>
+					<button className='btn btn-success btn-fin' onClick={ this.enviarOrden.bind(this) }>
 						FINALIZAR ORDEN
 					</button>
 				</div>
@@ -167,18 +163,17 @@ class Simbolos extends React.Component {
 		return (
 			<div>
 				<div className='simbology'>
-					<h3> Simbología </h3>
 					{ mitad }
 					{ dosPlatos }
 					{ ahogada }
 					{ sin }
 					{ con }
 					{ extra }
+					<button  className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
+						+
+					</button>
 				</div>
 
-				<button  className='btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
-					Agregar Plato
-				</button>
 				<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
 
 			</div>
@@ -191,24 +186,187 @@ class Simbolos extends React.Component {
 class Platillos extends React.Component {
 	render() {
 		return (
-			<div>
-				<h1>Platillos</h1>
-				<h3>Entradas</h3>
 
-				<table>
-					<tbody>
-					  <tr>
-					    <td>Orden de choriqueso</td>
-					  </tr>
-					  <tr>
-					    <td>Orden de Nopales</td>
-					  </tr>
-					  <tr>
-					    <td>Orden de Guacamole</td>
-					  </tr>
-					</tbody>
-				</table>
-			</div>
+		<div className='menus'>
+			<div className='dropdown'>
+	            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+	                Entradas <span className='caret'></span>
+	            </a>
+	    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+	    			<li><a href='#'>Choriqueso</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Nopales</a></li>
+	    			<li className='divider'></li>
+	                <li><a href='#'>Guacamole</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Cebollitas</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Frijoles Charros</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Papa "El costeño"</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Chuy</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Chenchitos</a></li>
+	            </ul>
+	        </div>
+
+	        <div className='dropdown'>
+	            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+	                Quesadillas <span className='caret'></span>
+	            </a>
+	    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+	    			<li><a href='#'>Sencilla</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Mixta</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Mixta de Tripa</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Combinada de Tripa</a></li>
+	    			<li className='divider'></li>
+	                <li><a href='#'>Mixta Ahogada</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Mixta de Tripa Ahogada</a></li>
+	            </ul>
+	        </div>
+
+	        <div className='dropdown'>
+	            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+	                Tacos <span className='caret'></span>
+	            </a>
+	    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+	    			<li><a href='#'>Sencillo</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Combinado con Tripa</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Tripa</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Mixto con Queso</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Mixto Tripa con Queso</a></li>
+	    			<li className='divider'></li>
+	                <li><a href='#'>Quesadilla tipo Taco</a></li>
+	            </ul>
+	        </div>
+
+	        <div className='dropdown'>
+	            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+	                Chavindecas <span className='caret'></span>
+	            </a>
+	    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+	    			<li><a href='#'>Chavindeca</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>De Tripa</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Ahogada</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Ahogada Tripa</a></li>
+	            </ul>
+	        </div>
+
+
+	       	<div className='dropdown'>
+	            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+	                Alambres/Volcanes <span className='caret'></span>
+	            </a>
+	    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+	    			<li><a href='#'>de Queso</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Volcan</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>De Tripa</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Carne El costeño</a></li>
+	    			<li className='divider'></li>
+	                <li><a href='#'>Alambre</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Alambre especial</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Platillo El costeño</a></li>
+	                <li className='divider'></li>
+	                <li><a href='#'>Platillo de Carne Asada</a></li>
+	            </ul>
+	        </div>
+
+	       	<div className='dropdown'>
+	            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+	                Postres <span className='caret'></span>
+	            </a>
+	    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+	    			<li><a href='#'>Gelatina</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Gelatina con Rompope</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Tapioca</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Durazno en Almibar</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Chongos</a></li>
+	            </ul>
+	        </div>
+
+	       	<div className='dropdown'>
+	            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+	                Agua <span className='caret'></span>
+	            </a>
+	    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+	    			<li><a href='#'>Agua de Frutas</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Refresco</a></li>
+	            </ul>
+	        </div>
+
+	       	<div className='dropdown'>
+	            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+	                Refresco <span className='caret'></span>
+	            </a>
+	    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+	    			<li><a href='#'>Agua de Frutas</a></li>
+	    			<li className='divider'></li>
+	    			<li><a href='#'>Refresco</a></li>
+	            </ul>
+	        </div>
+
+	    </div>
+		);
+	}
+}
+
+class Ingredientes extends React.Component {
+	render() {
+		return (
+
+		<div className='menus'>
+			<div className='dropdown'>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Tripa
+	            </a>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Carne
+	            </a>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Chorizo
+	            </a>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Pimiento
+	            </a>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Cebolla
+	            </a>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Queso
+	            </a>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Piña
+	            </a>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Champiñones
+	            </a>
+	            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+	                Chilantro
+	            </a>
+	        </div>
+	    </div>
 		);
 	}
 }
@@ -218,17 +376,19 @@ class Pedidos extends React.Component {
 
 		return (
 			<div className='container'>
-				<div className='col-md-6'>
-					<h1> Bienvenido a Pedidos </h1>
-
-					{ <Simbolos /> }
-
-					{ <LevantarOrden />}
+				<h1> Bienvenido a Pedidos </h1>
+				<div className="row">
+					<div className='col-md-8'>
+						{ <Simbolos /> }
+						{ <LevantarOrden />}
+					</div>
+					<div className='col-md-2'>
+						{ <Platillos /> }
+					</div>
+					<div className='col-md-2'>
+						{ <Ingredientes /> }
+					</div>
 				</div>
-				<div className='col-md-6'>
-					{ <Platillos /> }
-				</div>
-
 			</div>
 		);
 	}
