@@ -65,53 +65,13 @@ class Simbolos extends React.Component {
 		};
 
 	}
-	mitad() {
-		const simboloMitad = '/';
+	setSinbolo(simbo) {
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloMitad,
+			ordenCompuesta: this.state.ordenCompuesta + simbo,
 			ordenLista: false
 		});
 	}
 
-	dosPlatos() {
-		const simboloPlatos = '1/2';
-		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloPlatos,
-			ordenLista: false
-		});
-	}
-
-	ahogada() {
-		const simboloAhogada = 'Ahogada';
-		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloAhogada,
-			ordenLista: false
-		});
-	}
-
-	sin() {
-		const simboloSin = 'Sin';
-		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloSin,
-			ordenLista: false
-		});
-	}
-
-	con() {
-		const simboloCon = 'Con';
-		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloCon,
-			ordenLista: false
-		});
-	}
-
-	extra() {
-		const simboloExtra = 'Extra';
-		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simboloExtra,
-			ordenLista: false
-		});
-	}
 
 	agregarOrden() {
 		const { ordenCompuesta } = this.props;
@@ -124,37 +84,38 @@ class Simbolos extends React.Component {
 
 	render() {
 		const mitad = (
-			<button className='btn simbols btn-primary ' onClick={ this.mitad.bind(this) }>
+
+			<button className='btn simbols btn-primary ' onClick={ this.setSinbolo.bind(this, '/') }>
 				/
 			</button>
 		);
 
 		const dosPlatos = (
-			<button className='btn simbols btn-info' onClick={ this.dosPlatos.bind(this) }>
+			<button className='btn simbols btn-info' onClick={ this.setSinbolo.bind(this, '1/2') }>
 				1/2
 			</button>
 		);
 
 		const ahogada = (
-			<button className='btn simbols btn-warning' onClick={ this.ahogada.bind(this) }>
+			<button className='btn simbols btn-warning' onClick={ this.setSinbolo.bind(this, 'ahogada') }>
 				Ahogada
 			</button>
 		);
 
 		const sin = (
-			<button className='btn simbols btn-danger' onClick={ this.sin.bind(this) }>
+			<button className='btn simbols btn-danger' onClick={ this.setSinbolo.bind(this, 'sin') }>
 				Sin
 			</button>
 		);
 
 		const con = (
-			<button className='btn simbols btn-con' onClick={ this.con.bind(this) }>
+			<button className='btn simbols btn-con' onClick={ this.setSinbolo.bind(this, 'con') }>
 				Con
 			</button>
 		);
 
 		const extra = (
-			<button className='btn simbols btn-extra' onClick={ this.extra.bind(this) }>
+			<button className='btn simbols btn-extra' onClick={ this.setSinbolo.bind(this, 'Extra') }>
 				Extra
 			</button>
 		);
