@@ -161,7 +161,7 @@ class Simbolos extends React.Component {
 				                <li className='divider'></li>
 				                <li><a onClick={ this.setSinbolo.bind(this, ' Chuy') }>Chuy</a></li>
 				                <li className='divider'></li>
-				                <li><a href='#'>Chenchitos</a></li>
+				                <li><a onClick={ this.setSinbolo.bind(this, ' Chenchitos') }>Chenchitos</a></li>
 				            </ul>
 				        </div>
 
@@ -170,17 +170,17 @@ class Simbolos extends React.Component {
 				                Quesadillas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a href='#'>Sencilla</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Sencilla') }>Sencilla</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Mixta</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixta') }>Mixta</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Mixta de Tripa</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixta de Tripa') }>Mixta de Tripa</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Combinada de Tripa</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Combinada de Tripa') }>Combinada de Tripa</a></li>
 				    			<li className='divider'></li>
-				                <li><a href='#'>Mixta Ahogada</a></li>
+				                <li><a onClick={ this.setSinbolo.bind(this, ' Mixta Ahogada') }>Mixta Ahogada</a></li>
 				                <li className='divider'></li>
-				                <li><a href='#'>Mixta de Tripa Ahogada</a></li>
+				                <li><a onClick={ this.setSinbolo.bind(this, ' Mixta de Tripa Ahogada') }>Mixta de Tripa Ahogada</a></li>
 				            </ul>
 				        </div>
 
@@ -189,17 +189,17 @@ class Simbolos extends React.Component {
 				                Tacos <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a href='#'>Sencillo</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Sencillo') }>Sencillo</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Combinado con Tripa</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Combinado con Tripa') }>Combinado con Tripa</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Tripa</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Tripa') }>Tripa</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Mixto con Queso</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixto con Queso') }>Mixto con Queso</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Mixto Tripa con Queso</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixto Tripa con Queso') }>Mixto Tripa con Queso</a></li>
 				    			<li className='divider'></li>
-				                <li><a href='#'>Quesadilla tipo Taco</a></li>
+				                <li><a onClick={ this.setSinbolo.bind(this, ' Quesadilla tipo Taco') }>Quesadilla tipo Taco</a></li>
 				            </ul>
 				        </div>
 
@@ -208,13 +208,13 @@ class Simbolos extends React.Component {
 				                Chavindecas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a href='#'>Chavindeca</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Chavindeca') }>Chavindeca</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>De Tripa</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' De Tripa') }>De Tripa</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Ahogada</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Ahogada') }>Ahogada</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Ahogada Tripa</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Ahogada Tripa') }>Ahogada Tripa</a></li>
 				            </ul>
 				        </div>
 
@@ -224,21 +224,21 @@ class Simbolos extends React.Component {
 				                Alambres/Volcanes <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a href='#'>de Queso</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Alambre De Queso') }>de Queso</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Volcan</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Volcan') }>Volcan</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>De Tripa</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' De Tripa') }>De Tripa</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Carne El costeño</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Carne "El Costeño"') }>Carne El costeño</a></li>
 				    			<li className='divider'></li>
-				                <li><a href='#'>Alambre</a></li>
+				                <li><a onClick={ this.setSinbolo.bind(this, ' Alambre') }>Alambre</a></li>
 				                <li className='divider'></li>
-				                <li><a href='#'>Alambre especial</a></li>
+				                <li><a onClick={ this.setSinbolo.bind(this, ' Alambre especial') }>Alambre especial</a></li>
 				                <li className='divider'></li>
-				                <li><a href='#'>Platillo El costeño</a></li>
+				                <li><a onClick={ this.setSinbolo.bind(this, ' Platillo El Costeño') }>Platillo El costeño</a></li>
 				                <li className='divider'></li>
-				                <li><a href='#'>Platillo de Carne Asada</a></li>
+				                <li><a onClick={ this.setSinbolo.bind(this, ' Platillo de Carne Asada') }>Platillo de Carne Asada</a></li>
 				            </ul>
 				        </div>
 
@@ -247,15 +247,15 @@ class Simbolos extends React.Component {
 				                Postres <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a href='#'>Gelatina</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Gelatina') }>Gelatina</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Gelatina con Rompope</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Gelatina con Rompope') }>Gelatina con Rompope</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Tapioca</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Tapioca') }>Tapioca</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Durazno en Almibar</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Durazno en Almibar') }>Durazno en Almibar</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Chongos</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Chongos') }>Chongos</a></li>
 				            </ul>
 				        </div>
 
@@ -264,9 +264,9 @@ class Simbolos extends React.Component {
 				                Agua <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a href='#'>Agua de Frutas</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Agua de Frutas') }>Agua de Frutas</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Refresco</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Refresco') }>Refresco</a></li>
 				            </ul>
 				        </div>
 
@@ -275,48 +275,46 @@ class Simbolos extends React.Component {
 				                Refresco <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a href='#'>Agua de Frutas</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Agua de Frutas') }>Agua de Frutas</a></li>
 				    			<li className='divider'></li>
-				    			<li><a href='#'>Refresco</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Refresco') }>Refresco</a></li>
 				            </ul>
 				        </div>
 
 				    </div>
 				</div>
 				<div className='col-md-2'>
-					--
 					<div className='menus'>
 						<div className='dropdown'>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Tripa') }>
 				                Tripa
 				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Carne') }>
 				                Carne
 				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Chorizo') }>
 				                Chorizo
 				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Pimiento') }>
 				                Pimiento
 				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Cebolla') }>
 				                Cebolla
 				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Queso') }>
 				                Queso
 				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Piña') }>
 				                Piña
 				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Champiñones') }>
 				                Champiñones
 				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' href='#'>
-				                Chilantro
+				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Cilantro') }>
+				                Cilantro
 				            </a>
 				        </div>
 				    </div>
-					--
 				</div>
 			</div>
 		);
