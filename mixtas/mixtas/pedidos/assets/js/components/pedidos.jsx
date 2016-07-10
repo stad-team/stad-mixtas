@@ -65,9 +65,9 @@ class Simbolos extends React.Component {
 		};
 
 	}
-	setSinbolo(simbo) {
+	setSinbolo(simbolo) {
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simbo,
+			ordenCompuesta: this.state.ordenCompuesta + simbolo,
 			ordenLista: false
 		});
 	}
