@@ -1,0 +1,28 @@
+npm --save install react
+npm --save install react-dom
+npm --save install babel-core
+npm --save install babel-loader
+npm --save install babel-preset-es2015
+npm --save install babel-preset-react
+npm --save install jquery
+npm --save install webpack
+npm --save install webpack-bundle-tracker
+npm --save install babel-eslint
+npm --save install eslint
+npm --save install eslint-plugin-react
+npm --save install axios
+npm --save install redux
+npm --save install react-redux
+npm --save install redux-promise
+npm --save install redux-thunk
+
+install postgres
+http://postgresapp.com
+
+install psycopg2 en el entorno virtual
+	- pip install psycopg2
+
+'/Applications/Postgres.app/Contents/Versions/9.5/bin'/psql -p5432
+
+CREATE DATABASE mixtas;
+\q
