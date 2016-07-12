@@ -103,19 +103,23 @@ class Simbolos extends React.Component {
 
 
 	agregarOrden() {
-		const { ordenCompuesta } = this.props;
+		const { ordenCompuesta } = this.state;
 
 		this.setState({
-			listaOrdenes: this.state.listaOrdenes.concat(this.state.ordenCompuesta),
-			ordenCompuesta: ''
+			listaOrdenes: this.state.listaOrdenes.concat(ordenCompuesta.join('')),
+			ordenCompuesta: []
 		});
 	}
 
 	borrarElemento() {
-		this.state.ordenCompuesta.pop();
-		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta
-		});
+		const { ordenCompuesta } = this.state;
+
+		if (ordenCompuesta.lenght !== 0) {
+			ordenCompuesta.pop();
+			this.setState({
+				ordenCompuesta: ordenCompuesta
+			});
+		}
 	}
 
 	render() {
