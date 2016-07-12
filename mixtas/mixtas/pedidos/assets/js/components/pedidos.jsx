@@ -14,6 +14,19 @@ class LevantarOrden extends React.Component {
 }
 
 class OrdenPersonal extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			elementosLista: []
+		};
+	}
+
+	componentWillReceiveProps(nextProps, nextState) {
+		this.setState({
+			elementosLista: nextProps.listaOrdenes
+		});
+	}
 
 	enviarOrden() {
 		const { ordenCompuesta, listaOrdenes } = this.props;
@@ -21,14 +34,30 @@ class OrdenPersonal extends React.Component {
 		alert(listaOrdenes);
 	}
 
+	borrarPlato(index) {
+		const { elementosLista } = this.state;
+
+		delete elementosLista[index];
+		this.setState({
+			elementosLista: elementosLista
+		});
+
+	}
+
 	render() {
 		const { ordenCompuesta, listaOrdenes } = this.props;
+		const { elementosLista } = this.state;
 
-		let ordenes = listaOrdenes.map((orden, index) => {
+		let ordenes = elementosLista.map((orden, index) => {
 			return (
-				<p className='plato' key={index}>
-					{ orden + ` - orden numero ${index}` }
-				</p>
+				<div key={index}>
+					<button onClick={ this.borrarPlato.bind(this, index) }>
+						X
+					</button>
+					<p className='plato'>
+						{ orden }
+					</p>
+				</div>
 
 			);
 		});
@@ -59,7 +88,7 @@ class Simbolos extends React.Component {
 		super(props);
 
 		this.state = {
-			ordenCompuesta: '',
+			ordenCompuesta: [],
 			ordenLista: false,
 			listaOrdenes: []
 		};
@@ -67,7 +96,7 @@ class Simbolos extends React.Component {
 	}
 	setSinbolo(simbolo) {
 		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta + simbolo,
+			ordenCompuesta: this.state.ordenCompuesta.concat(simbolo),
 			ordenLista: false
 		});
 	}
@@ -79,6 +108,13 @@ class Simbolos extends React.Component {
 		this.setState({
 			listaOrdenes: this.state.listaOrdenes.concat(this.state.ordenCompuesta),
 			ordenCompuesta: ''
+		});
+	}
+
+	borrarElemento() {
+		this.state.ordenCompuesta.pop();
+		this.setState({
+			ordenCompuesta: this.state.ordenCompuesta
 		});
 	}
 
@@ -134,6 +170,11 @@ class Simbolos extends React.Component {
 							<button  className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
 								+
 							</button>
+
+							<button  className='mas btn btn-danger btn-lg' onClick={ this.borrarElemento.bind(this) }>
+								-
+							</button>
+
 						</div>
 
 						<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
