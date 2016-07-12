@@ -51,8 +51,8 @@ class OrdenPersonal extends React.Component {
 		let ordenes = elementosLista.map((orden, index) => {
 			return (
 				<div key={index}>
-					<button onClick={ this.borrarPlato.bind(this, index) }>
-						X
+					<button className='btn btn-danger x-btn' onClick={ this.borrarPlato.bind(this, index) }>
+						<i className="fa fa-trash-o"></i>
 					</button>
 					<p className='plato'>
 						{ orden }
@@ -168,11 +168,11 @@ class Simbolos extends React.Component {
 							{ con }
 							{ extra }
 							<button  className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
-								+
+								<i className="fa fa-plus" aria-hidden="true"></i>
 							</button>
 
-							<button  className='mas btn btn-danger btn-lg' onClick={ this.borrarElemento.bind(this) }>
-								-
+							<button  className='menos btn btn-danger pull-right' onClick={ this.borrarElemento.bind(this) }>
+								<i className="fa fa-eraser" aria-hidden="true"></i>
 							</button>
 
 						</div>
