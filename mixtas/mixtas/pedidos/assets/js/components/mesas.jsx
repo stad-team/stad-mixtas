@@ -89,23 +89,25 @@ class Mesas extends React.Component {
 			});
 
 			return (
-				<div>
+				<li className="mesa" key={ mesa.id }>
 					<img
-						key={ mesa.id }
-						src="http://vignette1.wikia.nocookie.net/mundogaturro/images/6/66/MESA_VERDE.png/revision/latest?cb=20141218183515&path-prefix=es"
+						src="/static/src/img/mesa.png"
 						onClick={ this.levantarPedido.bind(this, mesa.id) }
 					/>
-					{ mesa.name }
-				</div>
+					<div className="mesa-name">
+						{ mesa.name }
+					</div>
+				</li>
 			);
 		});
 
 		return(
 			<div>
-				<h1> Mesas </h1>
+				<h1 className="title-mesas "> Mesas </h1>
 				<hr />
-
-				{ listadoMesas }
+				<div className="container">
+					<ul className="list-inline">{ listadoMesas }</ul>
+				</div>
 			</div>
 		);
 	}
