@@ -369,10 +369,11 @@ class Simbolos extends React.Component {
 
 class Pedidos extends React.Component {
 	render() {
+		const { mesa } = this.props;
 
 		return (
 			<div className='container'>
-				<h1> Bienvenido a Pedidos </h1>
+				<h1> Bienvenido a Pedidos  Mesa # { mesa } </h1>
 				{ <Simbolos /> }
 			</div>
 		);
@@ -380,8 +381,9 @@ class Pedidos extends React.Component {
 }
 
 const element = document.getElementById('pedidos');
+const dataMesa = element.getAttribute('data-mesa');
 
 ReactDOM.render(
-	<Pedidos />,
+	<Pedidos mesa={ dataMesa }/>,
 	element
 );
