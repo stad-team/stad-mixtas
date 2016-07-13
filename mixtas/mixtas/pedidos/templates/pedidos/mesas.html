@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
+
+{% block content %}
+<style>
+	body{
+		background: url("http://www.photoshopbuzz.com/wp-content/uploads/2013/06/woodtexture3.jpg") repeat;
+
+	}
+</style>
+
+	<div id='mesas'></div>
+	{% render_bundle 'mesas' %}
+
+
+
+{% endblock content %}
