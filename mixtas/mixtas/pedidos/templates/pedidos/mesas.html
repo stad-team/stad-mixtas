@@ -3,16 +3,35 @@
 {% load staticfiles %}
 
 {% block content %}
-<style>
-	body{
-		background: url("http://www.photoshopbuzz.com/wp-content/uploads/2013/06/woodtexture3.jpg") repeat;
 
-	}
-</style>
 
 	<div id='mesas'></div>
 	{% render_bundle 'mesas' %}
 
+<style>
+	body{
+		background: url("{% static "src/img/madera.jpg" %}") repeat;
 
+	}
+
+	.mesa{
+		position: relative;
+		margin-left: 2em;
+	}
+
+	.mesa-name{
+		position: absolute;
+	    top: 1.1em;
+	    font-size: 2em;
+	    left: 1.1em;
+	    color: white;
+	    border-radius: 20%;
+	    background: brown;
+	}
+
+	.title-mesas{
+		text-align: center;
+	}
+</style>
 
 {% endblock content %}
