@@ -9,8 +9,16 @@ from django.conf.urls import patterns, url, include
 from django.views.generic import TemplateView
 
 from rest_framework import routers
+
+from .views import CrearObtenerMesasView
+
+router = routers.SimpleRouter()
+router.register(r'mesas', CrearObtenerMesasView)
 # from .views import LoginRetrieveView
 
 urlpatterns = patterns('',
-    url(r'^$', TemplateView.as_view(template_name='pedidos/pedidos.html')),
+    url(r'^mesas/$', TemplateView.as_view(template_name='pedidos/mesas.html')),
+    url(r'^alta/(?P<id>[0-9]*)/$', TemplateView.as_view(template_name='pedidos/pedidos.html')),
+    url(r'^api/', include(router.urls, namespace='api')),
+
 )
