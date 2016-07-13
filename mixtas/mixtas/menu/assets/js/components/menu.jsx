@@ -12,7 +12,7 @@ class Menu extends React.Component {
 	}
 
 	pedidos() {
-		window.location = '/pedidos';
+		window.location = '/pedidos/mesas';
 	}
 
 	usuarios() {
