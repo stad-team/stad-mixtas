@@ -18,6 +18,10 @@ module.exports = {
 		[
 			'./mixtas/pedidos/assets/js/components/pedidos',
 		],
+		mesas:
+		[
+			'./mixtas/pedidos/assets/js/components/mesas',
+		],
 		usuarios:
 		[
 			'./mixtas/usuarios/assets/js/components/usuarios',
