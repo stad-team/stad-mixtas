@@ -115,62 +115,78 @@ class Usuarios extends React.Component {
 		if (!isEmpty(usuarios)) {
 			listado = usuarios.map(usuario => {
 				return (
-					<div key={ usuario.id }>
-						{ usuario.username }
-					</div>
+						<tbody key={ usuario.id }>
+						    <tr >
+						     	<td>{ usuario.username }</td>
+						     	<td> { usuario.first_name}</td>
+						    </tr>
+					    </tbody>
 				);
 			});
 		}
 
 		return (
 			<div>
-				<h1>
+				<h1 className='title'> 
 					Creación de Usuarios
 				</h1>
 				<hr />
-				<h3>
-					Nuevo Usuario
-				</h3>
 
-				<div className='container formulario'>
-					<div className='form-group col-xs-4'>
-						<label>Password:</label>
-						<input
-							ref='password'
-							type='password'
-							className='form-control'
-							onChange={ this.obtenerValorInput.bind(this) }
-							value={ this.state.passwordInput }
-						/>
-					</div>
-					<div className='form-group col-xs-4'>
-						<label>Nombre:</label>
-						<input
-							ref='nombre'
-							type='text'
-							className='form-control'
-							onChange={ this.obtenerValorInput.bind(this) }
-							value={ this.state.nombreInput }
-						/>
-					</div>
-					<div className='form-group col-xs-4'>
-						<label>Puesto</label>
-						<select className='form-control' id="lang" ref='puesto' onChange={ this.obtenerValorInput.bind(this) } value={ this.state.puestoInput }>
-							<option value="admin">Admin</option>
-							<option value="cajero">Cajero</option>
-							<option value="mesero">Mesero</option>
-						</select>
-					</div>
+				<div className="col-md-6">
+					<div className="new-users">
+						<h3>Nuevo Usuario</h3>
+						<div className='formulario'>
+							<div className='form-group col-xs-12'>
+								<label>Password:</label>
+								<input
+									ref='password'
+									type='password'
+									className='form-control'
+									onChange={ this.obtenerValorInput.bind(this) }
+									value={ this.state.passwordInput }
+								/>
+							</div>
+							<div className='form-group col-xs-12'>
+								<label>Nombre:</label>
+								<input
+									ref='nombre'
+									type='text'
+									className='form-control'
+									onChange={ this.obtenerValorInput.bind(this) }
+									value={ this.state.nombreInput }
+								/>
+							</div>
+							<div className='form-group col-xs-12'>
+								<label>Puesto</label>
+								<select className='form-control' id="lang" ref='puesto' onChange={ this.obtenerValorInput.bind(this) } value={ this.state.puestoInput }>
+									<option value="admin">Admin</option>
+									<option value="cajero">Cajero</option>
+									<option value="mesero">Mesero</option>
+								</select>
+							</div>
 
-					<button className='btn btn-primary' onClick={ this.crearUsuario.bind(this) }>
-						Crear usuario
-					</button>
+							<button className='btn btn-primary center-block btn-crear' onClick={ this.crearUsuario.bind(this) }>
+								Crear usuario
+							</button>
+						</div>
+					</div>
 				</div>
-				<hr />
 
-				<div className='container'>
-					{ listado }
+				<div className="col-md-6">
+					<div className="my-users">
+						<h3>Mis Usuarios</h3>
+					 	<table className="table table-hover">
+							<thead>
+							    <tr>
+							    	<th>Usuarios</th>
+							    	<th>Puesto</th>
+							    </tr>
+							</thead>
+							{ listado }
+						</table>
+					</div>
 				</div>
+
 			</div>
 		);
 	}
