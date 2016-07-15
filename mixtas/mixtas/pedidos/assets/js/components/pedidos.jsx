@@ -159,6 +159,12 @@ class Simbolos extends React.Component {
 			</button>
 		);
 
+		const llevar = (
+			<button className='btn simbols btn-llevar' onClick={ this.setSinbolo.bind(this, ' Llevar') }>
+				llevar
+			</button>
+		);
+
 
 		return (
 			<div className="row">
@@ -171,15 +177,15 @@ class Simbolos extends React.Component {
 							{ sin }
 							{ con }
 							{ extra }
-							<button  className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
+							{ llevar }
+						</div>
+						<button  className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
 								<i className="fa fa-plus" aria-hidden="true"></i>
 							</button>
 
 							<button  className='menos btn btn-danger pull-right' onClick={ this.borrarElemento.bind(this) }>
 								<i className="fa fa-eraser" aria-hidden="true"></i>
 							</button>
-
-						</div>
 
 						<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
 					</div>
@@ -192,7 +198,7 @@ class Simbolos extends React.Component {
 				                Entradas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Quesadilla') }>Quesadillas</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Ord-C-Q') }>Croriqueso</a></li>
 				    			<li className='divider'></li>
 				    			<li><a onClick={ this.setSinbolo.bind(this, ' Nopales') }>Nopales</a></li>
 				    			<li className='divider'></li>
@@ -215,7 +221,7 @@ class Simbolos extends React.Component {
 				                Quesadillas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Sencilla') }>Sencilla</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' QQ') }>Sencilla</a></li>
 				    			<li className='divider'></li>
 				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixta') }>Mixta</a></li>
 				    			<li className='divider'></li>
