@@ -15,28 +15,23 @@ import thunkMiddleware from 'redux-thunk';
 
 import axios from 'axios';
 
-const OBTENER_MESAS = 'OBTENER_MESAS';;
-const CREAR_MESA = 'CREAR_MESA';;
+const OBTENER_MESAS1 = 'OBTENER_MESAS1';;
+const OBTENER_MESAS2 = 'OBTENER_MESAS2';;
 
-const actionObtenerMesas = () => {
-	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/');
+const actionObtenerMesasP1 = () => {
+	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/?floor=P1');
 
 	return {
-		type: OBTENER_MESAS,
+		type: OBTENER_MESAS1,
 		payload: respuesta
 	};
 };
 
-const actionCrearMesas = (name, location) => {
-	const data = {
-		name: name,
-		location: location
-	};
-
-	const respuesta = axios.post('url', data);
+const actionObtenerMesasP2 = () => {
+	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/?floor=P2');
 
 	return {
-		type: CREAR_MESA,
+		type: OBTENER_MESAS2,
 		payload: respuesta
 	};
 };
@@ -49,9 +44,18 @@ const actionCrearMesas = (name, location) => {
 //  / _, _/ /___/ /_/ / /_/ / /___/ /___/ _, _/___/ /
 // /_/ |_/_____/_____/\____/\____/_____/_/ |_|/____/
 
-const reductorObtenerMesas = (state=[], action) => {
+const reductorObtenerMesas1 = (state=[], action) => {
 	switch(action.type){
-	case OBTENER_MESAS:
+	case OBTENER_MESAS1:
+		return Object.assign([], state, action.payload.data);
+	default:
+		return state;
+	}
+};
+
+const reductorObtenerMesas2 = (state=[], action) => {
+	switch(action.type){
+	case OBTENER_MESAS2:
 		return Object.assign([], state, action.payload.data);
 	default:
 		return state;
@@ -64,7 +68,8 @@ class Mesas extends React.Component {
 	componentWillMount() {
 		const { dispatch } = this.props;
 
-		dispatch(actionObtenerMesas());
+		dispatch(actionObtenerMesasP1());
+		dispatch(actionObtenerMesasP2());
 	}
 
 	levantarPedido(id) {
@@ -72,9 +77,36 @@ class Mesas extends React.Component {
 	}
 
 	render() {
-		const { mesas } = this.props;
+		const { mesas1, mesas2 } = this.props;
 
-		const listadoMesas = mesas.map(mesa => {
+		const listadoMesas1 = mesas1.map(mesa => {
+			let sillas = [];
+			for (var i = 0; i <= mesa.n_chairs; i++) {
+				sillas.push('silla ' + i);
+			}
+
+			const muestraSillas = sillas.map((silla, index) => {
+				return (
+					<p key={ index }>
+						{ silla }
+					</p>
+				);
+			});
+
+			return (
+				<li className="mesa" key={ mesa.id }>
+					<img
+						src="/static/src/img/mesa.png"
+						onClick={ this.levantarPedido.bind(this, mesa.id) }
+					/>
+					<div className="mesa-name">
+						{ mesa.name }
+					</div>
+				</li>
+			);
+		});
+
+		const listadoMesas2 = mesas2.map(mesa => {
 			let sillas = [];
 			for (var i = 0; i <= mesa.n_chairs; i++) {
 				sillas.push('silla ' + i);
@@ -106,7 +138,21 @@ class Mesas extends React.Component {
 				<h1 className="title-mesas "> Mesas </h1>
 				<hr />
 				<div className="container">
-					<ul className="list-inline">{ listadoMesas }</ul>
+					<ul className="nav nav-tabs">
+						<li className="active"><a data-toggle="tab" href="#home">Planta Baja</a></li>
+						<li><a data-toggle="tab" href="#menu1">Planta Alta</a></li>
+					</ul>
+
+					<div className="tab-content">
+						<div id="home" className="tab-pane fade in active">
+							<h3>Planta Baja</h3>
+							<ul className="list-inline">{ listadoMesas1 }</ul>
+						</div>
+						<div id="menu1" className="tab-pane fade">
+							<h3>Planta Alta</h3>
+							<ul className="list-inline">{ listadoMesas2 }</ul>
+						</div>
+					</div>
 				</div>
 			</div>
 		);
@@ -114,10 +160,11 @@ class Mesas extends React.Component {
 }
 
 // conectar el component con redux
-const MesasConnect = connect(store => ({ mesas: store.listadoMesas }))(Mesas);
+const MesasConnect = connect(store => ({ mesas1: store.listadoMesas1, mesas2: store.listadoMesas2 }))(Mesas);
 
 const reducer = combineReducers({
-	listadoMesas: reductorObtenerMesas
+	listadoMesas1: reductorObtenerMesas1,
+	listadoMesas2: reductorObtenerMesas2
 });
 
 const store = createStore(
