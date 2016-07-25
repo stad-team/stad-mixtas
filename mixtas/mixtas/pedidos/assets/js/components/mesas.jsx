@@ -19,7 +19,7 @@ const OBTENER_MESAS = 'OBTENER_MESAS';;
 const CREAR_MESA = 'CREAR_MESA';;
 
 const actionObtenerMesas = () => {
-	const respuesta = axios.get('http://127.0.0.1:8000/pedidos/api/mesas/');
+	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/');
 
 	return {
 		type: OBTENER_MESAS,

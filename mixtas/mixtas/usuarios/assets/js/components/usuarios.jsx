@@ -20,7 +20,7 @@ const OBTENER_USUARIOS = 'OBTENER_USUARIOS';
 const CREAR_USUARIO = 'CREAR_USUARIO';
 
 const actionObtenerUsuarios = () => {
-	const respuesta = axios.get('http://127.0.0.1:8000/usuarios/api/usuarios/');
+	const respuesta = axios.get('http://mixtas-costeno/usuarios/api/usuarios/');
 
 	return {
 		type: OBTENER_USUARIOS,
@@ -29,7 +29,7 @@ const actionObtenerUsuarios = () => {
 };
 
 const actionCrearUsuario = (nombre, password, puesto) => {
-	const respuesta = axios.post('http://127.0.0.1:8000/usuarios/api/usuarios/',
+	const respuesta = axios.post('http://mixtas-costeno/usuarios/api/usuarios/',
 		{
 			username: nombre,
 			password: password,
