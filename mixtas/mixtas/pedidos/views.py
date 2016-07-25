@@ -17,3 +17,12 @@ class CrearObtenerMesasView(ModelViewSet):
     serializer_class = SerializadorMesas
     queryset = Mesas.objects.all()
     permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        qs = Mesas.objects.all()
+
+        floor = self.request.query_params.get('floor')
+        if floor:
+            qs = qs.filter(location=floor)
+
+        return qs
