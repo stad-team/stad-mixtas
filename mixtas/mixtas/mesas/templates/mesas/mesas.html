@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
+
+{% block content %}
+
+	<div
+		id="react-mesas"
+		data-user={{ request.user }}
+		super-user={{ request.user.is_superuser }}
+		data-token="{{ csrf_token }}"
+	>
+	</div>
+
+	{% render_bundle 'crearMesas'%}
+
+
+<style>
+
+	body{
+		background: url("{% static "src/img/maderanegra.jpg" %}") repeat
+	}
+
+	.my-users{
+	    background-color: #EFECEC;
+	    border-radius: 10px;
+	    padding-top: 0.5em;
+	    padding-right: 2em;
+	    padding-left: 2em;
+	    padding-bottom: 0.5em;
+	}
+
+	.new-users{
+		background-color: #EFECEC;
+	    border-radius: 10px;
+	    padding-top: 0.5em;
+	    padding-right: 2em;
+	    padding-left: 2em;
+	    padding-bottom: 0.5em;
+	}
+
+	.btn-crear{
+		width: 50%;
+	}
+
+	.title{
+		color:#f2f2f2;
+		text-align: center;
+	}
+
+
+</style>
+
+{% endblock content %}
