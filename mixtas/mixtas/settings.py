@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'mixtas.menu',
     'mixtas.pedidos',
     'mixtas.usuarios',
+    'mixtas.mesas',
     'rest_framework',
 )
 
@@ -69,7 +70,12 @@ ROOT_URLCONF = 'mixtas.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates', 'mixtas/templates'],
+        'DIRS': [
+            'templates',
+            'mixtas/templates',
+            os.path.join(BASE_DIR, 'mixtas/templates'),
+            os.path.join(BASE_DIR, 'mixtas/templates/rest_framework/login.html')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,7 +98,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mixtas',
-        'USER': '',
+        'USER': 'andres',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
