@@ -25,6 +25,10 @@ module.exports = {
 		usuarios:
 		[
 			'./mixtas/usuarios/assets/js/components/usuarios',
+		],
+		crearMesas:
+		[
+			'./mixtas/mesas/assets/js/components/mesas',
 		]
 	},
 
