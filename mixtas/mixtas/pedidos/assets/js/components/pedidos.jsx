@@ -67,15 +67,15 @@ class OrdenPersonal extends React.Component {
 				<div className="platillox">
 					{ ordenCompuesta }
 				</div>
-				<div className='order-list'>
-					<h3>  Ordenes</h3>
-					<hr />
-					{ ordenes }
-				</div>
 				<div>
 					<button className='btn btn-success btn-fin' onClick={ this.enviarOrden.bind(this) }>
 						FINALIZAR ORDEN
 					</button>
+				</div>
+				<div className='order-list'>
+					<h3>  Ordenes</h3>
+					<hr />
+					{ ordenes }
 				</div>
 
 			</div>
@@ -164,6 +164,56 @@ class Simbolos extends React.Component {
 				llevar
 			</button>
 		);
+		const uno = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '1') }>
+				1
+			</button>
+		);
+		const dos = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '2') }>
+				2
+			</button>
+		);
+		const tres = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '3') }>
+				3
+			</button>
+		);
+		const cuatro = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '4') }>
+				4
+			</button>
+		);
+		const cinco = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '5') }>
+				5
+			</button>
+		);
+		const seis = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '6') }>
+				6
+			</button>
+		);
+		const siete = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '7') }>
+				7
+			</button>
+		);
+		const ocho = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '8') }>
+				8
+			</button>
+		);
+		const nueve = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '9') }>
+				9
+			</button>
+		);
+		const cero = (
+			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '0') }>
+				0
+			</button>
+		);
 
 
 		return (
@@ -171,17 +221,33 @@ class Simbolos extends React.Component {
 				<div className='col-md-8'>
 					<div>
 						<div className='simbology'>
-							{ mitad }
-							{ dosPlatos }
-							{ ahogada }
-							{ sin }
-							{ con }
-							{ extra }
-							{ llevar }
+							<div className="row">
+								<div className='col-md-7'>
+									{ mitad }
+									{ dosPlatos }
+									{ ahogada }
+									{ sin }
+									{ con }
+									{ extra }
+									{ llevar }
+								</div>
+								<div className='col-md-5'>
+									{ uno }
+									{ dos }
+									{ tres }
+									{ cuatro }
+									{ cinco }
+									{ seis }
+									{ siete }
+									{ ocho }
+									{ nueve }
+									{ cero }
+								</div>
+							</div>
 						</div>
 						<button  className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
 								<i className="fa fa-plus" aria-hidden="true"></i>
-							</button>
+						</button>
 
 							<button  className='menos btn btn-danger pull-right' onClick={ this.borrarElemento.bind(this) }>
 								<i className="fa fa-eraser" aria-hidden="true"></i>
