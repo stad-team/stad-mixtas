@@ -10,10 +10,11 @@ from django.views.generic import TemplateView
 
 from rest_framework import routers
 
-from .views import CrearObtenerMesasView
+from .views import CrearObtenerMesasView, CrearPedidosView
 
 router = routers.SimpleRouter()
 router.register(r'mesas', CrearObtenerMesasView)
+router.register(r'pedidos', CrearPedidosView)
 # from .views import LoginRetrieveView
 
 urlpatterns = patterns('',
