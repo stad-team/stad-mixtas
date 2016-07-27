@@ -1,6 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { connect, Provider } from 'react-redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import promise from 'redux-promise';
+import thunkMiddleware from 'redux-thunk';
+
+
+//     ___   ____________________  _   _______
+//    /   | / ____/_  __/  _/ __ \/ | / / ___/
+//   / /| |/ /     / /  / // / / /  |/ /\__ \
+//  / ___ / /___  / / _/ // /_/ / /|  /___/ /
+// /_/  |_\____/ /_/ /___/\____/_/ |_//____/
+
+import axios from 'axios';
+
+const OBTENER_SIMBOLOS = 'OBTENER_SIMBOLOS';
+
+const actionObtenerSimbolos = () => {
+	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/simbolos/');
+
+	return {
+		type: OBTENER_SIMBOLOS,
+		payload: respuesta
+	};
+};
+
+////////////////////////////////////////////////
+
+
+//     ____  __________  __  __________________  _____
+//    / __ \/ ____/ __ \/ / / / ____/ ____/ __ \/ ___/
+//   / /_/ / __/ / / / / / / / /   / __/ / /_/ /\__ \
+//  / _, _/ /___/ /_/ / /_/ / /___/ /___/ _, _/___/ /
+// /_/ |_/_____/_____/\____/\____/_____/_/ |_|/____/
+
+const reductorObtenerSimbolos = (state=[], action) => {
+	switch(action.type){
+	case OBTENER_SIMBOLOS:
+		return Object.assign([], state, action.payload.data);
+	default:
+		return state;
+	}
+};
+
+
 class LevantarOrden extends React.Component {
 	render() {
 		const { orden } = this.props;
@@ -48,7 +92,7 @@ class OrdenPersonal extends React.Component {
 		const { ordenCompuesta, listaOrdenes } = this.props;
 		const { elementosLista } = this.state;
 
-		let ordenes = elementosLista.map((orden, index) => {
+		let ordenes = elementosLista.reverse().map((orden, index) => {
 			return (
 				<div key={index}>
 					<button className='btn btn-danger x-btn' onClick={ this.borrarPlato.bind(this, index) }>
@@ -94,7 +138,7 @@ class Simbolos extends React.Component {
 		};
 
 	}
-	setSinbolo(simbolo) {
+	setSinbolo(simbolo, precio=false) {
 		this.setState({
 			ordenCompuesta: this.state.ordenCompuesta.concat(simbolo),
 			ordenLista: false
@@ -123,98 +167,29 @@ class Simbolos extends React.Component {
 	}
 
 	render() {
-		const mitad = (
-			<button className='btn simbols btn-primary ' onClick={ this.setSinbolo.bind(this, ' /') }>
-				/
-			</button>
-		);
+		const { simbolos } = this.props;
 
-		const dosPlatos = (
-			<button className='btn simbols btn-info' onClick={ this.setSinbolo.bind(this, ' 1/2') }>
-				1/2
-			</button>
-		);
+		let listaSimbolos;
+		if (simbolos.length > 0) {
+			listaSimbolos = simbolos.map(simbolo => {
+				return (
+					<button className={ `btn simbols ${ simbolo.claseColor }` } onClick={ this.setSinbolo.bind(this, ` ${ simbolo.simbolo }`) }>
+						{ simbolo.simbolo }
+					</button>
+				);
+			});
+		}
 
-		const ahogada = (
-			<button className='btn simbols btn-warning' onClick={ this.setSinbolo.bind(this, ' ahogada') }>
-				Ahogada
-			</button>
-		);
+		let listaNumeros = [];
+		for (var i = 0; i < 10; i++) {
+			const btn = (
+				<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, `${ i }`) }>
+					{ i }
+				</button>
+			);
 
-		const sin = (
-			<button className='btn simbols btn-danger' onClick={ this.setSinbolo.bind(this, ' sin') }>
-				Sin
-			</button>
-		);
-
-		const con = (
-			<button className='btn simbols btn-con' onClick={ this.setSinbolo.bind(this, ' con') }>
-				Con
-			</button>
-		);
-
-		const extra = (
-			<button className='btn simbols btn-extra' onClick={ this.setSinbolo.bind(this, ' Extra') }>
-				Extra
-			</button>
-		);
-
-		const llevar = (
-			<button className='btn simbols btn-llevar' onClick={ this.setSinbolo.bind(this, ' Llevar') }>
-				llevar
-			</button>
-		);
-		const uno = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '1') }>
-				1
-			</button>
-		);
-		const dos = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '2') }>
-				2
-			</button>
-		);
-		const tres = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '3') }>
-				3
-			</button>
-		);
-		const cuatro = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '4') }>
-				4
-			</button>
-		);
-		const cinco = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '5') }>
-				5
-			</button>
-		);
-		const seis = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '6') }>
-				6
-			</button>
-		);
-		const siete = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '7') }>
-				7
-			</button>
-		);
-		const ocho = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '8') }>
-				8
-			</button>
-		);
-		const nueve = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '9') }>
-				9
-			</button>
-		);
-		const cero = (
-			<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, '0') }>
-				0
-			</button>
-		);
-
+			listaNumeros.push(btn);
+		}
 
 		return (
 			<div className="row">
@@ -223,25 +198,10 @@ class Simbolos extends React.Component {
 						<div className='simbology'>
 							<div className="row">
 								<div className='col-md-7'>
-									{ mitad }
-									{ dosPlatos }
-									{ ahogada }
-									{ sin }
-									{ con }
-									{ extra }
-									{ llevar }
+									{ listaSimbolos }
 								</div>
 								<div className='col-md-5'>
-									{ uno }
-									{ dos }
-									{ tres }
-									{ cuatro }
-									{ cinco }
-									{ seis }
-									{ siete }
-									{ ocho }
-									{ nueve }
-									{ cero }
+									{ listaNumeros }
 								</div>
 							</div>
 						</div>
@@ -264,7 +224,7 @@ class Simbolos extends React.Component {
 				                Entradas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Ord-C-Q') }>Croriqueso</a></li>
+				    			<li><a onClick={ this.setSinbolo.bind(this, ' Ord-C-Q', 50) }>Croriqueso</a></li>
 				    			<li className='divider'></li>
 				    			<li><a onClick={ this.setSinbolo.bind(this, ' Nopales') }>Nopales</a></li>
 				    			<li className='divider'></li>
@@ -439,23 +399,43 @@ class Simbolos extends React.Component {
 }
 
 
+
 class Pedidos extends React.Component {
+	componentWillMount() {
+		const { dispatch } = this.props;
+
+		dispatch(actionObtenerSimbolos());
+	}
+
 	render() {
-		const { mesa } = this.props;
+		const { mesa, simbolos } = this.props;
 
 		return (
 			<div className='container'>
 				<h1> Bienvenido a Pedidos  Mesa # { mesa } </h1>
-				{ <Simbolos /> }
+				{ <Simbolos simbolos={ simbolos } /> }
 			</div>
 		);
 	}
 }
 
+
+// conectar el component con redux
+const PedidosConnect = connect(store => ({ simbolos: store.listadoSimbolos }))(Pedidos);
+
+const reducer = combineReducers({
+	listadoSimbolos: reductorObtenerSimbolos,
+});
+
+const store = createStore(
+	reducer, applyMiddleware(thunkMiddleware, promise));
+
 const element = document.getElementById('pedidos');
 const dataMesa = element.getAttribute('data-mesa');
 
 ReactDOM.render(
-	<Pedidos mesa={ dataMesa }/>,
+	<Provider store={ store } >
+		<PedidosConnect mesa={ dataMesa }/>
+	</Provider>,
 	element
 );
