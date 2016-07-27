@@ -15,8 +15,8 @@ import thunkMiddleware from 'redux-thunk';
 
 import axios from 'axios';
 
-const OBTENER_MESAS1 = 'OBTENER_MESAS1';;
-const OBTENER_MESAS2 = 'OBTENER_MESAS2';;
+const OBTENER_MESAS1 = 'OBTENER_MESAS1';
+const OBTENER_MESAS2 = 'OBTENER_MESAS2';
 
 const actionObtenerMesasP1 = () => {
 	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/?floor=P1');
