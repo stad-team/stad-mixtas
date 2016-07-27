@@ -5,12 +5,12 @@ STAD TEAM
 """
 from __future__ import absolute_import, unicode_literals, print_function
 
-from .models import Mesas, DetalleOrden
+from .models import Mesas, DetalleOrden, Simbolos
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
 
-from .serializers import SerializadorMesas, SerializadorPedidos
+from .serializers import SerializadorMesas, SerializadorPedidos, SerializadorSimbolos
 
 
 class CrearObtenerMesasView(ModelViewSet):
@@ -39,3 +39,9 @@ class CrearPedidosView(ModelViewSet):
                 self.request, message="You have no permissions for creating a user"
             )
         serializer.save()
+
+
+class ObtenerSimbolos(ModelViewSet):
+    serializer_class = SerializadorSimbolos
+    queryset = Simbolos.objects.all()
+    permission_classes = (AllowAny,)
