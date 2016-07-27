@@ -37,3 +37,9 @@ class DetalleOrden(models.Model):
     cantidad = models.IntegerField()
     platillo = models.CharField(max_length=50)
     precio = models.IntegerField()
+
+
+class Simbolos(models.Model):
+
+    simbolo = models.CharField(max_length=10)
+    claseColor = models.CharField(max_length=15, null=True, blank=True)
