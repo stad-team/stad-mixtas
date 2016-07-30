@@ -5,12 +5,12 @@ STAD TEAM
 """
 from __future__ import absolute_import, unicode_literals, print_function
 
-from .models import Mesas, DetalleOrden, Simbolos
+from .models import Mesas, DetalleOrden, Simbolos, Menu
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
 
-from .serializers import SerializadorMesas, SerializadorPedidos, SerializadorSimbolos
+from .serializers import SerializadorMesas, SerializadorPedidos, SerializadorSimbolos, SerializadorMenu
 
 
 class CrearObtenerMesasView(ModelViewSet):
@@ -44,4 +44,10 @@ class CrearPedidosView(ModelViewSet):
 class ObtenerSimbolos(ModelViewSet):
     serializer_class = SerializadorSimbolos
     queryset = Simbolos.objects.all()
+    permission_classes = (AllowAny,)
+
+
+class ObtenerMenu(ModelViewSet):
+    serializer_class = SerializadorMenu
+    queryset = Menu.objects.all()
     permission_classes = (AllowAny,)
