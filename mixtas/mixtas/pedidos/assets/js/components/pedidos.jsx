@@ -26,6 +26,17 @@ const actionObtenerSimbolos = () => {
 	};
 };
 
+const OBTENER_MENUS = 'OBTENER_MENUS';
+
+const actionObtenerMenus = () => {
+	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/menu/');
+
+	return {
+		type: OBTENER_MENUS,
+		payload: respuesta
+	};
+};
+
 ////////////////////////////////////////////////
 
 
@@ -38,6 +49,16 @@ const actionObtenerSimbolos = () => {
 const reductorObtenerSimbolos = (state=[], action) => {
 	switch(action.type){
 	case OBTENER_SIMBOLOS:
+		return Object.assign([], state, action.payload.data);
+	default:
+		return state;
+	}
+};
+
+
+const reductorObtenerMenus = (state=[], action) => {
+	switch(action.type){
+	case OBTENER_MENUS:
 		return Object.assign([], state, action.payload.data);
 	default:
 		return state;
@@ -166,8 +187,27 @@ class Simbolos extends React.Component {
 		}
 	}
 
+	listadosMenus(tipos, menus) {
+		let lista;
+		if (menus.length > 0) {
+			lista = menus.map(menu => {
+				if (menu.tipo == tipos){
+					return (
+						<li className='divider2'>
+							<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, 50) }>
+								{ menu.nombre }
+							</a>
+						</li>
+
+					);
+				}
+			});
+		}
+		return lista;
+	}
+
 	render() {
-		const { simbolos } = this.props;
+		const { simbolos, menus } = this.props;
 
 		let listaSimbolos;
 		if (simbolos.length > 0) {
@@ -180,6 +220,16 @@ class Simbolos extends React.Component {
 			});
 		}
 
+		let listaEntradas = this.listadosMenus('Entrada', menus);
+		let listaQuesadillas = this.listadosMenus('Quesadillas', menus);;
+		let listatacos = this.listadosMenus('Taco', menus);;
+		let listaChavindecas = this.listadosMenus('Chavindecas', menus);;
+		let listaAlambres = this.listadosMenus('Alambres y Volcanes', menus);;
+		let listaPostres = this.listadosMenus('Postres', menus);;
+		let listaBebidas = this.listadosMenus('Bebidas', menus);;
+
+
+
 		let listaNumeros = [];
 		for (var i = 0; i < 10; i++) {
 			const btn = (
@@ -190,6 +240,7 @@ class Simbolos extends React.Component {
 
 			listaNumeros.push(btn);
 		}
+
 
 		return (
 			<div className="row">
@@ -224,21 +275,7 @@ class Simbolos extends React.Component {
 				                Entradas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Ord-C-Q', 50) }>Croriqueso</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Nopales') }>Nopales</a></li>
-				    			<li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Guacamole') }>Guacamole</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Cebollitas') }>Cebollitas</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Frijoles Charros') }>Frijoles Charros</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Papa "El Costeño"') }>Papa "El Costeño"</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Chuy') }>Chuy</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Chenchitos') }>Chenchitos</a></li>
+				    			{ listaEntradas }
 				            </ul>
 				        </div>
 
@@ -247,17 +284,7 @@ class Simbolos extends React.Component {
 				                Quesadillas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' QQ') }>Sencilla</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixta') }>Mixta</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixta de Tripa') }>Mixta de Tripa</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Combinada de Tripa') }>Combinada de Tripa</a></li>
-				    			<li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Mixta Ahogada') }>Mixta Ahogada</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Mixta de Tripa Ahogada') }>Mixta de Tripa Ahogada</a></li>
+				    			{ listaQuesadillas }
 				            </ul>
 				        </div>
 
@@ -266,17 +293,7 @@ class Simbolos extends React.Component {
 				                Tacos <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Sencillo') }>Sencillo</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Combinado con Tripa') }>Combinado con Tripa</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Tripa') }>Tripa</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixto con Queso') }>Mixto con Queso</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Mixto Tripa con Queso') }>Mixto Tripa con Queso</a></li>
-				    			<li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Quesadilla tipo Taco') }>Quesadilla tipo Taco</a></li>
+				    			{ listatacos }
 				            </ul>
 				        </div>
 
@@ -285,13 +302,7 @@ class Simbolos extends React.Component {
 				                Chavindecas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Chavindeca') }>Chavindeca</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' De Tripa') }>De Tripa</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Ahogada') }>Ahogada</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Ahogada Tripa') }>Ahogada Tripa</a></li>
+				    			{ listaChavindecas }
 				            </ul>
 				        </div>
 
@@ -301,21 +312,7 @@ class Simbolos extends React.Component {
 				                Alambres/Volcanes <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Alambre De Queso') }>de Queso</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Volcan') }>Volcan</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' De Tripa') }>De Tripa</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Carne "El Costeño"') }>Carne El costeño</a></li>
-				    			<li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Alambre') }>Alambre</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Alambre especial') }>Alambre especial</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Platillo El Costeño') }>Platillo El costeño</a></li>
-				                <li className='divider'></li>
-				                <li><a onClick={ this.setSinbolo.bind(this, ' Platillo de Carne Asada') }>Platillo de Carne Asada</a></li>
+				    			{ listaAlambres }
 				            </ul>
 				        </div>
 
@@ -324,15 +321,7 @@ class Simbolos extends React.Component {
 				                Postres <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Gelatina') }>Gelatina</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Gelatina con Rompope') }>Gelatina con Rompope</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Tapioca') }>Tapioca</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Durazno en Almibar') }>Durazno en Almibar</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Chongos') }>Chongos</a></li>
+				    			{ listaPostres }
 				            </ul>
 				        </div>
 
@@ -341,9 +330,7 @@ class Simbolos extends React.Component {
 				                Agua <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Agua de Frutas') }>Agua de Frutas</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Refresco') }>Refresco</a></li>
+				    			{ listaBebidas }
 				            </ul>
 				        </div>
 
@@ -352,9 +339,7 @@ class Simbolos extends React.Component {
 				                Refresco <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Agua de Frutas') }>Agua de Frutas</a></li>
-				    			<li className='divider'></li>
-				    			<li><a onClick={ this.setSinbolo.bind(this, ' Refresco') }>Refresco</a></li>
+				    			{ listaBebidas }
 				            </ul>
 				        </div>
 
@@ -405,15 +390,16 @@ class Pedidos extends React.Component {
 		const { dispatch } = this.props;
 
 		dispatch(actionObtenerSimbolos());
+		dispatch(actionObtenerMenus());
 	}
 
 	render() {
-		const { mesa, simbolos } = this.props;
+		const { mesa, simbolos, menus } = this.props;
 
 		return (
 			<div className='container'>
 				<h1> Bienvenido a Pedidos  Mesa # { mesa } </h1>
-				{ <Simbolos simbolos={ simbolos } /> }
+				{ <Simbolos simbolos={ simbolos } menus={ menus }/> }
 			</div>
 		);
 	}
@@ -421,11 +407,14 @@ class Pedidos extends React.Component {
 
 
 // conectar el component con redux
-const PedidosConnect = connect(store => ({ simbolos: store.listadoSimbolos }))(Pedidos);
+const PedidosConnect = connect(store => ({ simbolos: store.listadoSimbolos, menus: store.listadoMenus }))(Pedidos);
+
 
 const reducer = combineReducers({
 	listadoSimbolos: reductorObtenerSimbolos,
+	listadoMenus: reductorObtenerMenus,
 });
+
 
 const store = createStore(
 	reducer, applyMiddleware(thunkMiddleware, promise));
