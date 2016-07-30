@@ -43,3 +43,10 @@ class Simbolos(models.Model):
 
     simbolo = models.CharField(max_length=10)
     claseColor = models.CharField(max_length=15, null=True, blank=True)
+
+
+class Menu(models.Model):
+    tipo = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=20)
+    nombreCorto = models.CharField(max_length=20)
+    precio = models.IntegerField()
