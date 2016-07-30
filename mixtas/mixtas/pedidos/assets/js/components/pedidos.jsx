@@ -132,11 +132,6 @@ class OrdenPersonal extends React.Component {
 				<div className="platillox">
 					{ ordenCompuesta }
 				</div>
-				<div>
-					<button className='btn btn-success btn-fin' onClick={ this.enviarOrden.bind(this) }>
-						FINALIZAR ORDEN
-					</button>
-				</div>
 				<div className='order-list'>
 					<h3>  Ordenes</h3>
 					<hr />
@@ -155,7 +150,8 @@ class Simbolos extends React.Component {
 		this.state = {
 			ordenCompuesta: [],
 			ordenLista: false,
-			listaOrdenes: []
+			listaOrdenes: [],
+			ordenesUsuarios: []
 		};
 
 	}
@@ -187,13 +183,61 @@ class Simbolos extends React.Component {
 		}
 	}
 
+	editarOrdenPersonal(ordenesActualizar){
+		const { listaOrdenes, ordenesUsuarios } = this.state;
+
+		if (listaOrdenes.length !== 0) {
+			alert('Terminar Orden en procesor antes de editar');
+		} else {
+			this.setState({
+				listaOrdenes: ordenesActualizar
+			});
+
+			for (var i = 0; i <= ordenesUsuarios.length; i++) {
+				if (ordenesUsuarios[i].props.orden === ordenesActualizar) {
+					delete ordenesUsuarios[i];
+					this.setState({
+						ordenesUsuarios: ordenesUsuarios
+					});
+					break;
+				}
+			}
+		}
+	}
+
+	agregarOrdenUsuario(){
+		const { listaOrdenes, ordenesUsuarios } = this.state;
+
+		let ordenSimplificada;
+		ordenSimplificada = (
+			<div className='orden-personalizada plato' orden={ listaOrdenes } onClick={ this.editarOrdenPersonal.bind(this, listaOrdenes) }>
+				{
+					listaOrdenes.map((orden, index) => {
+						return (
+							<div className='orden-simple-x-usuario' key={ `orden-simple-${ index }`}>
+								{ orden }
+							</div>
+						);
+					})
+				}
+			</div>
+		);
+
+
+		this.setState({
+			ordenesUsuarios: [ordenSimplificada].concat(ordenesUsuarios),
+			ordenCompuesta: [],
+			listaOrdenes: []
+		});
+	}
+
 	listadosMenus(tipos, menus) {
 		let lista;
 		if (menus.length > 0) {
-			lista = menus.map(menu => {
+			lista = menus.map((menu, index) => {
 				if (menu.tipo == tipos){
 					return (
-						<li className='divider2'>
+						<li className='divider2' key={ `menu-${ menu.tipo }-${ index }` }>
 							<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, 50) }>
 								{ menu.nombre }
 							</a>
@@ -208,6 +252,7 @@ class Simbolos extends React.Component {
 
 	render() {
 		const { simbolos, menus } = this.props;
+		const { ordenesUsuarios } = this.state;
 
 		let listaSimbolos;
 		if (simbolos.length > 0) {
@@ -233,7 +278,7 @@ class Simbolos extends React.Component {
 		let listaNumeros = [];
 		for (var i = 0; i < 10; i++) {
 			const btn = (
-				<button className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, `${ i }`) }>
+				<button key={ `numero-${ i }` } className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, `${ i }`) }>
 					{ i }
 				</button>
 			);
@@ -256,17 +301,29 @@ class Simbolos extends React.Component {
 								</div>
 							</div>
 						</div>
-						<button  className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
+						<button className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
 								<i className="fa fa-plus" aria-hidden="true"></i>
 						</button>
 
-							<button  className='menos btn btn-danger pull-right' onClick={ this.borrarElemento.bind(this) }>
-								<i className="fa fa-eraser" aria-hidden="true"></i>
-							</button>
+						<button className='menos btn btn-danger pull-right' onClick={ this.borrarElemento.bind(this) }>
+							<i className="fa fa-eraser" aria-hidden="true"></i>
+						</button>
 
 						<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
+
+						<div className='btn btn-success btn-fin'>
+							<button onClick={ this.agregarOrdenUsuario.bind(this) }>
+								Agregar Orden de Usuario
+							</button>
+						</div>
+
+						<div className='order-list'>
+							<h3>  Ordenes Listas </h3>
+							<hr />
+							{ ordenesUsuarios }
+						</div>
+
 					</div>
-					{ <LevantarOrden />}
 				</div>
 				<div className='col-md-2'>
 					<div className='menus'>
