@@ -47,6 +47,6 @@ class Simbolos(models.Model):
 
 class Menu(models.Model):
     tipo = models.CharField(max_length=50)
-    nombre = models.CharField(max_length=20)
-    nombreCorto = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=100)
+    nombreCorto = models.CharField(max_length=50)
     precio = models.IntegerField()
