@@ -151,25 +151,58 @@ class Simbolos extends React.Component {
 			ordenCompuesta: [],
 			ordenLista: false,
 			listaOrdenes: [],
-			ordenesUsuarios: []
+			ordenesUsuarios: [],
+			precio: 0
 		};
 
 	}
-	setSinbolo(simbolo, precio=false) {
-		this.setState({
-			ordenCompuesta: this.state.ordenCompuesta.concat(simbolo),
-			ordenLista: false
-		});
+
+	setSinbolo(simbolo, precioIngrediente=0) {
+		const { ordenCompuesta, precio } = this.state;
+
+		if (precioIngrediente > 0){
+			if (ordenCompuesta.indexOf(' con') > 1) {
+				this.setState({
+					ordenCompuesta: ordenCompuesta.concat(simbolo),
+					ordenLista: false,
+					precio: precio + precioIngrediente
+				});
+			} else {
+				this.setState({
+					ordenCompuesta: ordenCompuesta.concat(simbolo),
+					ordenLista: false,
+					precio: precioIngrediente
+				});
+			}
+
+		} else {
+			this.setState({
+				ordenCompuesta: ordenCompuesta.concat(simbolo),
+				ordenLista: false
+			});
+		}
+
 	}
 
 
 	agregarOrden() {
-		const { ordenCompuesta } = this.state;
+		const { ordenCompuesta, precio } = this.state;
 
-		this.setState({
-			listaOrdenes: this.state.listaOrdenes.concat(ordenCompuesta.join('')),
-			ordenCompuesta: []
-		});
+		let precioPlato;
+		if (precio) {
+			if (parseInt(ordenCompuesta[0]) % 1 === 0) {
+				precioPlato = parseInt(ordenCompuesta[0] * precio);
+			} else {
+				alert('Indique la cantidad, la cantidad debe de ir al inicio de la orden.');
+			}
+		}
+
+		if (parseInt(ordenCompuesta[0]) % 1 === 0) {
+			this.setState({
+				listaOrdenes: this.state.listaOrdenes.concat(ordenCompuesta.join('') + ` ${ precioPlato }`),
+				ordenCompuesta: []
+			});
+		}
 	}
 
 	borrarElemento() {
@@ -209,13 +242,31 @@ class Simbolos extends React.Component {
 		const { listaOrdenes, ordenesUsuarios } = this.state;
 
 		let ordenSimplificada;
+		let indexPrecio = 0;
+		let precioFinal = 0;
+
 		ordenSimplificada = (
 			<div className='orden-personalizada plato' orden={ listaOrdenes } onClick={ this.editarOrdenPersonal.bind(this, listaOrdenes) }>
 				{
 					listaOrdenes.map((orden, index) => {
-						return (
+
+						indexPrecio = orden.split(' ').length;
+						precioFinal += parseInt(orden.split(' ')[indexPrecio - 1]);
+
+						const ord = (
 							<div className='orden-simple-x-usuario' key={ `orden-simple-${ index }`}>
 								{ orden }
+							</div>
+						);
+
+						return (
+							<div>
+								{ orden }
+								<hr />
+								{
+									index === listaOrdenes.length - 1 ?
+									precioFinal : ''
+								}
 							</div>
 						);
 					})
@@ -236,9 +287,19 @@ class Simbolos extends React.Component {
 		if (menus.length > 0) {
 			lista = menus.map((menu, index) => {
 				if (menu.tipo == tipos){
+					if (menu.tipo === 'Ingredientes') {
+						return (
+							<li className='divider2 ' key={ `menu-${ menu.tipo }-${ index }` }>
+								<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, menu.precio) }>
+									{ menu.nombre }
+								</a>
+							</li>
+
+						);
+					}
 					return (
 						<li className='divider2' key={ `menu-${ menu.tipo }-${ index }` }>
-							<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, 50) }>
+							<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, menu.precio) }>
 								{ menu.nombre }
 							</a>
 						</li>
@@ -272,13 +333,14 @@ class Simbolos extends React.Component {
 		let listaAlambres = this.listadosMenus('Alambres y Volcanes', menus);;
 		let listaPostres = this.listadosMenus('Postres', menus);;
 		let listaBebidas = this.listadosMenus('Bebidas', menus);;
+		let listaIngredientes = this.listadosMenus('Ingredientes', menus);;
 
 
 
 		let listaNumeros = [];
 		for (var i = 0; i < 10; i++) {
 			const btn = (
-				<button key={ `numero-${ i }` } className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, `${ i }`) }>
+				<button key={ `numero-${ i }` } className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, `${ i }`, 0) }>
 					{ i }
 				</button>
 			);
@@ -289,16 +351,17 @@ class Simbolos extends React.Component {
 
 		return (
 			<div className="row">
-				<div className='col-md-8'>
+				<div className='col-md-10'>
 					<div>
 						<div className='simbology'>
 							<div className="row">
-								<div className='col-md-7'>
-									{ listaSimbolos }
-								</div>
-								<div className='col-md-5'>
+								<div className='col-md-4'>
 									{ listaNumeros }
 								</div>
+								<div className='col-md-8 simbol-btns'>
+									{ listaSimbolos }
+								</div>
+
 							</div>
 						</div>
 						<button className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
@@ -311,10 +374,8 @@ class Simbolos extends React.Component {
 
 						<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
 
-						<div className='btn btn-success btn-fin'>
-							<button onClick={ this.agregarOrdenUsuario.bind(this) }>
-								Agregar Orden de Usuario
-							</button>
+						<div className='btn btn-success btn-fin' onClick={ this.agregarOrdenUsuario.bind(this) }>
+							Agregar Orden de Usuario
 						</div>
 
 						<div className='order-list'>
@@ -328,7 +389,16 @@ class Simbolos extends React.Component {
 				<div className='col-md-2'>
 					<div className='menus'>
 						<div className='dropdown'>
-				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-warning menu-btns ingredients' data-target='#' href='#'>
+				                Ingredientes <span className='caret'></span>
+				            </a>
+				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
+				    			{ listaIngredientes }
+				            </ul>
+				        </div>
+
+						<div className='dropdown'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary menu-btns' data-target='#' href='#'>
 				                Entradas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
@@ -337,7 +407,7 @@ class Simbolos extends React.Component {
 				        </div>
 
 				        <div className='dropdown'>
-				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary menu-btns' data-target='#' href='#'>
 				                Quesadillas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
@@ -346,7 +416,7 @@ class Simbolos extends React.Component {
 				        </div>
 
 				        <div className='dropdown'>
-				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary menu-btns' data-target='#' href='#'>
 				                Tacos <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
@@ -355,7 +425,7 @@ class Simbolos extends React.Component {
 				        </div>
 
 				        <div className='dropdown'>
-				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary menu-btns' data-target='#' href='#'>
 				                Chavindecas <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
@@ -365,7 +435,7 @@ class Simbolos extends React.Component {
 
 
 				       	<div className='dropdown'>
-				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary menu-btns' data-target='#' href='#'>
 				                Alambres/Volcanes <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
@@ -374,7 +444,7 @@ class Simbolos extends React.Component {
 				        </div>
 
 				       	<div className='dropdown'>
-				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary menu-btns' data-target='#' href='#'>
 				                Postres <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
@@ -383,7 +453,7 @@ class Simbolos extends React.Component {
 				        </div>
 
 				       	<div className='dropdown'>
-				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary menu-btns' data-target='#' href='#'>
 				                Agua <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
@@ -392,7 +462,7 @@ class Simbolos extends React.Component {
 				        </div>
 
 				       	<div className='dropdown'>
-				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary' data-target='#' href='#'>
+				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-primary menu-btns' data-target='#' href='#'>
 				                Refresco <span className='caret'></span>
 				            </a>
 				    		<ul className='dropdown-menu multi-level' role='menu' aria-labelledby='dropdownMenu'>
@@ -400,39 +470,6 @@ class Simbolos extends React.Component {
 				            </ul>
 				        </div>
 
-				    </div>
-				</div>
-				<div className='col-md-2'>
-					<div className='menus'>
-						<div className='dropdown'>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Tripa') }>
-				                Tripa
-				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Carne') }>
-				                Carne
-				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Chorizo') }>
-				                Chorizo
-				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Pimiento') }>
-				                Pimiento
-				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Cebolla') }>
-				                Cebolla
-				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Queso') }>
-				                Queso
-				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Piña') }>
-				                Piña
-				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Champiñones') }>
-				                Champiñones
-				            </a>
-				            <a id='dLabel' role='button' className='btn btn-primary' data-target='#' onClick={ this.setSinbolo.bind(this, ' Cilantro') }>
-				                Cilantro
-				            </a>
-				        </div>
 				    </div>
 				</div>
 			</div>
