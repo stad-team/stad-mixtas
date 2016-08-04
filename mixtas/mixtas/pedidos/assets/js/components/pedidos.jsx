@@ -160,24 +160,31 @@ class Simbolos extends React.Component {
 	setSinbolo(simbolo, precioIngrediente=0) {
 		const { ordenCompuesta, precio } = this.state;
 
+		let simboloVar = simbolo;
+
 		if (precioIngrediente > 0){
 			if (ordenCompuesta.indexOf(' con') > 1) {
 				this.setState({
-					ordenCompuesta: ordenCompuesta.concat(simbolo),
+					ordenCompuesta: ordenCompuesta.concat(simboloVar),
 					ordenLista: false,
 					precio: precio + precioIngrediente
 				});
 			} else {
 				this.setState({
-					ordenCompuesta: ordenCompuesta.concat(simbolo),
+					ordenCompuesta: ordenCompuesta.concat(simboloVar),
 					ordenLista: false,
 					precio: precioIngrediente
 				});
 			}
 
 		} else {
+			if (parseInt(simboloVar) % 1 >= 0 && ordenCompuesta.length > 0) {
+				simboloVar = ordenCompuesta[0] + simboloVar;
+				ordenCompuesta.shift();
+
+			}
 			this.setState({
-				ordenCompuesta: ordenCompuesta.concat(simbolo),
+				ordenCompuesta: ordenCompuesta.concat(simboloVar),
 				ordenLista: false
 			});
 		}
@@ -244,6 +251,7 @@ class Simbolos extends React.Component {
 		let ordenSimplificada;
 		let indexPrecio = 0;
 		let precioFinal = 0;
+		let precioFinalOrden;
 
 		ordenSimplificada = (
 			<div className='orden-personalizada plato' orden={ listaOrdenes } onClick={ this.editarOrdenPersonal.bind(this, listaOrdenes) }>
@@ -252,6 +260,11 @@ class Simbolos extends React.Component {
 
 						indexPrecio = orden.split(' ').length;
 						precioFinal += parseInt(orden.split(' ')[indexPrecio - 1]);
+						precioFinalOrden = (
+							<div className='costo-por-persona pull-right'>
+								{ precioFinal}
+							</div>
+						);
 
 						const ord = (
 							<div className='orden-simple-x-usuario' key={ `orden-simple-${ index }`}>
@@ -263,10 +276,10 @@ class Simbolos extends React.Component {
 							<div>
 								{ orden }
 								<hr />
-								{
-									index === listaOrdenes.length - 1 ?
-									precioFinal : ''
-								}
+									{
+										index === listaOrdenes.length - 1 ?
+										precioFinalOrden : ''
+									}
 							</div>
 						);
 					})
