@@ -19,7 +19,14 @@ const OBTENER_MESAS1 = 'OBTENER_MESAS1';
 const OBTENER_MESAS2 = 'OBTENER_MESAS2';
 
 const actionObtenerMesasP1 = () => {
-	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/?floor=P1');
+	const respuesta = axios.get(
+		'http://mixtas-costeno/pedidos/api/mesas/?floor=P1',
+		{
+			headers: {
+				'X-CSRFToken': tokenCSRF
+			}
+		}
+	);
 
 	return {
 		type: OBTENER_MESAS1,
@@ -28,7 +35,14 @@ const actionObtenerMesasP1 = () => {
 };
 
 const actionObtenerMesasP2 = () => {
-	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/?floor=P2');
+	const respuesta = axios.get(
+		'http://mixtas-costeno/pedidos/api/mesas/?floor=P2',
+		{
+			headers: {
+				'X-CSRFToken': tokenCSRF
+			}
+		}
+	);
 
 	return {
 		type: OBTENER_MESAS2,
@@ -171,6 +185,7 @@ const store = createStore(
 	reducer, applyMiddleware(thunkMiddleware, promise));
 
 const element = document.getElementById('mesas');
+const tokenCSRF = element.getAttribute('data-token');
 
 ReactDom.render(
 	<Provider store={ store } >
