@@ -157,23 +157,28 @@ class Simbolos extends React.Component {
 
 	}
 
-	setSinbolo(simbolo, precioIngrediente=0) {
+	setSinbolo(simbolo, precioIngrediente=0, tipo) {
 		const { ordenCompuesta, precio } = this.state;
 
 		let simboloVar = simbolo;
 
-		if (precioIngrediente > 0){
-			if (ordenCompuesta.indexOf(' con') > 1) {
+		if (precioIngrediente > 0) {
+			if (ordenCompuesta.indexOf(' Extra') > 1) {
 				this.setState({
 					ordenCompuesta: ordenCompuesta.concat(simboloVar),
 					ordenLista: false,
 					precio: precio + precioIngrediente
 				});
-			} else {
+			} else if (tipo !== 'Ingredientes'){
 				this.setState({
 					ordenCompuesta: ordenCompuesta.concat(simboloVar),
 					ordenLista: false,
 					precio: precioIngrediente
+				});
+			} else {
+				this.setState({
+					ordenCompuesta: ordenCompuesta.concat(simboloVar),
+					ordenLista: false
 				});
 			}
 
@@ -303,7 +308,7 @@ class Simbolos extends React.Component {
 					if (menu.tipo === 'Ingredientes') {
 						return (
 							<li className='divider2 ' key={ `menu-${ menu.tipo }-${ index }` }>
-								<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, menu.precio) }>
+								<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, menu.precio, menu.tipo) }>
 									{ menu.nombre }
 								</a>
 							</li>
@@ -312,7 +317,7 @@ class Simbolos extends React.Component {
 					}
 					return (
 						<li className='divider2' key={ `menu-${ menu.tipo }-${ index }` }>
-							<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, menu.precio) }>
+							<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, menu.precio, menu.tipo) }>
 								{ menu.nombre }
 							</a>
 						</li>
