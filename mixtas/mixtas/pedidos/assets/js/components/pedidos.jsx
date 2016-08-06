@@ -396,9 +396,8 @@ class Simbolos extends React.Component {
 							Agregar Orden de Usuario
 						</div>
 
-						<div className='btn btn-warning btn-fin-orden' onClick="">
-+                         Finalizar Orden
-+                       </div>
+						<div className='btn btn-warning btn-fin-orden' onClick=""> 
+						Finalizar Orden</div>
 
 						<div className='order-list'>
 							<h3>  Ordenes Listas </h3>
