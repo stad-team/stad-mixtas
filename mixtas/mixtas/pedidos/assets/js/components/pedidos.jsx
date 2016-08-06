@@ -382,19 +382,23 @@ class Simbolos extends React.Component {
 
 							</div>
 						</div>
-						<button className='mas btn btn-success btn-lg' onClick={ this.agregarOrden.bind(this) }>
+						<button className='mas btn btn-success btn-lg pull-right' onClick={ this.agregarOrden.bind(this) }>
 								<i className="fa fa-plus" aria-hidden="true"></i>
 						</button>
 
-						<button className='menos btn btn-danger pull-right' onClick={ this.borrarElemento.bind(this) }>
+						<button className='menos btn btn-danger ' onClick={ this.borrarElemento.bind(this) }>
 							<i className="fa fa-eraser" aria-hidden="true"></i>
 						</button>
 
 						<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
 
-						<div className='btn btn-success btn-fin' onClick={ this.agregarOrdenUsuario.bind(this) }>
+						<div className='btn btn-success btn-fin pull-right' onClick={ this.agregarOrdenUsuario.bind(this) }>
 							Agregar Orden de Usuario
 						</div>
+
+						<div className='btn btn-warning btn-fin-orden' onClick="">
++                         Finalizar Orden
++                       </div>
 
 						<div className='order-list'>
 							<h3>  Ordenes Listas </h3>
