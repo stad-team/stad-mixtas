@@ -33,7 +33,7 @@ class Orden(models.Model):
 
 
 class DetalleOrden(models.Model):
-
+    idOrden = models.ForeignKey(Orden)
     cantidad = models.IntegerField()
     platillo = models.CharField(max_length=50)
     precio = models.IntegerField()
