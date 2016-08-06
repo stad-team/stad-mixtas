@@ -12,8 +12,25 @@ from rest_framework.permissions import AllowAny
 
 from .serializers import SerializadorUsuarios
 
+ACCESS_CONTROL_ALLOW_HEADERS = 'Authorization,Content-Type'
+ACCESS_CONTROL_ALLOW_METHODS = 'GET, POST, PUT, PATCH, HEAD, OPTIONS, DELETE'
 
-class CrearUsuariosView(ModelViewSet):
+
+class CORSAccessControlMixin(object):
+    is_options_method_open = True
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super(CORSAccessControlMixin, self).dispatch(request, *args, **kwargs)
+        try:
+            response['Access-Control-Allow-Origin'] = '*'
+            response['Access-Control-Allow-Headers'] = ACCESS_CONTROL_ALLOW_HEADERS
+            response['Access-Control-Allow-Methods'] = ACCESS_CONTROL_ALLOW_METHODS
+        except TypeError:
+            pass
+        return response
+
+
+class CrearUsuariosView(CORSAccessControlMixin, ModelViewSet):
     serializer_class = SerializadorUsuarios
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
