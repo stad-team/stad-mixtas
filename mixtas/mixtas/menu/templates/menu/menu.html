@@ -15,8 +15,11 @@
 
 <style>
 	body{
-	background: url("{% static "src/img/fondo.jpg" %}") no-repeat;
+	background: url("{% static "src/img/wood-menu2.jpg" %}") no-repeat;
 	background-size: cover;
+    background-color: #3d270c;
+    background-repeat: repeat-y;
+
 
 }
 
@@ -45,6 +48,19 @@
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 6em;
+}
+
+
+@media only screen and (max-width: 991px) {
+    .btn-outline{
+        width: 10em;
+    }
+}
+
+@media only screen and (max-width: 1089px) {
+    .btn-outline{
+        width: 10em;
+    }
 }
 
 </style>
