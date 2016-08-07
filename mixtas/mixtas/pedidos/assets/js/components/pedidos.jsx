@@ -329,6 +329,72 @@ class Simbolos extends React.Component {
 		return lista;
 	}
 
+	finalizarOrden() {
+		const { ordenesUsuarios } = this.state;
+		const { user, mesa } = this.props;
+
+		let ordenes;
+		let cantidad;
+		let precio;
+		let descripcion;
+		let ordenDescompuesta;
+
+		let idOrden;
+
+		axios.post('http://mixtas-costeno/pedidos/api/folio/',
+			{
+				nombreMesero: user,
+			},
+			{
+				headers: {
+					'X-CSRFToken': tokenCSRF
+				}
+			}
+		).then(responseFolio => {
+			for (var i = 0; i <= ordenesUsuarios.length - 1; i++) {
+				ordenes = ordenesUsuarios[i].props.orden;
+
+				ordenes.map((orden, index) => {
+					ordenDescompuesta = orden.split(' ');
+
+					cantidad = ordenDescompuesta.shift();
+					precio = ordenDescompuesta.pop();
+					descripcion = ordenDescompuesta.join(' ');
+
+					axios.post('http://mixtas-costeno/pedidos/api/orden/',
+						{
+							cantidad: parseInt(cantidad),
+							precio: parseInt(precio),
+							platillo: descripcion,
+							idOrden: responseFolio.data.id,
+							cliente: i
+						},
+						{
+							headers: {
+								'X-CSRFToken': tokenCSRF
+							}
+						}
+					);
+				});
+			}
+
+			axios.patch(`http://mixtas-costeno/pedidos/api/mesas/${ mesa }`,
+				{
+					status: true,
+					idOrdenMesa: responseFolio.data.id
+				},
+				{
+					headers: {
+						'X-CSRFToken': tokenCSRF
+					}
+				}
+			).then(responseMesa => {
+				window.location = '/pedidos/mesas/';
+			});
+		});
+
+	}
+
 	render() {
 		const { simbolos, menus } = this.props;
 		const { ordenesUsuarios } = this.state;
@@ -396,8 +462,9 @@ class Simbolos extends React.Component {
 							Agregar Orden de Usuario
 						</div>
 
-						<div className='btn btn-warning btn-fin-orden' onClick=""> 
-						Finalizar Orden</div>
+						<div className='btn btn-warning btn-fin-orden' onClick={ this.finalizarOrden.bind(this) }>
+							Finalizar Orden
+						</div>
 
 						<div className='order-list'>
 							<h3>  Ordenes Listas </h3>
@@ -509,12 +576,12 @@ class Pedidos extends React.Component {
 	}
 
 	render() {
-		const { mesa, simbolos, menus } = this.props;
+		const { mesa, simbolos, menus, user } = this.props;
 
 		return (
 			<div className='contenedor-pedidos'>
 				<h1> Bienvenido a Pedidos  Mesa # { mesa } </h1>
-				{ <Simbolos simbolos={ simbolos } menus={ menus }/> }
+				{ <Simbolos simbolos={ simbolos } menus={ menus } user={ user } mesa={ mesa } /> }
 			</div>
 		);
 	}
@@ -536,10 +603,12 @@ const store = createStore(
 
 const element = document.getElementById('pedidos');
 const dataMesa = element.getAttribute('data-mesa');
+const dataUser = element.getAttribute('data-user');
+const tokenCSRF = element.getAttribute('data-token');
 
 ReactDOM.render(
 	<Provider store={ store } >
-		<PedidosConnect mesa={ dataMesa }/>
+		<PedidosConnect mesa={ dataMesa } user={ dataUser }/>
 	</Provider>,
 	element
 );

@@ -197,7 +197,7 @@
 
 </style>
 
-	<div id='pedidos' data-mesa={{ id }}></div>
+	<div id='pedidos' data-mesa={{ id }} data-user={{ user.username }} data-token="{{ csrf_token }}"></div>
 
 	{% render_bundle 'pedidos' %}
 
