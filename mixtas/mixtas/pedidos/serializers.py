@@ -5,7 +5,7 @@ STAD TEAM
 """
 from __future__ import absolute_import, unicode_literals, print_function
 
-from .models import Mesas, DetalleOrden, Simbolos, Menu
+from .models import Mesas, DetalleOrden, Simbolos, Menu, Folio
 
 from rest_framework import serializers
 
@@ -15,7 +15,7 @@ class SerializadorMesas(serializers.ModelSerializer):
         model = Mesas
 
 
-class SerializadorPedidos(serializers.ModelSerializer):
+class SerializadorOrden(serializers.ModelSerializer):
     class Meta:
         model = DetalleOrden
 
@@ -28,4 +28,10 @@ class SerializadorSimbolos(serializers.ModelSerializer):
 class SerializadorMenu(serializers.ModelSerializer):
     class Meta:
         model = Menu
+
+
+class SerializadorFolio(serializers.ModelSerializer):
+    class Meta:
+        model = Folio
+
 

@@ -5,12 +5,13 @@ STAD TEAM
 """
 from __future__ import absolute_import, unicode_literals, print_function
 
-from .models import Mesas, DetalleOrden, Simbolos, Menu
+from .models import Mesas, DetalleOrden, Simbolos, Menu, Folio
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
 
-from .serializers import SerializadorMesas, SerializadorPedidos, SerializadorSimbolos, SerializadorMenu
+from .serializers import SerializadorMesas, SerializadorSimbolos, SerializadorMenu, SerializadorFolio, \
+    SerializadorOrden
 
 
 class CrearObtenerMesasView(ModelViewSet):
@@ -28,17 +29,17 @@ class CrearObtenerMesasView(ModelViewSet):
         return qs
 
 
-class CrearPedidosView(ModelViewSet):
-    serializer_class = SerializadorPedidos
-    queryset = DetalleOrden.objects.all()
-    permission_classes = (AllowAny,)
+# class CrearPedidosView(ModelViewSet):
+#     serializer_class = SerializadorPedidos
+#     queryset = DetalleOrden.objects.all()
+#     permission_classes = (AllowAny,)
 
-    def perform_create(self, serializer):
-        if not self.request.user.is_staff:
-            self.permission_denied(
-                self.request, message="You have no permissions for creating a user"
-            )
-        serializer.save()
+#     def perform_create(self, serializer):
+#         if not self.request.user.is_staff:
+#             self.permission_denied(
+#                 self.request, message="You have no permissions for creating a user"
+#             )
+#         serializer.save()
 
 
 class ObtenerSimbolos(ModelViewSet):
@@ -50,4 +51,16 @@ class ObtenerSimbolos(ModelViewSet):
 class ObtenerMenu(ModelViewSet):
     serializer_class = SerializadorMenu
     queryset = Menu.objects.all()
+    permission_classes = (AllowAny,)
+
+
+class CrearFolio(ModelViewSet):
+    serializer_class = SerializadorFolio
+    queryset = Folio.objects.all()
+    permission_classes = (AllowAny,)
+
+
+class CrearOrden(ModelViewSet):
+    serializer_class = SerializadorOrden
+    queryset = DetalleOrden.objects.all()
     permission_classes = (AllowAny,)
