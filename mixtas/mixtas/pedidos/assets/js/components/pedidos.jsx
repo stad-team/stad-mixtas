@@ -369,7 +369,7 @@ class Simbolos extends React.Component {
 
 		return (
 			<div className="row">
-				<div className='col-md-10'>
+				<div className='col-md-10 col-sm-8'>
 					<div>
 						<div className='simbology'>
 							<div className="row">
@@ -407,7 +407,7 @@ class Simbolos extends React.Component {
 
 					</div>
 				</div>
-				<div className='col-md-2'>
+				<div className='col-md-2 col-sm-4' >
 					<div className='menus'>
 						<div className='dropdown'>
 				            <a id='dLabel' role='button' data-toggle='dropdown' className='btn btn-warning menu-btns ingredients' data-target='#' href='#'>
@@ -512,7 +512,7 @@ class Pedidos extends React.Component {
 		const { mesa, simbolos, menus } = this.props;
 
 		return (
-			<div className='container'>
+			<div className='contenedor-pedidos'>
 				<h1> Bienvenido a Pedidos  Mesa # { mesa } </h1>
 				{ <Simbolos simbolos={ simbolos } menus={ menus }/> }
 			</div>
