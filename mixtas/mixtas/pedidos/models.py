@@ -5,7 +5,15 @@ STAD TEAM
 """
 from __future__ import absolute_import, unicode_literals, print_function
 
+from datetime import datetime
+
 from django.db import models
+
+
+class Folio(models.Model):
+
+    nombreMesero = models.CharField(max_length=50)
+    fecha = models.DateTimeField(default=datetime.now)
 
 
 class Mesas(models.Model):
@@ -16,6 +24,7 @@ class Mesas(models.Model):
     description = models.CharField(max_length=50)
     n_chairs = models.IntegerField()
     n_people = models.IntegerField()
+    idOrdenMesa = models.ForeignKey(Folio, null=True, blank=True)
 
 
 class Carta(models.Model):
@@ -25,18 +34,12 @@ class Carta(models.Model):
     costo = models.IntegerField()
 
 
-class Orden(models.Model):
-
-    nombreMesero = models.CharField(max_length=50)
-    fecha = models.DateField()
-    hora = models.TimeField()
-
-
 class DetalleOrden(models.Model):
-    idOrden = models.ForeignKey(Orden)
+    idOrden = models.ForeignKey(Folio)
     cantidad = models.IntegerField()
     platillo = models.CharField(max_length=50)
     precio = models.IntegerField()
+    cliente = models.IntegerField()
 
 
 class Simbolos(models.Model):
