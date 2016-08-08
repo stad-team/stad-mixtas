@@ -9,6 +9,7 @@ from .models import Mesas, DetalleOrden, Simbolos, Menu, Folio
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 from .serializers import SerializadorMesas, SerializadorSimbolos, SerializadorMenu, SerializadorFolio, \
     SerializadorOrden
@@ -23,8 +24,12 @@ class CrearObtenerMesasView(ModelViewSet):
         qs = Mesas.objects.all()
 
         floor = self.request.query_params.get('floor')
+        caja = self.request.query_params.get('caja')
         if floor:
             qs = qs.filter(location=floor)
+
+        if caja:
+            qs = qs.filter(status=True)
 
         return qs
 
@@ -64,3 +69,12 @@ class CrearOrden(ModelViewSet):
     serializer_class = SerializadorOrden
     queryset = DetalleOrden.objects.all()
     permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        qs = DetalleOrden.objects.all()
+
+        idOrden = int(self.request.query_params.get('idOrdenMesa'))
+        if idOrden:
+            qs = qs.filter(idOrden__id=idOrden).order_by('cliente')
+
+        return qs
