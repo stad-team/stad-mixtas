@@ -23,6 +23,10 @@ class Menu extends React.Component {
 		window.location = '/caja';
 	}
 
+	corteCaja() {
+		window.location = '/caja/corte-caja';
+	}
+
 	render() {
 		const { user, superUser } = this.props;
 
@@ -41,7 +45,7 @@ class Menu extends React.Component {
 		if (superUser === 'True') {
 			corteCaja = (
 				<div>
-					<button className="btn btn-warning btn-outline btn-lg">
+					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.corteCaja }>
 						CORTE DE CAJA
 					</button>
 				</div>
