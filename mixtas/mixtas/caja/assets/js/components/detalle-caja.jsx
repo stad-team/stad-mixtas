@@ -64,12 +64,13 @@ class DetalleCaja extends React.Component {
 		dispatch(actionObtenerOrdenes(idOrdenMesa));
 	}
 
-	cobrar() {
+	cobrar(total) {
 		const { mesa, idOrdenMesa } = this.props;
 
 		axios.patch(`http://mixtas-costeno/pedidos/api/folio/${ idOrdenMesa }`,
 			{
-				pagado: true
+				pagado: true,
+				total: total
 			},
 			{
 				headers: {
@@ -185,7 +186,7 @@ class DetalleCaja extends React.Component {
 				    		</tbody>
 						</table>
 					</div>
-					<button className='btn btn-lg btn-block btn-success' onClick={ this.cobrar.bind(this) }>
+					<button className='btn btn-lg btn-block btn-success' onClick={ this.cobrar.bind(this, precioFinal) }>
 						Cobrar
 					</button>
 				</div>
