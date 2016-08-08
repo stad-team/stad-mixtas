@@ -308,7 +308,7 @@ class Simbolos extends React.Component {
 					if (menu.tipo === 'Ingredientes') {
 						return (
 							<li className='divider2 ' key={ `menu-${ menu.tipo }-${ index }` }>
-								<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, menu.precio, menu.tipo) }>
+								<a onClick={ this.setSinbolo.bind(this, `${ menu.nombreCorto }`, menu.precio, menu.tipo) }>
 									{ menu.nombre }
 								</a>
 							</li>
@@ -317,7 +317,7 @@ class Simbolos extends React.Component {
 					}
 					return (
 						<li className='divider2' key={ `menu-${ menu.tipo }-${ index }` }>
-							<a onClick={ this.setSinbolo.bind(this, ` ${ menu.nombreCorto }`, menu.precio, menu.tipo) }>
+							<a onClick={ this.setSinbolo.bind(this, `${ menu.nombreCorto }`, menu.precio, menu.tipo) }>
 								{ menu.nombre }
 							</a>
 						</li>
@@ -331,7 +331,7 @@ class Simbolos extends React.Component {
 
 	finalizarOrden() {
 		const { ordenesUsuarios } = this.state;
-		const { user, mesa } = this.props;
+		const { user, mesa, idOrdenMesa } = this.props;
 
 		let ordenes;
 		let cantidad;
@@ -340,8 +340,20 @@ class Simbolos extends React.Component {
 		let ordenDescompuesta;
 
 		let idOrden;
+		let metodo;
+		let extraOrden;
 
-		axios.post('http://mixtas-costeno/pedidos/api/folio/',
+		if (idOrdenMesa != 'new') {
+			metodo = axios.patch;
+			idOrden = idOrdenMesa;
+			extraOrden = 'extra';
+		} else {
+			metodo = axios.post;
+			idOrden = '';
+			extraOrden = '';
+		}
+
+		metodo(`http://mixtas-costeno/pedidos/api/folio/${ idOrden }`,
 			{
 				nombreMesero: user,
 			},
@@ -367,7 +379,7 @@ class Simbolos extends React.Component {
 							precio: parseInt(precio),
 							platillo: descripcion,
 							idOrden: responseFolio.data.id,
-							cliente: i
+							cliente: !extraOrden ? i + 1 : extraOrden
 						},
 						{
 							headers: {
@@ -576,12 +588,20 @@ class Pedidos extends React.Component {
 	}
 
 	render() {
-		const { mesa, simbolos, menus, user } = this.props;
+		const { mesa, simbolos, menus, user, idOrdenMesa } = this.props;
 
 		return (
 			<div className='contenedor-pedidos'>
 				<h1> Bienvenido a Pedidos  Mesa # { mesa } </h1>
-				{ <Simbolos simbolos={ simbolos } menus={ menus } user={ user } mesa={ mesa } /> }
+				{
+					<Simbolos
+						simbolos={ simbolos }
+						menus={ menus }
+						user={ user }
+						mesa={ mesa }
+						idOrdenMesa={ idOrdenMesa }
+					/>
+				}
 			</div>
 		);
 	}
@@ -605,10 +625,11 @@ const element = document.getElementById('pedidos');
 const dataMesa = element.getAttribute('data-mesa');
 const dataUser = element.getAttribute('data-user');
 const tokenCSRF = element.getAttribute('data-token');
+const idOrdenMesa = element.getAttribute('data-idOrdenMesa');
 
 ReactDOM.render(
 	<Provider store={ store } >
-		<PedidosConnect mesa={ dataMesa } user={ dataUser }/>
+		<PedidosConnect mesa={ dataMesa } user={ dataUser } idOrdenMesa={ idOrdenMesa } />
 	</Provider>,
 	element
 );
