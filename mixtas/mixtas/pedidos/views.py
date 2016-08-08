@@ -5,11 +5,11 @@ STAD TEAM
 """
 from __future__ import absolute_import, unicode_literals, print_function
 
+from datetime import datetime
 from .models import Mesas, DetalleOrden, Simbolos, Menu, Folio
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
 
 from .serializers import SerializadorMesas, SerializadorSimbolos, SerializadorMenu, SerializadorFolio, \
     SerializadorOrden
@@ -63,6 +63,16 @@ class CrearFolio(ModelViewSet):
     serializer_class = SerializadorFolio
     queryset = Folio.objects.all()
     permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        qs = Folio.objects.all()
+
+        date = self.request.query_params.get('date')
+        if date:
+            objDate = datetime.strptime(date, '%b-%d-%Y')
+            qs = qs.filter(fecha__day=objDate.day, fecha__month=objDate.month, fecha__year=objDate.year)
+
+        return qs
 
 
 class CrearOrden(ModelViewSet):
