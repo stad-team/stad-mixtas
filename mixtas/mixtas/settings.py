@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'mixtas.pedidos',
     'mixtas.usuarios',
     'mixtas.mesas',
+    'mixtas.caja',
     'rest_framework',
 )
 
