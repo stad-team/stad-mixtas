@@ -19,6 +19,10 @@ class Menu extends React.Component {
 		window.location = '/usuarios';
 	}
 
+	caja() {
+		window.location = '/caja';
+	}
+
 	render() {
 		const { user, superUser } = this.props;
 
@@ -48,7 +52,7 @@ class Menu extends React.Component {
 		if (superUser === 'True') {
 			caja = (
 				<div>
-					<button className="btn btn-warning btn-outline btn-lg">
+					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.caja }>
 						CAJA
 					</button>
 				</div>
