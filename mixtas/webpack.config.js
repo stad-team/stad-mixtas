@@ -29,6 +29,14 @@ module.exports = {
 		crearMesas:
 		[
 			'./mixtas/mesas/assets/js/components/mesas',
+		],
+		caja:
+		[
+			'./mixtas/caja/assets/js/components/caja',
+		],
+		detalleCaja:
+		[
+			'./mixtas/caja/assets/js/components/detalle-caja',
 		]
 	},
 
