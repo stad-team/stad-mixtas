@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <style>
+        body{
+            background: url("{% static "src/img/madera-blanca.jpg" %}") repeat;
+        }
+
+        .orden-caja {
+			font-size: 3rem;
+        }
+
+        .total-dia {
+        	text-align: center;
+        	background-color: orange;
+        	font-size: 5rem;
+        }
+    </style>
+
+    <h1> Corte Caja </h1>
+    <hr />
+	<div
+		id="react-corte-caja"
+		data-token="{{ csrf_token }}"
+		data-user={{ request.user }}
+		super-user={{ request.user.is_superuser }}
+	>
+	</div>
+
+	{% render_bundle 'corteCaja' %}
+
+{% endblock content %}
+
+
