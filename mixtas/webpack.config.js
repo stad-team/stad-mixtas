@@ -37,6 +37,10 @@ module.exports = {
 		detalleCaja:
 		[
 			'./mixtas/caja/assets/js/components/detalle-caja',
+		],
+		corteCaja:
+		[
+			'./mixtas/caja/assets/js/components/corte-caja',
 		]
 	},
 
