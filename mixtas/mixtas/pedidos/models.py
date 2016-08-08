@@ -14,6 +14,7 @@ class Folio(models.Model):
 
     nombreMesero = models.CharField(max_length=50)
     fecha = models.DateTimeField(default=datetime.now)
+    pagado = models.BooleanField()
 
 
 class Mesas(models.Model):
@@ -39,7 +40,7 @@ class DetalleOrden(models.Model):
     cantidad = models.IntegerField()
     platillo = models.CharField(max_length=50)
     precio = models.IntegerField()
-    cliente = models.IntegerField()
+    cliente = models.CharField(max_length=500)
 
 
 class Simbolos(models.Model):
