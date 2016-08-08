@@ -14,12 +14,12 @@ class Folio(models.Model):
 
     nombreMesero = models.CharField(max_length=50)
     fecha = models.DateTimeField(default=datetime.now)
-    pagado = models.BooleanField()
+    pagado = models.BooleanField(default=False)
 
 
 class Mesas(models.Model):
 
-    status = models.BooleanField()
+    status = models.BooleanField(default=False)
     name = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
     description = models.CharField(max_length=50)
