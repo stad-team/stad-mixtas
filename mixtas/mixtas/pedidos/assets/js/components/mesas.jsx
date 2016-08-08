@@ -86,14 +86,19 @@ class Mesas extends React.Component {
 		dispatch(actionObtenerMesasP2());
 	}
 
-	levantarPedido(id) {
-		window.location = '/pedidos/alta/'+id;
+	levantarPedido(id, idOrdenMesa) {
+		if (idOrdenMesa) {
+			window.location = '/pedidos/alta/'+id+'/'+idOrdenMesa;
+		} else {
+			window.location = '/pedidos/alta/'+id+'/new';
+		}
 	}
 
 	render() {
 		const { mesas1, mesas2 } = this.props;
 
 		const listadoMesas1 = mesas1.map(mesa => {
+			let mesaStatus;
 			let sillas = [];
 			for (var i = 0; i <= mesa.n_chairs; i++) {
 				sillas.push('silla ' + i);
@@ -107,12 +112,22 @@ class Mesas extends React.Component {
 				);
 			});
 
+			if (mesa.status) {
+				mesaStatus = 'text-danger';
+			} else {
+				mesaStatus = 'text-success';
+			}
+
 			return (
 				<li className="mesa" key={ mesa.id }>
 					<img
 						src="/static/src/img/mesa.png"
-						onClick={ this.levantarPedido.bind(this, mesa.id) }
+						onClick={ this.levantarPedido.bind(this, mesa.id, mesa.idOrdenMesa) }
 					/>
+					<span className="fa-stack fa-lg">
+						<i className={ `fa fa-circle fa-stack-2x ${ mesaStatus }` }></i>
+						<i className="fa fa-lightbulb-o fa-stack-1x fa-inverse"></i>
+					</span>
 					<div className="mesa-name">
 						{ mesa.name }
 					</div>
@@ -121,6 +136,7 @@ class Mesas extends React.Component {
 		});
 
 		const listadoMesas2 = mesas2.map(mesa => {
+			let mesaStatus;
 			let sillas = [];
 			for (var i = 0; i <= mesa.n_chairs; i++) {
 				sillas.push('silla ' + i);
@@ -134,12 +150,22 @@ class Mesas extends React.Component {
 				);
 			});
 
+			if (mesa.status) {
+				mesaStatus = 'text-danger';
+			} else {
+				mesaStatus = 'text-success';
+			}
+
 			return (
 				<li className="mesa" key={ mesa.id }>
 					<img
 						src="/static/src/img/mesa.png"
-						onClick={ this.levantarPedido.bind(this, mesa.id) }
+						onClick={ this.levantarPedido.bind(this, mesa.id, mesa.idOrdenMesa) }
 					/>
+					<span className="fa-stack fa-lg">
+						<i className={ `fa fa-circle fa-stack-2x ${ mesaStatus }` }></i>
+						<i className="fa fa-lightbulb-o fa-stack-1x fa-inverse"></i>
+					</span>
 					<div className="mesa-name">
 						{ mesa.name }
 					</div>
@@ -174,7 +200,7 @@ class Mesas extends React.Component {
 }
 
 // conectar el component con redux
-const MesasConnect = connect(store => ({ mesas1: store.listadoMesas1, mesas2: store.listadoMesas2 }))(Mesas);
+export const MesasConnect = connect(store => ({ mesas1: store.listadoMesas1, mesas2: store.listadoMesas2 }))(Mesas);
 
 const reducer = combineReducers({
 	listadoMesas1: reductorObtenerMesas1,
