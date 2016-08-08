@@ -15,6 +15,7 @@ class Folio(models.Model):
     nombreMesero = models.CharField(max_length=50)
     fecha = models.DateTimeField(default=datetime.now)
     pagado = models.BooleanField(default=False)
+    total = models.FloatField(null=True, blank=True)
 
 
 class Mesas(models.Model):
