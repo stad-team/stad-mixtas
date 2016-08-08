@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <style>
+        body{
+            background: url("{% static "src/img/madera-blanca.jpg" %}") repeat;
+        }
+    </style>
+
+    <h1> Caja </h1>
+	<div
+		id="react-caja"
+		data-user={{ request.user }}
+		super-user={{ request.user.is_superuser }}
+	>
+	</div>
+
+	{% render_bundle 'caja' %}
+
+{% endblock content %}
+
+
