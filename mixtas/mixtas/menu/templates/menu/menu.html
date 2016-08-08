@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 {% block content %}
-
+    <img class="logo" src="{% static "src/img/logo-circle.png" %}" alt="">
 	<div
 		id="react-menu"
 		data-user={{ request.user }}
@@ -14,13 +14,20 @@
 	{% render_bundle 'menu'%}
 
 <style>
-	body{
+
+body{
 	background: url("{% static "src/img/madera.jpg" %}") no-repeat;
 	background-size: cover;
     background-color: #3d270c;
     background-repeat: repeat-y;
+    }
 
-
+.logo{
+    position: absolute;
+    right: 1em;
+    top: 0em;
+    height: 12em;
+    opacity: 0.5;
 }
 
 .bienvenida{
