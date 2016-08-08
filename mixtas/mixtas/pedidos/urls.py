@@ -25,7 +25,7 @@ router.register(r'orden', CrearOrden)
 
 urlpatterns = patterns('',
     url(r'^mesas/$', TemplateView.as_view(template_name='pedidos/mesas.html')),
-    url(r'^alta/(?P<id>[0-9]*)/$', TemplateView.as_view(template_name='pedidos/pedidos.html')),
+    url(r'^alta/(?P<id>[0-9]*)/(?P<idOrdenMesa>[0-9,new]*)$', TemplateView.as_view(template_name='pedidos/pedidos.html')),
     url(r'^api/', include(router.urls, namespace='api')),
 
 )
