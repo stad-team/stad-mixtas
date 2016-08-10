@@ -18,18 +18,19 @@
     		border-top: 0px;
         }
 
+        .title-caja{
+            text-align: center;
+        }
     </style>
-
-    <h1> Caja </h1>
-    <hr />
 
 	<div
 		id="react-detalle-caja"
 		data-mesa={{ id }}
-		data-user={{ request.user }}
+        data-user={{ user }}
+		data-rol={{ user.first_name }}
 		data-idOrdenMesa={{ idOrdenMesa }}
 		data-token="{{ csrf_token }}"
-		super-user={{ request.user.is_superuser }}
+		super-user={{ user.is_superuser }}
 	>
 	</div>
 

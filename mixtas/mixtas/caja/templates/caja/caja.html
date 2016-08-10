@@ -8,13 +8,17 @@
         body{
             background: url("{% static "src/img/madera-blanca.jpg" %}") repeat;
         }
+
+        .title-caja{
+			text-align: center;
+		}
     </style>
 
-    <h1> Caja </h1>
 	<div
 		id="react-caja"
-		data-user={{ request.user }}
-		super-user={{ request.user.is_superuser }}
+		data-user={{ user }}
+		data-rol={{ user.first_name }}
+		super-user={{ user.is_superuser }}
 	>
 	</div>
 

@@ -5,10 +5,11 @@
 {% block content %}
 
 	<div
-		id="react-mesas"
-		data-user={{ request.user }}
-		super-user={{ request.user.is_superuser }}
 		data-token="{{ csrf_token }}"
+		id="react-mesas"
+		super-user={{ user.is_superuser }}
+		data-user={{ user }}
+		data-rol={{ user.first_name }}
 	>
 	</div>
 

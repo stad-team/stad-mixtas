@@ -18,15 +18,18 @@
         	background-color: orange;
         	font-size: 5rem;
         }
+
+        .title-corte{
+            text-align: center;
+        }
     </style>
 
-    <h1> Corte Caja </h1>
-    <hr />
 	<div
 		id="react-corte-caja"
 		data-token="{{ csrf_token }}"
-		data-user={{ request.user }}
-		super-user={{ request.user.is_superuser }}
+		data-super-user={{ user.is_superuser }}
+        data-user={{ user }}
+        data-rol={{ user.first_name }}
 	>
 	</div>
 

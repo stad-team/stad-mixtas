@@ -63,9 +63,13 @@ const reductorObtenerFolios = (state=[], action) => {
 
 class CorteCaja extends React.Component {
 	componentWillMount() {
-		const { dispatch } = this.props;
+		const { dispatch, user, rol } = this.props;
 
-		dispatch(actionObtenerFolios());
+		if (user === 'AnonymousUser' || rol === 'mesero'){
+			window.location = '/auth/logout';
+		} else {
+			dispatch(actionObtenerFolios());
+		}
 	}
 
 	render() {
@@ -90,26 +94,39 @@ class CorteCaja extends React.Component {
 		}
 
 		return (
-			<div className='container'>
-				<div className='col-md-12'>
-					<div className='my-users'>
-						<h3>Corte Diario</h3>
-					 	<table className='table table-hover'>
-							<thead>
-							    <tr>
-							    	<th>Folio</th>
-							    	<th>Mesero</th>
-							    	<th>Fecha</th>
-							    	<th>Total</th>
-							    </tr>
-							</thead>
-							<tbody key='orden-caja-1' className='orden-caja' >
-								{ listadoFolios }
-				    		</tbody>
-						</table>
+			<div>
+				<div className='row'>
+					<div className='col-md-12 col-xs-12'>
+						<div className='col-md-1 col-xs-1'>
+							<a className='back-menu' href='/menu/'>
+								<i className='fa fa-arrow-left fa-3x' aria-hidden='true'></i>
+							</a>
+						</div>
+						<h1 className='title-corte'> Corte Diario </h1>
 					</div>
-					<h3> Total Dia </h3>
-					<h3 className='total-dia'> { totalDia }</h3>
+				</div>
+				<hr />
+				<div className='container'>
+					<div className='col-md-12'>
+						<div className='my-users'>
+							<h3>Corte Diario</h3>
+						 	<table className='table table-hover'>
+								<thead>
+								    <tr>
+								    	<th>Folio</th>
+								    	<th>Mesero</th>
+								    	<th>Fecha</th>
+								    	<th>Total</th>
+								    </tr>
+								</thead>
+								<tbody key='orden-caja-1' className='orden-caja' >
+									{ listadoFolios }
+					    		</tbody>
+							</table>
+						</div>
+						<h3> Total Dia </h3>
+						<h3 className='total-dia'> { totalDia }</h3>
+					</div>
 				</div>
 			</div>
 		);
@@ -128,12 +145,14 @@ const store = createStore(
 );
 
 const element = document.getElementById('react-corte-caja');
+const dataUser = element.getAttribute('data-user');
+const dataRol = element.getAttribute('data-rol');
 const tokenCSRF = element.getAttribute('data-token');
 
 
 ReactDom.render(
 	<Provider store={ store }>
-		<CorteCajaConnect />
+		<CorteCajaConnect user={ dataUser } rol={ dataRol } />
 	</Provider>,
 	element
 );

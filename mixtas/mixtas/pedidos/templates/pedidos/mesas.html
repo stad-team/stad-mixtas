@@ -5,7 +5,7 @@
 {% block content %}
 
 
-	<div id='mesas' data-token="{{ csrf_token }}"></div>
+	<div id='mesas' data-token="{{ csrf_token }}" data-rol={{ user.first_name }}></div>
 	{% render_bundle 'mesas' %}
 
 <style>

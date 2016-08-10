@@ -588,11 +588,20 @@ class Pedidos extends React.Component {
 	}
 
 	render() {
-		const { mesa, simbolos, menus, user, idOrdenMesa } = this.props;
+		const { mesa, simbolos, menus, user, idOrdenMesa, rol } = this.props;
 
 		return (
 			<div className='contenedor-pedidos'>
-				<h1> Bienvenido a Pedidos  Mesa # { mesa } </h1>
+				<div className='row'>
+					<div className='col-md-1 col-xs-1'>
+						<a className='back-menu' href='/pedidos/mesas/'>
+							<i className='fa fa-arrow-left fa-3x' aria-hidden='true'></i>
+						</a>
+					</div>
+					<div className='col-md-11 col-xs-11'>
+						<h1> Mesa # { mesa } </h1>
+					</div>
+				</div>
 				{
 					<Simbolos
 						simbolos={ simbolos }
@@ -624,12 +633,13 @@ const store = createStore(
 const element = document.getElementById('pedidos');
 const dataMesa = element.getAttribute('data-mesa');
 const dataUser = element.getAttribute('data-user');
+const dataRol = element.getAttribute('data-rol');
 const tokenCSRF = element.getAttribute('data-token');
 const idOrdenMesa = element.getAttribute('data-idOrdenMesa');
 
 ReactDOM.render(
 	<Provider store={ store } >
-		<PedidosConnect mesa={ dataMesa } user={ dataUser } idOrdenMesa={ idOrdenMesa } />
+		<PedidosConnect mesa={ dataMesa } user={ dataUser } idOrdenMesa={ idOrdenMesa } rol={ dataRol }/>
 	</Provider>,
 	element
 );

@@ -80,10 +80,14 @@ const reductorObtenerMesas2 = (state=[], action) => {
 
 class Mesas extends React.Component {
 	componentWillMount() {
-		const { dispatch } = this.props;
+		const { dispatch, user, rol } = this.props;
 
-		dispatch(actionObtenerMesasP1());
-		dispatch(actionObtenerMesasP2());
+		if (user === 'AnonymousUser' || rol === 'mesero') {
+			window.location = '/auth/logout';
+		} else {
+			dispatch(actionObtenerMesasP1());
+			dispatch(actionObtenerMesasP2());
+		}
 	}
 
 	levantarPedido(mesa, idOrdenMesa) {
@@ -169,9 +173,19 @@ class Mesas extends React.Component {
 			);
 		});
 
+
 		return(
 			<div>
-				<h1 className="title-mesas "> Mesas </h1>
+				<div className='row'>
+					<div className='col-md-12 col-xs-12'>
+						<div className='col-md-1 col-xs-1'>
+							<a className='back-menu' href='/menu/'>
+								<i className='fa fa-arrow-left fa-3x' aria-hidden='true'></i>
+							</a>
+						</div>
+						<h1 className='title-caja'> Caja </h1>
+					</div>
+				</div>
 				<hr />
 				<div className="container">
 					<ul className="nav nav-tabs">
@@ -207,11 +221,13 @@ const store = createStore(
 	reducer, applyMiddleware(thunkMiddleware, promise));
 
 const element = document.getElementById('react-caja');
+const dataUser = element.getAttribute('data-user');
+const dataRol = element.getAttribute('data-rol');
 const tokenCSRF = element.getAttribute('data-token');
 
 ReactDom.render(
 	<Provider store={ store } >
-		<MesasConnect />
+		<MesasConnect user={ dataUser } rol={ dataRol }/>
 	</Provider>,
 	element
 );

@@ -79,9 +79,13 @@ class Usuarios extends React.Component {
 	}
 
 	componentWillMount() {
-		const { dispatch } = this.props;
+		const { dispatch, user, rol } = this.props;
 
-		dispatch(actionObtenerUsuarios());
+		if (user === 'AnonymousUser' || rol === 'mesero') {
+			window.location = '/auth/logout';
+		} else {
+			dispatch(actionObtenerUsuarios());
+		}
 	}
 
 	obtenerValorInput() {
@@ -127,9 +131,18 @@ class Usuarios extends React.Component {
 
 		return (
 			<div>
-				<h1 className='title'> 
-					Creación de Usuarios
-				</h1>
+				<div className='row'>
+					<div className='col-md-12 col-xs-12'>
+						<div className='col-md-1 col-xs-1'>
+							<a className='back-menu' href='/menu/'>
+								<i className='fa fa-arrow-left fa-3x' aria-hidden='true'></i>
+							</a>
+						</div>
+						<h1 className='title'>
+							Creación de Usuarios
+						</h1>
+					</div>
+				</div>
 				<hr />
 
 				<div className="col-md-6">
@@ -203,13 +216,14 @@ const store = createStore(
 	reducer, applyMiddleware(thunkMiddleware, promise));
 
 const element = document.getElementById('react-usuarios');
-const user = element.getAttribute('data-user');
-const superUser = element.getAttribute('super-user');
+const dataUser = element.getAttribute('data-user');
+const dataRol = element.getAttribute('data-rol');
+const superUser = element.getAttribute('data-super-user');
 const tokenCSRF = element.getAttribute('data-token');
 
 ReactDOM.render(
 	<Provider store={ store } >
-		<UsuariosConnect user={ user } superUser={ superUser } />
+		<UsuariosConnect user={ dataUser } rol={ dataRol } superUser={ superUser } />
 	</Provider>,
 	element
 );

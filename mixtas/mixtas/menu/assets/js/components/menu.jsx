@@ -27,41 +27,36 @@ class Menu extends React.Component {
 		window.location = '/caja/corte-caja';
 	}
 
-	render() {
-		const { user, superUser } = this.props;
+	altaMesa() {
+		window.location = '/mesas';
+	}
 
-		let crearUsuarios = undefined;
-		if (superUser === 'True') {
-			crearUsuarios = (
+	render() {
+		const { user, superUser, rol } = this.props;
+
+		let	crearUsuarios = (
 				<div>
 					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.usuarios }>
 						CREAR  USUARIOS
 					</button>
 				</div>
 			);
-		}
 
-		let corteCaja = undefined;
-		if (superUser === 'True') {
-			corteCaja = (
-				<div>
-					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.corteCaja }>
-						CORTE DE CAJA
-					</button>
-				</div>
-			);
-		}
+		let corteCaja = (
+			<div>
+				<button className="btn btn-warning btn-outline btn-lg" onClick={ this.corteCaja }>
+					CORTE DE CAJA
+				</button>
+			</div>
+		);
 
-		let caja = undefined;
-		if (superUser === 'True') {
-			caja = (
-				<div>
-					<button className="btn btn-warning btn-outline btn-lg" onClick={ this.caja }>
-						CAJA
-					</button>
-				</div>
-			);
-		}
+		let caja = (
+			<div>
+				<button className="btn btn-warning btn-outline btn-lg" onClick={ this.caja }>
+					CAJA
+				</button>
+			</div>
+		);
 
 		let pedidos = (
 				<div>
@@ -90,8 +85,8 @@ class Menu extends React.Component {
 		if (user === 'AnonymousUser') {
 			window.location = '/auth/login';
 			return <div> Acceso Denegado </div>;
-		} else {
-			return(
+		} else if (superUser === 'True' || rol === 'admin') {
+			return (
 				<div>
 					<h1>
 						<p className="bienvenida"> Bienvenido  { user }</p>
@@ -106,15 +101,31 @@ class Menu extends React.Component {
 					</div>
 				</div>
 			);
+		} else if (rol === 'mesero') {
+			window.location = '/pedidos/mesas';
+		} else if (rol === 'cajero') {
+			return (
+				<div>
+					<h1>
+						<p className="bienvenida"> Bienvenido  { user } </p>
+					</h1>
+					<div className="options-buttons">
+						{ caja }
+						{ corteCaja }
+						{ pedidos }
+					</div>
+				</div>
+			);
 		}
 	}
 }
 
 const element = document.getElementById('react-menu');
-const user = element.getAttribute('data-user');
-const superUser = element.getAttribute('super-user');
+const dataUser = element.getAttribute('data-user');
+const dataRol = element.getAttribute('data-rol');
+const superUser = element.getAttribute('data-super-user');
 
 ReactDOM.render(
-	<Menu user={ user } superUser={ superUser } />,
+	<Menu user={ dataUser } superUser={ superUser } rol={ dataRol } />,
 	document.getElementById('react-menu')
 );

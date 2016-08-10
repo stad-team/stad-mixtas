@@ -95,7 +95,7 @@ class Mesas extends React.Component {
 	}
 
 	render() {
-		const { mesas1, mesas2 } = this.props;
+		const { mesas1, mesas2, rol } = this.props;
 
 		const listadoMesas1 = mesas1.map(mesa => {
 			let mesaStatus;
@@ -173,9 +173,27 @@ class Mesas extends React.Component {
 			);
 		});
 
+
+		let backButton;
+
+		if (rol !== 'mesero') {
+			backButton = (
+				<a className='back-menu' href='/menu/'>
+					<i className='fa fa-arrow-left fa-3x' aria-hidden='true'></i>
+				</a>
+			);
+		}
+
 		return(
 			<div>
-				<h1 className="title-mesas "> Mesas </h1>
+				<div className='row'>
+					<div className='col-md-12 col-xs-12'>
+						<div className='col-md-1 col-xs-1'>
+							{ backButton }
+						</div>
+						<h1 className="title-mesas"> Mesas </h1>
+					</div>
+				</div>
 				<hr />
 				<div className="container">
 					<ul className="nav nav-tabs">
@@ -211,11 +229,12 @@ const store = createStore(
 	reducer, applyMiddleware(thunkMiddleware, promise));
 
 const element = document.getElementById('mesas');
+const dataRol = element.getAttribute('data-rol');
 const tokenCSRF = element.getAttribute('data-token');
 
 ReactDom.render(
 	<Provider store={ store } >
-		<MesasConnect />
+		<MesasConnect rol={ dataRol }/>
 	</Provider>,
 	element
 );

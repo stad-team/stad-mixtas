@@ -83,9 +83,13 @@ class Mesas extends React.Component {
 	}
 
 	componentWillMount() {
-		const { dispatch } = this.props;
+		const { dispatch, user, rol } = this.props;
 
-		dispatch(actionObtenerMesas());
+		if (user === 'AnonymousUser' || rol === 'mesero') {
+			window.location = '/auth/logout';
+		} else {
+			dispatch(actionObtenerMesas());
+		}
 	}
 
 	obtenerValorInput() {
@@ -225,13 +229,14 @@ const store = createStore(
 	reducer, applyMiddleware(thunkMiddleware, promise));
 
 const element = document.getElementById('react-mesas');
-const user = element.getAttribute('data-user');
+const dataUser = element.getAttribute('data-user');
+const dataRol = element.getAttribute('data-rol');
 const superUser = element.getAttribute('super-user');
 const tokenCSRF = element.getAttribute('data-token');
 
 ReactDOM.render(
 	<Provider store={ store } >
-		<MesasConnect user={ user } superUser={ superUser } />
+		<MesasConnect user={ dataUser } rol={ dataRol } superUser={ superUser } />
 	</Provider>,
 	element
 );

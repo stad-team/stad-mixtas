@@ -59,9 +59,13 @@ const reductorObtenerOrdenes = (state=[], action) => {
 
 class DetalleCaja extends React.Component {
 	componentWillMount() {
-		const { dispatch, idOrdenMesa } = this.props;
+		const { dispatch, idOrdenMesa, user, rol } = this.props;
 
-		dispatch(actionObtenerOrdenes(idOrdenMesa));
+		if (user === 'AnonymousUser' || rol === 'mesero') {
+			window.location = '/auth/logout';
+		} else {
+			dispatch(actionObtenerOrdenes(idOrdenMesa));
+		}
 	}
 
 	cobrar(total) {
@@ -160,35 +164,48 @@ class DetalleCaja extends React.Component {
 		}
 
 		return (
-			<div className='container'>
-				<div className='col-md-12'>
-					<div className='my-users'>
-						<h3>Pedidos</h3>
-					 	<table className='table table-hover'>
-							<thead>
-							    <tr>
-							    	<th>Cliente</th>
-							    	<th>Cantidad</th>
-							    	<th>Platillo</th>
-							    	<th>Precio</th>
-							    	<th>TOTAL</th>
-							    </tr>
-							</thead>
-							<tbody key='orden-caja-1' className='orden-caja' >
-								{ listadoOrdenes }
-								<tr>
-									<td></td>
-									<td></td>
-							     	<td></td>
-							     	<td></td>
-							     	<td style={{backgroundColor: 'orange'}}> { precioFinal } </td>
-								</tr>
-				    		</tbody>
-						</table>
+			<div>
+				<div className='row'>
+					<div className='col-md-12 col-xs-12'>
+						<div className='col-md-1 col-xs-1'>
+							<a className='back-menu' href='/caja/'>
+								<i className='fa fa-arrow-left fa-3x' aria-hidden='true'></i>
+							</a>
+						</div>
+						<h1 className='title-caja'> Detalle Caja </h1>
 					</div>
-					<button className='btn btn-lg btn-block btn-success' onClick={ this.cobrar.bind(this, precioFinal) }>
-						Cobrar
-					</button>
+				</div>
+				<hr />
+				<div className='container'>
+					<div className='col-md-12'>
+						<div className='my-users'>
+							<h3>Pedidos</h3>
+						 	<table className='table table-hover'>
+								<thead>
+								    <tr>
+								    	<th>Cliente</th>
+								    	<th>Cantidad</th>
+								    	<th>Platillo</th>
+								    	<th>Precio</th>
+								    	<th>TOTAL</th>
+								    </tr>
+								</thead>
+								<tbody key='orden-caja-1' className='orden-caja' >
+									{ listadoOrdenes }
+									<tr>
+										<td></td>
+										<td></td>
+								     	<td></td>
+								     	<td></td>
+								     	<td style={{backgroundColor: 'orange'}}> { precioFinal } </td>
+									</tr>
+					    		</tbody>
+							</table>
+						</div>
+						<button className='btn btn-lg btn-block btn-success' onClick={ this.cobrar.bind(this, precioFinal) }>
+							Cobrar
+						</button>
+					</div>
 				</div>
 			</div>
 		);
@@ -207,13 +224,15 @@ const store = createStore(
 	reducer, applyMiddleware(thunkMiddleware, promise));
 
 const element = document.getElementById('react-detalle-caja');
+const dataUser = element.getAttribute('data-user');
+const dataRol = element.getAttribute('data-rol');
 const idOrdenMesa = element.getAttribute('data-idOrdenMesa');
 const tokenCSRF = element.getAttribute('data-token');
 const dataMesa = element.getAttribute('data-mesa');
 
 ReactDom.render(
 	<Provider store={ store } >
-		<DetalleCajaConnect idOrdenMesa={ idOrdenMesa } mesa={ dataMesa }/>
+		<DetalleCajaConnect idOrdenMesa={ idOrdenMesa } mesa={ dataMesa } user={ dataUser } rol={ dataRol }/>
 	</Provider>,
 	element
 );
