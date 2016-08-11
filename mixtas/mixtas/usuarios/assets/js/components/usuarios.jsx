@@ -19,6 +19,7 @@ import axios from 'axios';
 const OBTENER_USUARIOS = 'OBTENER_USUARIOS';
 const CREAR_USUARIO = 'CREAR_USUARIO';
 const ACTUALIZAR_USUARIO = 'ACTUALIZAR_USUARIO';
+const DELETE_USUARIO = 'DELETE_USUARIO';
 
 const actionObtenerUsuarios = () => {
 	const respuesta = axios.get('http://mixtas-costeno/usuarios/api/usuarios/');
@@ -68,6 +69,21 @@ const actionActualizarUsuario = (id, nombre, password, puesto) => {
 		payload: respuesta
 	};
 };
+
+const actionDeleteUsuario = (id) => {
+	const respuesta = axios.delete(`http://mixtas-costeno/usuarios/api/usuarios/${ id}`,
+		{
+			headers: {
+				'X-CSRFToken': tokenCSRF
+			}
+		}
+	);
+
+	return {
+		type: DELETE_USUARIO,
+		payload: id
+	};
+};
 ////////////////////////////////////////////////
 
 //     ____  __________  __  __________________  _____
@@ -80,6 +96,10 @@ const reductorObtenerUsuarios = (state=[], action) => {
 	switch(action.type){
 	case OBTENER_USUARIOS:
 		return Object.assign([], state, action.payload.data);
+	case DELETE_USUARIO:
+		return state.filter(usuario => {
+			return usuario.id != action.payload;
+		});
 	case ACTUALIZAR_USUARIO:
 		const newState = state.filter(usuario => {
 			return usuario.id != action.payload.data.id;
@@ -165,6 +185,12 @@ class Usuarios extends React.Component {
 		});
 	}
 
+	deleteUsuario(id) {
+		const { dispatch } = this.props;
+
+		dispatch(actionDeleteUsuario(id));
+	}
+
 	render() {
 		const { usuarios } = this.props;
 		const { edit } = this.state;
@@ -175,9 +201,11 @@ class Usuarios extends React.Component {
 			listado = usuarios.map(usuario => {
 				return (
 						<tbody key={ usuario.id }>
-						    <tr onClick={ this.editUsuario.bind(this, usuario) } >
+						    <tr>
 						     	<td>{ usuario.username }</td>
 						     	<td> { usuario.first_name}</td>
+						     	<td> <i onClick={ this.editUsuario.bind(this, usuario) } className='fa fa-pencil text-primary fa-2x' aria-hidden='true'></i> </td>
+						     	<td> <i onClick={ this.deleteUsuario.bind(this, usuario.id) } className="fa fa-trash borrar-mesa text-danger fa-2x" aria-hidden="true"></i> </td>
 						    </tr>
 					    </tbody>
 				);
@@ -258,6 +286,8 @@ class Usuarios extends React.Component {
 							    <tr>
 							    	<th>Usuarios</th>
 							    	<th>Puesto</th>
+							    	<th>Editar</th>
+							    	<th>Borrar</th>
 							    </tr>
 							</thead>
 							{ listado }
