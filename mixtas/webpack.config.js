@@ -41,6 +41,10 @@ module.exports = {
 		corteCaja:
 		[
 			'./mixtas/caja/assets/js/components/corte-caja',
+		],
+		miMenu:
+		[
+			'./mixtas/menu/assets/js/components/mi-menu',
 		]
 	},
 
