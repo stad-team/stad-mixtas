@@ -156,6 +156,7 @@ class MiMenu extends React.Component {
 			nombreInput: '',
 			nombreCortoInput: '',
 			precioInput: '',
+			edit: false,
 			idEdit: ''
 		});
 
