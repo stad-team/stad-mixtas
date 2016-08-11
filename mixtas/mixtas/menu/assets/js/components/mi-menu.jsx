@@ -18,6 +18,7 @@ import axios from 'axios';
 
 const OBTENER_MENU = 'OBTENER_MENU';
 const CREAR_MENU = 'CREAR_MENU';
+const ACTUALIZAR_MENU = 'ACTUALIZAR_MENU';
 
 const actionObtenerMenu = () => {
 	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/menu/');
@@ -48,6 +49,27 @@ const actionCrearPlatillo = (tipo, nombre, nombreCorto, precio) => {
 		payload: respuesta
 	};
 };
+
+const actionActualizarPlatillo = (id, tipo, nombre, nombreCorto, precio) => {
+	const respuesta = axios.put(`http://mixtas-costeno/pedidos/api/menu/${ id }`,
+		{
+			tipo: tipo,
+			nombre: nombre,
+			nombreCorto: nombreCorto,
+			precio: precio
+		},
+		{
+			headers: {
+				'X-CSRFToken': tokenCSRF
+			}
+		}
+	);
+
+	return {
+		type: ACTUALIZAR_MENU,
+		payload: respuesta
+	};
+};
 ////////////////////////////////////////////////
 
 //     ____  __________  __  __________________  _____
@@ -60,6 +82,11 @@ const reductorObtenerMenu = (state=[], action) => {
 	switch(action.type){
 	case OBTENER_MENU:
 		return Object.assign([], state, action.payload.data);
+	case ACTUALIZAR_MENU:
+		const newState = state.filter(platillo => {
+			return platillo.id != action.payload.data.id;
+		});
+		return newState.concat(action.payload.data);
 	case CREAR_MENU:
 		return state.concat(action.payload.data);
 	default:
@@ -76,7 +103,9 @@ class MiMenu extends React.Component {
 			tipoInput: '',
 			nombreInput: '',
 			nombreCortoInput: '',
-			precioInput: ''
+			precioInput: '',
+			edit: false,
+			idEdit: ''
 		};
 	}
 
@@ -116,11 +145,39 @@ class MiMenu extends React.Component {
 		});
 	}
 
+	actualizarPlatillo() {
+		const { dispatch } = this.props;
+		const { tipoInput, nombreInput, nombreCortoInput, precioInput, idEdit } = this.state;
+
+		dispatch(actionActualizarPlatillo(idEdit, tipoInput, nombreInput, nombreCortoInput, precioInput));
+
+		this.setState({
+			tipoInput: '',
+			nombreInput: '',
+			nombreCortoInput: '',
+			precioInput: '',
+			idEdit: ''
+		});
+
+	}
+
+	editMenu(platillo) {
+
+		this.setState({
+			tipoInput: platillo.tipo,
+			nombreInput: platillo.nombre,
+			nombreCortoInput: platillo.nombreCorto,
+			precioInput: platillo.precio,
+			edit: true,
+			idEdit: platillo.id
+		});
+	}
+
 	getBodyTable(tipo) {
 		let listadoBody = tipo.map(type => {
 			return (
-				<tbody key={ type.id }>
-				    <tr >
+				<tbody key={ type.id } >
+				    <tr onClick={ this.editMenu.bind(this, type) } >
 				     	<td>{ type.tipo }</td>
 				     	<td> { type.nombre }</td>
 				     	<td> { type.nombreCorto }</td>
@@ -144,6 +201,7 @@ class MiMenu extends React.Component {
 
 	render() {
 		const { user, superUser, rol, platillos } = this.props;
+		const { edit } = this.state;
 
 		let platillosDefault = ['Entradas', 'Quesadillas', 'Tacos', 'Chavindecas', 'Postres', 'Alambres-Volcanes', 'Bebidas', 'Ingredientes'];
 		let navegacionPlatillos;
@@ -177,14 +235,14 @@ class MiMenu extends React.Component {
 
 		if (!isEmpty(platillos)) {
 			// Filtrado de platillos
-			entradas = this.getFilter('Entradas');
-			quesadillas = this.getFilter('Quesadillas');
-			tacos = this.getFilter('Tacos');
-			chavindecas = this.getFilter('Chavindecas');
-			postres = this.getFilter('Postres');
-			alambresVolcanes = this.getFilter('Alambres-Volcanes');
-			bebidas = this.getFilter('Bebidas');
-			ingredients = this.getFilter('Ingredientes');
+			entradas = this.getFilter('Entradas').reverse();
+			quesadillas = this.getFilter('Quesadillas').reverse();
+			tacos = this.getFilter('Tacos').reverse();
+			chavindecas = this.getFilter('Chavindecas').reverse();
+			postres = this.getFilter('Postres').reverse();
+			alambresVolcanes = this.getFilter('Alambres-Volcanes').reverse();
+			bebidas = this.getFilter('Bebidas').reverse();
+			ingredients = this.getFilter('Ingredientes').reverse();
 
 			// Tabla de platillos
 			listadoEntradas = this.getBodyTable(entradas);
@@ -251,6 +309,14 @@ class MiMenu extends React.Component {
 			});
 		}
 
+		let method;
+
+		if (!edit) {
+			method = this.crearPlatillo.bind(this);
+		} else {
+			method = this.actualizarPlatillo.bind(this);
+		}
+
 		return (
 			<div>
 				<div className='row'>
@@ -314,8 +380,11 @@ class MiMenu extends React.Component {
 								/>
 							</div>
 
-							<button className='btn btn-primary center-block btn-crear' onClick={ this.crearPlatillo.bind(this) }>
-								Crear Platillo
+							<button className='btn btn-primary center-block btn-crear' onClick={ method }>
+								{
+									!edit ? 'Crear Platillo'
+									: 'Actualizar Platillo'
+								}
 							</button>
 						</div>
 					</div>
