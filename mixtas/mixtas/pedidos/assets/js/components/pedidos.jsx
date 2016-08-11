@@ -422,11 +422,11 @@ class Simbolos extends React.Component {
 			});
 		}
 
-		let listaEntradas = this.listadosMenus('Entrada', menus);
+		let listaEntradas = this.listadosMenus('Entradas', menus);
 		let listaQuesadillas = this.listadosMenus('Quesadillas', menus);;
-		let listatacos = this.listadosMenus('Taco', menus);;
+		let listatacos = this.listadosMenus('Tacos', menus);;
 		let listaChavindecas = this.listadosMenus('Chavindecas', menus);;
-		let listaAlambres = this.listadosMenus('Alambres y Volcanes', menus);;
+		let listaAlambres = this.listadosMenus('Alambres-Volcanes', menus);;
 		let listaPostres = this.listadosMenus('Postres', menus);;
 		let listaBebidas = this.listadosMenus('Bebidas', menus);;
 		let listaIngredientes = this.listadosMenus('Ingredientes', menus);;
