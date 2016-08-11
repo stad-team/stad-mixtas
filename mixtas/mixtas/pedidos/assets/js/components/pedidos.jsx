@@ -160,7 +160,12 @@ class Simbolos extends React.Component {
 	setSinbolo(simbolo, precioIngrediente=0, tipo) {
 		const { ordenCompuesta, precio } = this.state;
 
-		let simboloVar = simbolo;
+		let simboloVar;
+		if (parseInt(simbolo) % 1 == 0) {
+			simboloVar = simbolo;
+		} else {
+			simboloVar = ` ${ simbolo }`;
+		}
 
 		if (precioIngrediente > 0) {
 			if (ordenCompuesta.indexOf(' Extra') > 1) {
@@ -632,10 +637,12 @@ const store = createStore(
 
 const element = document.getElementById('pedidos');
 const dataMesa = element.getAttribute('data-mesa');
-const dataUser = element.getAttribute('data-user');
-const dataRol = element.getAttribute('data-rol');
 const tokenCSRF = element.getAttribute('data-token');
 const idOrdenMesa = element.getAttribute('data-idOrdenMesa');
+
+const elementUser = document.getElementById('user');
+const dataUser = elementUser.getAttribute('data-user');
+const dataRol = elementUser.getAttribute('data-rol');
 
 ReactDOM.render(
 	<Provider store={ store } >
