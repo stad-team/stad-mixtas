@@ -24,15 +24,16 @@
     </style>
 
 	<div
-		id="react-detalle-caja"
-		data-mesa={{ id }}
-        data-user={{ user }}
-		data-rol={{ user.first_name }}
-		data-idOrdenMesa={{ idOrdenMesa }}
+        id="react-detalle-caja"
+        data-mesa={{ id }}
 		data-token="{{ csrf_token }}"
-		super-user={{ user.is_superuser }}
+        data-idOrdenMesa={{ idOrdenMesa }}
+        data-locacion-mesa={{ locacion }}
 	>
 	</div>
+
+    <div id='user' data-super-user={{ user.is_superuser }}
+       data-user={{ user }} data-rol={{ user.first_name }}></div>
 
 	{% render_bundle 'detalleCaja' %}
 
