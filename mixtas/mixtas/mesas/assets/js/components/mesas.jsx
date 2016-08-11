@@ -19,6 +19,7 @@ import axios from 'axios';
 const OBTENER_MESAS = 'OBTENER_MESAS';
 const CREAR_MESA = 'CREAR_MESA';
 const ACTUALIZAR_MESAS = 'ACTUALIZAR_MESAS';
+const BORRAR_MESA = 'BORRAR_MESA';
 
 const actionObtenerMesas = () => {
 	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/');
@@ -74,6 +75,21 @@ const actionActualizarMesa = (id, nombre, descripcion, locacion, numSillas, stat
 		payload: respuesta
 	};
 };
+
+const actionDeleteMesa = (id) => {
+	const respuesta = axios.delete(`http://mixtas-costeno/pedidos/api/mesas/${ id }`,
+		{
+			headers: {
+				'X-CSRFToken': tokenCSRF
+			}
+		}
+	);
+
+	return {
+		type: BORRAR_MESA,
+		payload: id
+	};
+};
 ////////////////////////////////////////////////
 
 //     ____  __________  __  __________________  _____
@@ -86,6 +102,10 @@ const reductorObtenerMesas = (state=[], action) => {
 	switch(action.type){
 	case OBTENER_MESAS:
 		return Object.assign([], state, action.payload.data);
+	case BORRAR_MESA:
+		return state.filter(mesa => {
+			return mesa.id != action.payload;
+		});
 	case ACTUALIZAR_MESAS:
 		const newState = state.filter(mesa => {
 			return mesa.id != action.payload.data.id;
@@ -180,6 +200,12 @@ class Mesas extends React.Component {
 		});
 	}
 
+	deleteMesa(id) {
+		const { dispatch } = this.props;
+
+		dispatch(actionDeleteMesa(id));
+	}
+
 	render() {
 		const { mesas } = this.props;
 		const { edit } = this.state;
@@ -190,11 +216,13 @@ class Mesas extends React.Component {
 			listado = mesas.map(mesa => {
 				return (
 						<tbody key={ mesa.id }>
-						    <tr onClick={ this.editMesa.bind(this, mesa)} >
+						    <tr>
 						     	<td>{ mesa.name }</td>
 						     	<td> { mesa.description }</td>
 						     	<td> { mesa.location }</td>
 						     	<td> { mesa.n_chairs }</td>
+						     	<td> <i onClick={ this.editMesa.bind(this, mesa)} className='fa fa-pencil text-primary fa-2x' aria-hidden='true'></i> </td>
+						     	<td> <i onClick={ this.deleteMesa.bind(this, mesa.id) } className="fa fa-trash borrar-mesa text-danger fa-2x" aria-hidden="true"></i> </td>
 						    </tr>
 					    </tbody>
 				);
@@ -244,6 +272,7 @@ class Mesas extends React.Component {
 								<select className='form-control' id="lang" ref='locacion' onChange={ this.obtenerValorInput.bind(this) } value={ this.state.locacionInput }>
 									<option value="P1">Planta Baja</option>
 									<option value="P2">Planta Alta</option>
+									<option value="Barra">Barra</option>
 								</select>
 							</div>
 							<div className='form-group col-xs-12'>
@@ -277,6 +306,8 @@ class Mesas extends React.Component {
 							    	<th>Descripcion</th>
 							    	<th>Locacion</th>
 							    	<th># Sillas</th>
+							    	<th>Editar</th>
+							    	<th>Borrar</th>
 							    </tr>
 							</thead>
 							{ listado }
