@@ -18,6 +18,7 @@ import axios from 'axios';
 
 const OBTENER_USUARIOS = 'OBTENER_USUARIOS';
 const CREAR_USUARIO = 'CREAR_USUARIO';
+const ACTUALIZAR_USUARIO = 'ACTUALIZAR_USUARIO';
 
 const actionObtenerUsuarios = () => {
 	const respuesta = axios.get('http://mixtas-costeno/usuarios/api/usuarios/');
@@ -47,6 +48,26 @@ const actionCrearUsuario = (nombre, password, puesto) => {
 		payload: respuesta
 	};
 };
+
+const actionActualizarUsuario = (id, nombre, password, puesto) => {
+	const respuesta = axios.put(`http://mixtas-costeno/usuarios/api/usuarios/${ id }`,
+		{
+			username: nombre,
+			password: password,
+			first_name: puesto
+		},
+		{
+			headers: {
+				'X-CSRFToken': tokenCSRF
+			}
+		}
+	);
+
+	return {
+		type: ACTUALIZAR_USUARIO,
+		payload: respuesta
+	};
+};
 ////////////////////////////////////////////////
 
 //     ____  __________  __  __________________  _____
@@ -59,6 +80,11 @@ const reductorObtenerUsuarios = (state=[], action) => {
 	switch(action.type){
 	case OBTENER_USUARIOS:
 		return Object.assign([], state, action.payload.data);
+	case ACTUALIZAR_USUARIO:
+		const newState = state.filter(usuario => {
+			return usuario.id != action.payload.data.id;
+		});
+		return state.concat(action.payload.data);
 	case CREAR_USUARIO:
 		return state.concat(action.payload.data);
 	default:
@@ -74,7 +100,9 @@ class Usuarios extends React.Component {
 		this.state = {
 			nombreInput: '',
 			passwordInput: '',
-			puestoInput: ''
+			puestoInput: '',
+			edit: false,
+			idEdit: ''
 		};
 	}
 
@@ -111,8 +139,35 @@ class Usuarios extends React.Component {
 		});
 	}
 
+	actuliazarUsuario() {
+		const { dispatch } = this.props;
+		const { nombreInput, passwordInput, puestoInput, idEdit} = this.state;
+
+		dispatch(actionActualizarUsuario(idEdit, nombreInput, passwordInput, puestoInput));
+
+		this.setState({
+			nombreInput: '',
+			passwordInput: '',
+			puestoInput: '',
+			edit: false,
+			idEdit: ''
+		});
+	}
+
+	editUsuario(usuario) {
+
+		this.setState({
+			nombreInput: usuario.username,
+			passwordInput: usuario.password,
+			puestoInput: usuario.first_name,
+			edit: true,
+			idEdit: usuario.id
+		});
+	}
+
 	render() {
 		const { usuarios } = this.props;
+		const { edit } = this.state;
 
 		let listado = null;
 
@@ -120,13 +175,20 @@ class Usuarios extends React.Component {
 			listado = usuarios.map(usuario => {
 				return (
 						<tbody key={ usuario.id }>
-						    <tr >
+						    <tr onClick={ this.editUsuario.bind(this, usuario) } >
 						     	<td>{ usuario.username }</td>
 						     	<td> { usuario.first_name}</td>
 						    </tr>
 					    </tbody>
 				);
-			});
+			}).reverse();
+		}
+
+		let method;
+		if (!edit) {
+			method = this.crearUsuario.bind(this);
+		} else {
+			method = this.actuliazarUsuario.bind(this);
 		}
 
 		return (
@@ -178,8 +240,11 @@ class Usuarios extends React.Component {
 								</select>
 							</div>
 
-							<button className='btn btn-primary center-block btn-crear' onClick={ this.crearUsuario.bind(this) }>
-								Crear usuario
+							<button className='btn btn-primary center-block btn-crear' onClick={ method }>
+								{
+									!edit ? 'Crear usuario'
+									: 'Actualizar Usuario'
+								}
 							</button>
 						</div>
 					</div>
