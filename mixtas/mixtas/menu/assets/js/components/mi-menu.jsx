@@ -145,7 +145,7 @@ class MiMenu extends React.Component {
 	render() {
 		const { user, superUser, rol, platillos } = this.props;
 
-		let platillosDefault = ['Entradas', 'Quesadillas', 'Tacos', 'Chavindecas', 'Postres', 'Alambres-Volcanes', 'Bebidas'];
+		let platillosDefault = ['Entradas', 'Quesadillas', 'Tacos', 'Chavindecas', 'Postres', 'Alambres-Volcanes', 'Bebidas', 'Ingredientes'];
 		let navegacionPlatillos;
 		let classTab;
 
@@ -170,6 +170,9 @@ class MiMenu extends React.Component {
 		let bebidas;
 		let listadoBebidas;
 
+		let ingredients;
+		let listadoIngredientes;
+
 		let tabContent;
 
 		if (!isEmpty(platillos)) {
@@ -181,6 +184,7 @@ class MiMenu extends React.Component {
 			postres = this.getFilter('Postres');
 			alambresVolcanes = this.getFilter('Alambres-Volcanes');
 			bebidas = this.getFilter('Bebidas');
+			ingredients = this.getFilter('Ingredientes');
 
 			// Tabla de platillos
 			listadoEntradas = this.getBodyTable(entradas);
@@ -190,6 +194,7 @@ class MiMenu extends React.Component {
 			listadoPostres = this.getBodyTable(postres);
 			listadoAlambresVolcanes = this.getBodyTable(alambresVolcanes);
 			listadoBebidas = this.getBodyTable(bebidas);
+			listadoIngredientes = this.getBodyTable(ingredients);
 
 
 			// Navegacion de platillos
@@ -237,7 +242,8 @@ class MiMenu extends React.Component {
 								: platillo == 'Chavindecas' ? listadoChavindecas
 								: platillo == 'Postres' ? listadoPostres
 								: platillo == 'Alambres-Volcanes' ? listadoAlambresVolcanes
-								: platillo == 'Bebidas' ? listadoBebidas : ''
+								: platillo == 'Bebidas' ? listadoBebidas
+								: platillo == 'Ingredientes' ? listadoIngredientes : ''
 							}
 						</table>
 					</div>
