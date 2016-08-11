@@ -31,6 +31,10 @@ class Menu extends React.Component {
 		window.location = '/mesas';
 	}
 
+	miMenu() {
+		window.location = '/menu/mi-menu';
+	}
+
 	render() {
 		const { user, superUser, rol } = this.props;
 
