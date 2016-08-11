@@ -415,7 +415,7 @@ class Simbolos extends React.Component {
 		if (simbolos.length > 0) {
 			listaSimbolos = simbolos.map(simbolo => {
 				return (
-					<button className={ `btn simbols ${ simbolo.claseColor }` } onClick={ this.setSinbolo.bind(this, ` ${ simbolo.simbolo }`, 0, 'simbolo') }>
+					<button className={ `btn simbols ${ simbolo.claseColor } btn-lg` } onClick={ this.setSinbolo.bind(this, ` ${ simbolo.simbolo }`, 0, 'simbolo') }>
 						{ simbolo.simbolo }
 					</button>
 				);
@@ -436,7 +436,7 @@ class Simbolos extends React.Component {
 		let listaNumeros = [];
 		for (var i = 0; i < 10; i++) {
 			const btn = (
-				<button key={ `numero-${ i }` } className='btn btn-success numeros' onClick={ this.setSinbolo.bind(this, `${ i }`, 0) }>
+				<button key={ `numero-${ i }` } className='btn btn-success numeros btn-lg' onClick={ this.setSinbolo.bind(this, `${ i }`, 0) }>
 					{ i }
 				</button>
 			);
@@ -470,11 +470,11 @@ class Simbolos extends React.Component {
 
 						<OrdenPersonal ordenCompuesta={ this.state.ordenCompuesta } listaOrdenes={ this.state.listaOrdenes }/>
 
-						<div className='btn btn-success btn-fin pull-right' onClick={ this.agregarOrdenUsuario.bind(this) }>
+						<div className='btn btn-success btn-fin pull-right btn-lg' onClick={ this.agregarOrdenUsuario.bind(this) }>
 							Agregar Orden de Usuario
 						</div>
 
-						<div className='btn btn-warning btn-fin-orden' onClick={ this.finalizarOrden.bind(this) }>
+						<div className='btn btn-warning btn-fin-orden btn-lg' onClick={ this.finalizarOrden.bind(this) }>
 							Finalizar Orden
 						</div>
 
