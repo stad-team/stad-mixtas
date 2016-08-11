@@ -348,6 +348,7 @@ class MiMenu extends React.Component {
 									<option value="Alambres-Volcanes">Alambres y Volcanes</option>
 									<option value="Postres">Postres</option>
 									<option value="Bebidas">Bebidas</option>
+									<option value="Ingredientes">Ingredientes</option>
 								</select>
 							</div>
 							<div className='form-group col-xs-12'>
