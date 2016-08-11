@@ -213,11 +213,12 @@
 	<div
 		id='pedidos'
 		data-mesa={{ id }}
-		data-user={{ user.username }}
-		data-rol={{ user.first_name }}
-		data-token="{{ csrf_token }}"
 		data-idOrdenMesa={{ idOrdenMesa }}
+		data-token="{{ csrf_token }}"
 	></div>
+
+	<div id='user' data-user={{ user.username }}
+		data-rol={{ user.first_name }}></div>
 
 	{% render_bundle 'pedidos' %}
 
