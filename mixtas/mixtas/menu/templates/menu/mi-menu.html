@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
+
+{% block content %}
+	<div
+        data-token="{{ csrf_token }}"
+        id="react-mi-menu"
+        data-super-user={{ user.is_superuser }}
+        data-user={{ user }}
+        data-rol={{ user.first_name }}
+	>
+	</div>
+
+	{% render_bundle 'miMenu'%}
+
+<style>
+
+body{
+	background: url("{% static "src/img/madera-blanca.jpg" %}") no-repeat;
+	background-size: cover;
+    background-color: #3d270c;
+    background-repeat: repeat-y;
+    }
+
+    .title{
+        text-align: center;
+    }
+
+@media only screen and (max-width: 991px) {
+    .btn-outline{
+        width: 10em;
+    }
+}
+
+@media only screen and (max-width: 1089px) {
+    .btn-outline{
+        width: 10em;
+    }
+}
+
+</style>
+
+{% endblock content %}
+
+
