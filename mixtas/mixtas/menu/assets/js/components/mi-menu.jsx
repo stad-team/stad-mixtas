@@ -19,6 +19,7 @@ import axios from 'axios';
 const OBTENER_MENU = 'OBTENER_MENU';
 const CREAR_MENU = 'CREAR_MENU';
 const ACTUALIZAR_MENU = 'ACTUALIZAR_MENU';
+const DELETE_PLATILLO = 'DELETE_PLATILLO';
 
 const actionObtenerMenu = () => {
 	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/menu/');
@@ -70,6 +71,21 @@ const actionActualizarPlatillo = (id, tipo, nombre, nombreCorto, precio) => {
 		payload: respuesta
 	};
 };
+
+const actionDeletePlatillo = (id) => {
+	const respuesta = axios.delete(`http://mixtas-costeno/pedidos/api/menu/${ id }`,
+		{
+			headers: {
+				'X-CSRFToken': tokenCSRF
+			}
+		}
+	);
+
+	return {
+		type: DELETE_PLATILLO,
+		payload: id
+	};
+};
 ////////////////////////////////////////////////
 
 //     ____  __________  __  __________________  _____
@@ -82,6 +98,10 @@ const reductorObtenerMenu = (state=[], action) => {
 	switch(action.type){
 	case OBTENER_MENU:
 		return Object.assign([], state, action.payload.data);
+	case DELETE_PLATILLO:
+		return state.filter(platillo => {
+			return platillo.id != action.payload;
+		});
 	case ACTUALIZAR_MENU:
 		const newState = state.filter(platillo => {
 			return platillo.id != action.payload.data.id;
@@ -174,15 +194,23 @@ class MiMenu extends React.Component {
 		});
 	}
 
+	deletePlatillo(id) {
+		const { dispatch } = this.props;
+
+		dispatch(actionDeletePlatillo(id));
+	}
+
 	getBodyTable(tipo) {
 		let listadoBody = tipo.map(type => {
 			return (
 				<tbody key={ type.id } >
-				    <tr onClick={ this.editMenu.bind(this, type) } >
+				    <tr>
 				     	<td>{ type.tipo }</td>
 				     	<td> { type.nombre }</td>
 				     	<td> { type.nombreCorto }</td>
 				     	<td> { type.precio }</td>
+				     	<td> <i onClick={ this.editMenu.bind(this, type) } className='fa fa-pencil text-primary fa-2x' aria-hidden='true'></i> </td>
+				     	<td> <i onClick={ this.deletePlatillo.bind(this, type.id) } className="fa fa-trash borrar-mesa text-danger fa-2x" aria-hidden="true"></i> </td>
 				    </tr>
 			    </tbody>
 			);
@@ -292,6 +320,8 @@ class MiMenu extends React.Component {
 							    	<th>Nombre</th>
 							    	<th>Nombre Corto</th>
 							    	<th>Precio</th>
+							    	<th>Editar</th>
+							    	<th>Borrar</th>
 							    </tr>
 							</thead>
 							{
