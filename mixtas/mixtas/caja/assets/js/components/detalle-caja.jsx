@@ -69,7 +69,7 @@ class DetalleCaja extends React.Component {
 	}
 
 	cobrar(total) {
-		const { mesa, idOrdenMesa } = this.props;
+		const { mesa, idOrdenMesa, locacion } = this.props;
 
 		axios.patch(`http://mixtas-costeno/pedidos/api/folio/${ idOrdenMesa }`,
 			{
@@ -82,19 +82,32 @@ class DetalleCaja extends React.Component {
 				}
 			}
 		).then(responseFolio => {
-			axios.patch(`http://mixtas-costeno/pedidos/api/mesas/${ mesa }`,
-				{
-					status: false,
-					idOrdenMesa: null
-				},
-				{
-					headers: {
-						'X-CSRFToken': tokenCSRF
+			if (locacion == 'Llevar') {
+				axios.delete(`http://mixtas-costeno/pedidos/api/mesas/${ mesa }`,
+					{
+						headers: {
+							'X-CSRFToken': tokenCSRF
+						}
 					}
-				}
-			).then(responseMesa => {
-				window.location = '/caja/';
-			});
+				).then(responseMesa1 => {
+					window.location = '/caja/';
+				});
+			} else {
+				axios.patch(`http://mixtas-costeno/pedidos/api/mesas/${ mesa }`,
+					{
+						status: false,
+						idOrdenMesa: null
+					},
+					{
+						headers: {
+							'X-CSRFToken': tokenCSRF
+						}
+					}
+				).then(responseMesa2 => {
+					window.location = '/caja/';
+				});
+			}
+
 		});
 	}
 
@@ -224,15 +237,18 @@ const store = createStore(
 	reducer, applyMiddleware(thunkMiddleware, promise));
 
 const element = document.getElementById('react-detalle-caja');
-const dataUser = element.getAttribute('data-user');
-const dataRol = element.getAttribute('data-rol');
 const idOrdenMesa = element.getAttribute('data-idOrdenMesa');
 const tokenCSRF = element.getAttribute('data-token');
 const dataMesa = element.getAttribute('data-mesa');
+const dataLocacionMesa = element.getAttribute('data-locacion-mesa');
+
+const elementUser = document.getElementById('user');
+const dataUser = elementUser.getAttribute('data-user');
+const dataRol = elementUser.getAttribute('data-rol');
 
 ReactDom.render(
 	<Provider store={ store } >
-		<DetalleCajaConnect idOrdenMesa={ idOrdenMesa } mesa={ dataMesa } user={ dataUser } rol={ dataRol }/>
+		<DetalleCajaConnect locacion={ dataLocacionMesa } idOrdenMesa={ idOrdenMesa } mesa={ dataMesa } user={ dataUser } rol={ dataRol }/>
 	</Provider>,
 	element
 );
