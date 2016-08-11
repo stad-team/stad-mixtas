@@ -18,6 +18,7 @@ import axios from 'axios';
 
 const OBTENER_MESAS = 'OBTENER_MESAS';
 const CREAR_MESA = 'CREAR_MESA';
+const ACTUALIZAR_MESAS = 'ACTUALIZAR_MESAS';
 
 const actionObtenerMesas = () => {
 	const respuesta = axios.get('http://mixtas-costeno/pedidos/api/mesas/');
@@ -50,6 +51,29 @@ const actionCrearMesa = (nombre, descripcion, locacion, numSillas) => {
 		payload: respuesta
 	};
 };
+
+const actionActualizarMesa = (id, nombre, descripcion, locacion, numSillas, statusMesa) => {
+	const respuesta = axios.put(`http://mixtas-costeno/pedidos/api/mesas/${ id }/`,
+		{
+			name: nombre,
+			description: descripcion,
+			location: locacion,
+			n_chairs: numSillas,
+			n_people: 0,
+			status: statusMesa
+		},
+		{
+			headers: {
+				'X-CSRFToken': tokenCSRF
+			}
+		}
+	);
+
+	return {
+		type: ACTUALIZAR_MESAS,
+		payload: respuesta
+	};
+};
 ////////////////////////////////////////////////
 
 //     ____  __________  __  __________________  _____
@@ -62,6 +86,11 @@ const reductorObtenerMesas = (state=[], action) => {
 	switch(action.type){
 	case OBTENER_MESAS:
 		return Object.assign([], state, action.payload.data);
+	case ACTUALIZAR_MESAS:
+		const newState = state.filter(mesa => {
+			return mesa.id != action.payload.data.id;
+		});
+		return newState.concat(action.payload.data);
 	case CREAR_MESA:
 		return state.concat(action.payload.data);
 	default:
@@ -78,7 +107,10 @@ class Mesas extends React.Component {
 			nombreInput: '',
 			descripcionInput: '',
 			locacionInput: '',
-			numSillasInput: ''
+			numSillasInput: '',
+			edit: false,
+			idEdit: '',
+			statusMesa: false
 		};
 	}
 
@@ -117,8 +149,40 @@ class Mesas extends React.Component {
 		});
 	}
 
+	actualizarMesa() {
+		const { dispatch } = this.props;
+		const { nombreInput, descripcionInput, locacionInput, numSillasInput, idEdit, statusMesa } = this.state;
+
+		dispatch(actionActualizarMesa(idEdit, nombreInput, descripcionInput, locacionInput, numSillasInput, statusMesa));
+
+		this.setState({
+			nombreInput: '',
+			descripcionInput: '',
+			locacionInput: '',
+			numSillasInput: '',
+			edit: false,
+			idEdit: '',
+			statusMesa: false
+		});
+
+	}
+
+	editMesa(mesa) {
+
+		this.setState({
+			nombreInput: mesa.name,
+			descripcionInput: mesa.description,
+			locacionInput: mesa.location,
+			numSillasInput: mesa.n_chairs,
+			edit: true,
+			idEdit: mesa.id,
+			statusMesa: mesa.status
+		});
+	}
+
 	render() {
 		const { mesas } = this.props;
+		const { edit } = this.state;
 
 		let listado = null;
 
@@ -126,7 +190,7 @@ class Mesas extends React.Component {
 			listado = mesas.map(mesa => {
 				return (
 						<tbody key={ mesa.id }>
-						    <tr >
+						    <tr onClick={ this.editMesa.bind(this, mesa)} >
 						     	<td>{ mesa.name }</td>
 						     	<td> { mesa.description }</td>
 						     	<td> { mesa.location }</td>
@@ -134,7 +198,14 @@ class Mesas extends React.Component {
 						    </tr>
 					    </tbody>
 				);
-			});
+			}).reverse();
+		}
+
+		let method;
+		if (!edit) {
+			method = this.crearMesa.bind(this);
+		} else {
+			method = this.actualizarMesa.bind(this);
 		}
 
 		return (
@@ -170,13 +241,10 @@ class Mesas extends React.Component {
 							</div>
 							<div className='form-group col-xs-12'>
 								<label>Locacion:</label>
-								<input
-									ref='locacion'
-									type='text'
-									className='form-control'
-									onChange={ this.obtenerValorInput.bind(this) }
-									value={ this.state.locacionInput }
-								/>
+								<select className='form-control' id="lang" ref='locacion' onChange={ this.obtenerValorInput.bind(this) } value={ this.state.locacionInput }>
+									<option value="P1">Planta Baja</option>
+									<option value="P2">Planta Alta</option>
+								</select>
 							</div>
 							<div className='form-group col-xs-12'>
 								<label># Sillas:</label>
@@ -189,8 +257,11 @@ class Mesas extends React.Component {
 								/>
 							</div>
 
-							<button className='btn btn-primary center-block btn-crear' onClick={ this.crearMesa.bind(this) }>
-								Crear Mesa
+							<button className='btn btn-primary center-block btn-crear' onClick={ method }>
+								{
+									!edit ? 'Crear Mesa'
+									: 'Actualizar Mesa'
+								}
 							</button>
 						</div>
 					</div>
