@@ -102,7 +102,7 @@ class OrdenPersonal extends React.Component {
 	borrarPlato(index) {
 		const { elementosLista } = this.state;
 
-		delete elementosLista[index];
+		elementosLista.splice(index, 1);
 		this.setState({
 			elementosLista: elementosLista
 		});
@@ -183,7 +183,7 @@ class Simbolos extends React.Component {
 			}
 
 		} else {
-			if (parseInt(simboloVar) % 1 >= 0 && ordenCompuesta.length > 0) {
+			if (parseInt(simboloVar) % 1 >= 0 && ordenCompuesta.length > 0 && typeof(simboloVar) !== 'string') {
 				simboloVar = ordenCompuesta[0] + simboloVar;
 				ordenCompuesta.shift();
 
@@ -256,7 +256,7 @@ class Simbolos extends React.Component {
 		let ordenSimplificada;
 		let indexPrecio = 0;
 		let precioFinal = 0;
-		let precioFinalOrden;
+		let precioFinalOrden = 0;
 
 		ordenSimplificada = (
 			<div className='orden-personalizada plato' orden={ listaOrdenes } onClick={ this.editarOrdenPersonal.bind(this, listaOrdenes) }>
@@ -267,7 +267,7 @@ class Simbolos extends React.Component {
 						precioFinal += parseInt(orden.split(' ')[indexPrecio - 1]);
 						precioFinalOrden = (
 							<div className='costo-por-persona pull-right'>
-								{ precioFinal}
+								{ precioFinal }
 							</div>
 						);
 
@@ -282,7 +282,7 @@ class Simbolos extends React.Component {
 								{ orden }
 								<hr />
 									{
-										index === listaOrdenes.length - 1 ?
+										index + 1 === listaOrdenes.length ?
 										precioFinalOrden : ''
 									}
 							</div>
@@ -415,7 +415,7 @@ class Simbolos extends React.Component {
 		if (simbolos.length > 0) {
 			listaSimbolos = simbolos.map(simbolo => {
 				return (
-					<button className={ `btn simbols ${ simbolo.claseColor }` } onClick={ this.setSinbolo.bind(this, ` ${ simbolo.simbolo }`) }>
+					<button className={ `btn simbols ${ simbolo.claseColor }` } onClick={ this.setSinbolo.bind(this, ` ${ simbolo.simbolo }`, 0, 'simbolo') }>
 						{ simbolo.simbolo }
 					</button>
 				);
