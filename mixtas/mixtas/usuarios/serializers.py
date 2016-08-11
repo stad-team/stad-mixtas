@@ -21,3 +21,13 @@ class SerializadorUsuarios(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        if password != instance.password:
+            instance.set_password(password)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
