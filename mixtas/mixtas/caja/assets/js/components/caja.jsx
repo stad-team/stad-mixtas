@@ -6,6 +6,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import promise from 'redux-promise';
 import thunkMiddleware from 'redux-thunk';
 
+import { isEmpty } from 'lodash';
 
 //     ___   ____________________  _   _______
 //    /   | / ____/_  __/  _/ __ \/ | / / ___/
@@ -15,12 +16,11 @@ import thunkMiddleware from 'redux-thunk';
 
 import axios from 'axios';
 
-const OBTENER_MESAS1 = 'OBTENER_MESAS1';
-const OBTENER_MESAS2 = 'OBTENER_MESAS2';
+const OBTENER_MESAS = 'OBTENER_MESAS';
 
-const actionObtenerMesasP1 = () => {
+const actionObtenerMesas = () => {
 	const respuesta = axios.get(
-		'http://mixtas-costeno/pedidos/api/mesas/?floor=P1&caja=True',
+		'http://mixtas-costeno/pedidos/api/mesas/?caja=True',
 		{
 			headers: {
 				'X-CSRFToken': tokenCSRF
@@ -29,23 +29,7 @@ const actionObtenerMesasP1 = () => {
 	);
 
 	return {
-		type: OBTENER_MESAS1,
-		payload: respuesta
-	};
-};
-
-const actionObtenerMesasP2 = () => {
-	const respuesta = axios.get(
-		'http://mixtas-costeno/pedidos/api/mesas/?floor=P2&caja=True',
-		{
-			headers: {
-				'X-CSRFToken': tokenCSRF
-			}
-		}
-	);
-
-	return {
-		type: OBTENER_MESAS2,
+		type: OBTENER_MESAS,
 		payload: respuesta
 	};
 };
@@ -58,18 +42,9 @@ const actionObtenerMesasP2 = () => {
 //  / _, _/ /___/ /_/ / /_/ / /___/ /___/ _, _/___/ /
 // /_/ |_/_____/_____/\____/\____/_____/_/ |_|/____/
 
-const reductorObtenerMesas1 = (state=[], action) => {
+const reductorObtenerMesas = (state=[], action) => {
 	switch(action.type){
-	case OBTENER_MESAS1:
-		return Object.assign([], state, action.payload.data);
-	default:
-		return state;
-	}
-};
-
-const reductorObtenerMesas2 = (state=[], action) => {
-	switch(action.type){
-	case OBTENER_MESAS2:
+	case OBTENER_MESAS:
 		return Object.assign([], state, action.payload.data);
 	default:
 		return state;
@@ -85,93 +60,98 @@ class Mesas extends React.Component {
 		if (user === 'AnonymousUser' || rol === 'mesero') {
 			window.location = '/auth/logout';
 		} else {
-			dispatch(actionObtenerMesasP1());
-			dispatch(actionObtenerMesasP2());
+			dispatch(actionObtenerMesas());
 		}
 	}
 
-	levantarPedido(mesa, idOrdenMesa) {
-		window.location = `/caja/detalle-caja/${ mesa }/${ idOrdenMesa }`;
+	levantarPedido(mesa, locacion, idOrdenMesa) {
+		window.location = `/caja/detalle-caja/${ mesa }/${ locacion }/${ idOrdenMesa }`;
+	}
+
+	getMesas(tipoMesa) {
+		const { mesas } = this.props;
+
+		return mesas.filter(mesa => {
+			return mesa.location == tipoMesa;
+		});
+	}
+
+	getListadoMesas(mesas) {
+		return mesas.map(mesa => {
+			let mesaStatus;
+			let sillas = [];
+			for (var i = 0; i <= mesa.n_chairs; i++) {
+				sillas.push('silla ' + i);
+			}
+
+			const muestraSillas = sillas.map((silla, index) => {
+				return (
+					<p key={ index }>
+						{ silla }
+					</p>
+				);
+			});
+
+			if (mesa.status) {
+				mesaStatus = 'text-danger';
+			} else {
+				mesaStatus = 'text-success';
+			}
+
+			let srcImagen;
+
+			if (mesa.location == 'Llevar') {
+				srcImagen = 'http://icon-icons.com/icons2/549/PNG/512/1455739788_Kitchen_Bold_Line_Color_Mix-05_icon-icons.com_53393.png';
+			} else if (mesa.location == 'Barra') {
+				srcImagen = 'https://image.freepik.com/iconos-gratis/mesa-de-la-cocina-y-los-asientos-conjunto-de-muebles_318-63454.png'
+			} else {
+				srcImagen = '/static/src/img/mesa.png';
+			}
+
+			return (
+				<li className="mesa" key={ mesa.id }>
+					<img
+						src={ srcImagen }
+						onClick={ this.levantarPedido.bind(this, mesa.id, mesa.location, mesa.idOrdenMesa) }
+					/>
+					<span className="fa-stack fa-lg">
+						<i className={ `fa fa-circle fa-stack-2x ${ mesaStatus }` }></i>
+						<i className="fa fa-lightbulb-o fa-stack-1x fa-inverse"></i>
+					</span>
+					<div className="mesa-name">
+						{ mesa.name }
+					</div>
+				</li>
+			);
+		});
 	}
 
 	render() {
-		const { mesas1, mesas2 } = this.props;
+		const { mesas } = this.props;
 
-		const listadoMesas1 = mesas1.map(mesa => {
-			let mesaStatus;
-			let sillas = [];
-			for (var i = 0; i <= mesa.n_chairs; i++) {
-				sillas.push('silla ' + i);
-			}
+		let mesasP1;
+		let listadoMesasP1;
 
-			const muestraSillas = sillas.map((silla, index) => {
-				return (
-					<p key={ index }>
-						{ silla }
-					</p>
-				);
-			});
+		let mesasP2;
+		let listadoMesasP2;
 
-			if (mesa.status) {
-				mesaStatus = 'text-danger';
-			} else {
-				mesaStatus = 'text-success';
-			}
+		let barra;
+		let listadoBarra;
 
-			return (
-				<li className="mesa" key={ mesa.id }>
-					<img
-						src="/static/src/img/mesa.png"
-						onClick={ this.levantarPedido.bind(this, mesa.id, mesa.idOrdenMesa) }
-					/>
-					<span className="fa-stack fa-lg">
-						<i className={ `fa fa-circle fa-stack-2x ${ mesaStatus }` }></i>
-						<i className="fa fa-lightbulb-o fa-stack-1x fa-inverse"></i>
-					</span>
-					<div className="mesa-name">
-						{ mesa.name }
-					</div>
-				</li>
-			);
-		});
+		let llevar;
+		let listadoParaLlevar;
 
-		const listadoMesas2 = mesas2.map(mesa => {
-			let mesaStatus;
-			let sillas = [];
-			for (var i = 0; i <= mesa.n_chairs; i++) {
-				sillas.push('silla ' + i);
-			}
+		if (!isEmpty(mesas)) {
+			mesasP1 = this.getMesas('P1');
+			mesasP2 = this.getMesas('P2');
+			barra = this.getMesas('Barra');
+			llevar = this.getMesas('Llevar');
 
-			const muestraSillas = sillas.map((silla, index) => {
-				return (
-					<p key={ index }>
-						{ silla }
-					</p>
-				);
-			});
-
-			if (mesa.status) {
-				mesaStatus = 'text-danger';
-			} else {
-				mesaStatus = 'text-success';
-			}
-
-			return (
-				<li className="mesa" key={ mesa.id }>
-					<img
-						src="/static/src/img/mesa.png"
-						onClick={ this.levantarPedido.bind(this, mesa.id, mesa.idOrdenMesa) }
-					/>
-					<span className="fa-stack fa-lg">
-						<i className={ `fa fa-circle fa-stack-2x ${ mesaStatus }` }></i>
-						<i className="fa fa-lightbulb-o fa-stack-1x fa-inverse"></i>
-					</span>
-					<div className="mesa-name">
-						{ mesa.name }
-					</div>
-				</li>
-			);
-		});
+			listadoMesasP1 = this.getListadoMesas(mesasP1);
+			listadoMesasP2 = this.getListadoMesas(mesasP2);
+			listadoBarra = this.getListadoMesas(barra);
+			listadoParaLlevar = this.getListadoMesas(llevar);
+		}
 
 
 		return(
@@ -189,18 +169,28 @@ class Mesas extends React.Component {
 				<hr />
 				<div className="container">
 					<ul className="nav nav-tabs">
-						<li className="active"><a data-toggle="tab" href="#home">Planta Baja</a></li>
-						<li><a data-toggle="tab" href="#menu1">Planta Alta</a></li>
+						<li className="active"><a data-toggle="tab" href="#P1">Planta Baja</a></li>
+						<li><a data-toggle="tab" href="#P2">Planta Alta</a></li>
+						<li><a data-toggle="tab" href="#Barra">Barra</a></li>
+						<li><a data-toggle="tab" href="#Llevar">Para Llevar</a></li>
 					</ul>
 
 					<div className="tab-content">
-						<div id="home" className="tab-pane fade in active">
+						<div id="P1" className="tab-pane fade in active">
 							<h3>Planta Baja</h3>
-							<ul className="list-inline">{ listadoMesas1 }</ul>
+							<ul className="list-inline">{ listadoMesasP1 }</ul>
 						</div>
-						<div id="menu1" className="tab-pane fade">
+						<div id="P2" className="tab-pane fade">
 							<h3>Planta Alta</h3>
-							<ul className="list-inline">{ listadoMesas2 }</ul>
+							<ul className="list-inline">{ listadoMesasP2 }</ul>
+						</div>
+						<div id="Barra" className="tab-pane fade">
+							<h3>Barra</h3>
+							<ul className="list-inline">{ listadoBarra }</ul>
+						</div>
+						<div id="Llevar" className="tab-pane fade">
+							<h3>Para Llevar</h3>
+							<ul className="list-inline">{ listadoParaLlevar }</ul>
 						</div>
 					</div>
 				</div>
@@ -210,11 +200,10 @@ class Mesas extends React.Component {
 }
 
 // conectar el component con redux
-export const MesasConnect = connect(store => ({ mesas1: store.listadoMesas1, mesas2: store.listadoMesas2 }))(Mesas);
+export const MesasConnect = connect(store => ({ mesas: store.listadoMesas }))(Mesas);
 
 const reducer = combineReducers({
-	listadoMesas1: reductorObtenerMesas1,
-	listadoMesas2: reductorObtenerMesas2
+	listadoMesas: reductorObtenerMesas
 });
 
 const store = createStore(
