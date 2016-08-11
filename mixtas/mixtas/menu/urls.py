@@ -18,5 +18,6 @@ from rest_framework import routers
 
 urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name='menu/menu.html')),
+    url(r'^mi-menu/$', TemplateView.as_view(template_name='menu/mi-menu.html')),
     # url(r'^api/', include(router.urls, namespace='api')),
 )
