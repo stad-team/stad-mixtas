@@ -128,16 +128,16 @@ class Mesas extends React.Component {
 			let srcImagen;
 
 			if (mesa.location == 'Llevar') {
-				srcImagen = 'http://icon-icons.com/icons2/549/PNG/512/1455739788_Kitchen_Bold_Line_Color_Mix-05_icon-icons.com_53393.png';
+				srcImagen = '/static/src/img/lleva.png';
 			} else if (mesa.location == 'Barra') {
-				srcImagen = 'https://image.freepik.com/iconos-gratis/mesa-de-la-cocina-y-los-asientos-conjunto-de-muebles_318-63454.png'
+				srcImagen = '/static/src/img/barrita.png';
 			} else {
 				srcImagen = '/static/src/img/mesa.png';
 			}
 
 			return (
 				<li className="mesa" key={ mesa.id }>
-					<img
+					<img className="image-element"
 						src={ srcImagen }
 						onClick={ this.levantarPedido.bind(this, mesa.id, mesa.idOrdenMesa) }
 					/>
