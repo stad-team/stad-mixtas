@@ -126,6 +126,10 @@ class Mesas extends React.Component {
 		});
 	}
 
+	reloadM() {
+		location.reload();
+	}
+
 	render() {
 		const { mesas } = this.props;
 
@@ -173,6 +177,7 @@ class Mesas extends React.Component {
 						<li><a data-toggle="tab" href="#P2">Planta Alta</a></li>
 						<li><a data-toggle="tab" href="#Barra">Barra</a></li>
 						<li><a data-toggle="tab" href="#Llevar">Para Llevar</a></li>
+						<li><a onClick={ this.reloadM } data-toggle="tab" href="#Llevar">Actualizar Mesas</a></li>
 					</ul>
 
 					<div className="tab-content">
