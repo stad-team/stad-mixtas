@@ -33,5 +33,3 @@ class SerializadorMenu(serializers.ModelSerializer):
 class SerializadorFolio(serializers.ModelSerializer):
     class Meta:
         model = Folio
-
-

@@ -343,6 +343,7 @@ class Simbolos extends React.Component {
 		let precio;
 		let descripcion;
 		let ordenDescompuesta;
+		let ordenesImprimir = [];
 
 		let idOrden;
 		let metodo;
@@ -358,9 +359,19 @@ class Simbolos extends React.Component {
 			extraOrden = '';
 		}
 
+		for (var i = 0; i <= ordenesUsuarios.length - 1; i++) {
+			ordenesImprimir.push(ordenesUsuarios[i].props.orden);
+		}
+
+
+		console.log(ordenesImprimir);
+
+		// metodo(`http://mixtas-costeno/pedidos/api/folio/${ idOrden }?ordenesImprimir=${ordenesImprimir}`,
 		metodo(`http://mixtas-costeno/pedidos/api/folio/${ idOrden }`,
 			{
 				nombreMesero: user,
+				ordenesImprimir: ordenesImprimir,
+				mesa: mesa
 			},
 			{
 				headers: {
