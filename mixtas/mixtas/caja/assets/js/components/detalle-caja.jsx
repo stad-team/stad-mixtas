@@ -58,6 +58,14 @@ const reductorObtenerOrdenes = (state=[], action) => {
 
 
 class DetalleCaja extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			qsFinal: []
+		};
+	}
+
 	componentWillMount() {
 		const { dispatch, idOrdenMesa, user, rol } = this.props;
 
@@ -68,13 +76,15 @@ class DetalleCaja extends React.Component {
 		}
 	}
 
-	cobrar(total) {
+	cobrar(total, qsFinal, qsTotal) {
 		const { mesa, idOrdenMesa, locacion } = this.props;
 
 		axios.patch(`http://mixtas-costeno/pedidos/api/folio/${ idOrdenMesa }`,
 			{
 				pagado: true,
-				total: total
+				total: total,
+				qsFinal: qsFinal,
+				qsTotal: qsTotal
 			},
 			{
 				headers: {
@@ -215,7 +225,7 @@ class DetalleCaja extends React.Component {
 					    		</tbody>
 							</table>
 						</div>
-						<button className='btn btn-lg btn-block btn-success' onClick={ this.cobrar.bind(this, precioFinal) }>
+						<button className='btn btn-lg btn-block btn-success' onClick={ this.cobrar.bind(this, precioFinal, qsFinal, precioFinal) }>
 							Cobrar
 						</button>
 					</div>

@@ -67,6 +67,40 @@ class CrearFolio(ModelViewSet):
     queryset = Folio.objects.all()
     permission_classes = (AllowAny,)
 
+    def printCobrar(self):
+        printFinal = ''
+
+        qsFinal = self.request.data.get('qsFinal')
+        qsTotal = self.request.data.get('qsTotal')
+        import ipdb; ipdb.set_trace()
+        qsFinal.pop(0)
+        for orden in qsFinal:
+            for platillo in orden:
+                _platillo = platillo.get('platillo')
+                if 'B-' in _platillo:
+                    _platillo = 'Bebida {0}'.format(platillo.get('platillo').split('-')[1])
+                elif 'Q-' in _platillo:
+                    _platillo = 'Quesadilla {0}'.format(platillo.get('platillo').split('-')[1])
+
+                printFinal += '{0} {1} {2} \n'.format(platillo.get('cantidad'), _platillo, platillo.get('precio'))
+
+        # Epson Bebidas y Caja
+        Epson = printer.Usb(0x04b8, 0x0e02, 5)
+        Epson.set(align='center')
+        # Epson.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
+        Epson.text('\n')
+        Epson.text('Mixtas El Costeno\n')
+        Epson.text('----------------------\n')
+        Epson.text('\n')
+        Epson.set(width=2)
+        Epson.set(height=2)
+        Epson.set(align='center')
+        Epson.text('------Ordenes-------\n')
+        Epson.text(printFinal)
+        Epson.text('------Total-------\n')
+        Epson.text(str(qsTotal))
+        Epson.cut()
+
     def printOrden(self):
         numTortillas = ''
         cantidad = 0
@@ -94,33 +128,72 @@ class CrearFolio(ModelViewSet):
                 elif 'B-' in platillo:
                     totalOrdenTomar += '{0} \n'.format(platillo)
 
+        import ipdb; ipdb.set_trace()
+        # Epson Bebidas y Caja
+        EpsonBC = printer.Usb(0x04b8, 0x0e02, 5)
+        EpsonBC.set(align='center')
+        # EpsonBC.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
+        EpsonBC.text('\n')
+        EpsonBC.text('Mixtas El Costeno\n')
+        EpsonBC.text('----------------------\n')
+        EpsonBC.text('\n')
+        EpsonBC.set(width=2)
+        EpsonBC.set(height=2)
+        EpsonBC.text('Mesa #{}'.format(mesa))
+        EpsonBC.text('\n')
+        EpsonBC.text('\n')
+        EpsonBC.set(width=1)
+        EpsonBC.set(height=1)
+        EpsonBC.text('------REFRESCOS-------\n')
+        EpsonBC.text(totalOrdenTomar)
+        EpsonBC.cut()
 
-        #  Total Orden tortillera
-        Epson = printer.Usb(0x04b8, 0x0e02)
-        Epson.set(align='center')
-        Epson.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
-        Epson.text('\n')
-        Epson.text('Mixtas El Costeno\n')
-        Epson.text('----------------------\n')
-        Epson.text('\n')
-        Epson.set(width=2)
-        Epson.set(height=2)
-        Epson.text('Mesa #{}'.format(mesa))
-        Epson.text('\n')
-        Epson.text('\n')
-        Epson.set(width=1)
-        Epson.set(height=1)
-        Epson.text('Mesero: {0}'.format(mesero))
-        Epson.text('\n')
-        Epson.text('\n')
-        Epson.set(align='center')
-        Epson.text('------TORTILLERA-------\n')
-        Epson.text(totalOrdenTotillera)
-        Epson.text('------REFRESCOS-------\n')
-        Epson.text(totalOrdenTomar)
-        Epson.text('--------TAQUERO--------\n')
-        Epson.text(totalOrdenTaquero)
-        Epson.cut()
+
+        # Epson Taquero
+        EpsonTq = printer.Usb(0x04b8, 0x0e02, 4)
+        EpsonTq.set(align='center')
+        # EpsonTq.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
+        EpsonTq.text('\n')
+        EpsonTq.text('Mixtas El Costeno\n')
+        EpsonTq.text('----------------------\n')
+        EpsonTq.text('\n')
+        EpsonTq.set(width=2)
+        EpsonTq.set(height=2)
+        EpsonTq.text('Mesa #{}'.format(mesa))
+        EpsonTq.text('\n')
+        EpsonTq.text('\n')
+        EpsonTq.set(width=1)
+        EpsonTq.set(height=1)
+        EpsonTq.text('Mesero: {0}'.format(mesero))
+        EpsonTq.text('\n')
+        EpsonTq.text('\n')
+        EpsonTq.set(align='center')
+        EpsonTq.text('--------TAQUERO--------\n')
+        EpsonTq.text(totalOrdenTaquero)
+        EpsonTq.cut()
+
+        # Epson Tortillera
+        EpsonTort = printer.Usb(0x04b8, 0x0e02, 6)
+        EpsonTort.set(align='center')
+        # EpsonTort.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
+        EpsonTort.text('\n')
+        EpsonTort.text('Mixtas El Costeno\n')
+        EpsonTort.text('----------------------\n')
+        EpsonTort.text('\n')
+        EpsonTort.set(width=2)
+        EpsonTort.set(height=2)
+        EpsonTort.text('Mesa #{}'.format(mesa))
+        EpsonTort.text('\n')
+        EpsonTort.text('\n')
+        EpsonTort.set(width=1)
+        EpsonTort.set(height=1)
+        EpsonTort.text('Mesero: {0}'.format(mesero))
+        EpsonTort.text('\n')
+        EpsonTort.text('\n')
+        EpsonTort.set(align='center')
+        EpsonTort.text('------TORTILLERA-------\n')
+        EpsonTort.text(totalOrdenTotillera)
+        EpsonTort.cut()
 
     def perform_create(self, serializer):
         self.printOrden()
@@ -129,6 +202,8 @@ class CrearFolio(ModelViewSet):
     def perform_update(self, serializer):
         if not self.request.data.get('pagado'):
             self.printOrden()
+        else:
+            self.printCobrar()
         serializer.save()
 
     def get_queryset(self):
