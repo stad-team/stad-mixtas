@@ -168,7 +168,7 @@ class Simbolos extends React.Component {
 		}
 
 		if (precioIngrediente > 0) {
-			if (ordenCompuesta.indexOf(' Extra') > 1) {
+			if (ordenCompuesta.indexOf('  Extra') > 1) {
 				this.setState({
 					ordenCompuesta: ordenCompuesta.concat(simboloVar),
 					ordenLista: false,
@@ -188,7 +188,7 @@ class Simbolos extends React.Component {
 			}
 
 		} else {
-			if (parseInt(simboloVar) % 1 >= 0 && ordenCompuesta.length > 0 && typeof(simboloVar) !== 'string') {
+			if (parseInt(simboloVar) % 1 >= 0 && ordenCompuesta.length > 0 && tipo === 'numero') {
 				simboloVar = ordenCompuesta[0] + simboloVar;
 				ordenCompuesta.shift();
 
@@ -452,7 +452,7 @@ class Simbolos extends React.Component {
 		let listaNumeros = [];
 		for (var i = 0; i < 10; i++) {
 			const btn = (
-				<button key={ `numero-${ i }` } className='btn btn-success numeros btn-lg' onClick={ this.setSinbolo.bind(this, `${ i }`, 0) }>
+				<button key={ `numero-${ i }` } className='btn btn-success numeros btn-lg' onClick={ this.setSinbolo.bind(this, `${ i }`, 0, 'numero') }>
 					{ i }
 				</button>
 			);
