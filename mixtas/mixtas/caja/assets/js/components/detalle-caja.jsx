@@ -76,15 +76,40 @@ class DetalleCaja extends React.Component {
 		}
 	}
 
+	imprimir(total, qsFinal, qsTotal) {
+		const { mesa, idOrdenMesa, locacion, user, ordenes } = this.props;
+
+		axios.patch(`http://mixtas-costeno/pedidos/api/folio/${ idOrdenMesa }`,
+			{
+				total: total,
+				qsFinal: qsFinal,
+				qsTotal: qsTotal,
+				mesa: mesa,
+				folio: idOrdenMesa,
+				mesero: user,
+				print: 'imprimir'
+			},
+			{
+				headers: {
+					'X-CSRFToken': tokenCSRF
+				}
+			}
+		);
+
+	}
+
 	cobrar(total, qsFinal, qsTotal) {
-		const { mesa, idOrdenMesa, locacion } = this.props;
+		const { mesa, idOrdenMesa, locacion, user, ordenes } = this.props;
 
 		axios.patch(`http://mixtas-costeno/pedidos/api/folio/${ idOrdenMesa }`,
 			{
 				pagado: true,
 				total: total,
 				qsFinal: qsFinal,
-				qsTotal: qsTotal
+				qsTotal: qsTotal,
+				mesa: mesa,
+				folio: idOrdenMesa,
+				mesero: user
 			},
 			{
 				headers: {
@@ -137,6 +162,7 @@ class DetalleCaja extends React.Component {
 		let qsFinal = [];
 
 		if (!isEmpty(ordenes)) {
+
 			qsSinExtras = remove(ordenes, orden => {
 				return orden.cliente != 'extra';
 			});
@@ -203,6 +229,9 @@ class DetalleCaja extends React.Component {
 					<div className='col-md-12'>
 						<div className='my-users'>
 							<h3>Pedidos</h3>
+							<button className='btn btn-lg btn-block btn-success' onClick={ this.imprimir.bind(this, precioFinal, qsFinal, precioFinal) }>
+								IMPRIMIR
+							</button>
 						 	<table className='table table-hover'>
 								<thead>
 								    <tr>
