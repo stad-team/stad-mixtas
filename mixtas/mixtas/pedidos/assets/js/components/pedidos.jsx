@@ -245,7 +245,7 @@ class Simbolos extends React.Component {
 
 			for (var i = 0; i <= ordenesUsuarios.length; i++) {
 				if (ordenesUsuarios[i].props.orden === ordenesActualizar) {
-					delete ordenesUsuarios[i];
+					elementosLista.splice(i, 1);
 					this.setState({
 						ordenesUsuarios: ordenesUsuarios
 					});
