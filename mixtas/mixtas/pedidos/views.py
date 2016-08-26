@@ -5,6 +5,10 @@ STAD TEAM
 """
 from __future__ import absolute_import, unicode_literals, print_function
 
+
+import win32print
+import win32ui
+
 from escpos import printer
 from datetime import datetime
 from .models import Mesas, DetalleOrden, Simbolos, Menu, Folio
@@ -72,7 +76,10 @@ class CrearFolio(ModelViewSet):
 
         qsFinal = self.request.data.get('qsFinal')
         qsTotal = self.request.data.get('qsTotal')
-        import ipdb; ipdb.set_trace()
+        folio = self.request.data.get('folio')
+        mesero = self.request.data.get('mesero')
+        mesa = self.request.data.get('mesa')
+
         qsFinal.pop(0)
         for orden in qsFinal:
             for platillo in orden:
@@ -82,24 +89,45 @@ class CrearFolio(ModelViewSet):
                 elif 'Q-' in _platillo:
                     _platillo = 'Quesadilla {0}'.format(platillo.get('platillo').split('-')[1])
 
-                printFinal += '{0} {1} {2} \n'.format(platillo.get('cantidad'), _platillo, platillo.get('precio'))
+                printFinal += '\n{0} {1} \n\t\t\t\t ${2}'.format(platillo.get('cantidad'), _platillo, platillo.get('precio'))
+
+
+        print_final_caja = """
+        \t FOLIO: {folio}
+         MIXTAS EL COSTEÑO
+         Mesero: {mesero}
+         Mesa # {mesa}
+        \r ----------------
+        Ordenes:
+        {printFinal}
+        \t\t\t---- \t
+            \t\t\t $ {total} \t
+
+        \n\tDesarollado por TEAM-ANYOAN\n\t   anyoan-team@gmail.com
+        """.format(
+            folio=folio,
+            mesero=mesero,
+            mesa=mesa,
+            printFinal=printFinal,
+            total=qsTotal
+        )
 
         # Epson Bebidas y Caja
-        Epson = printer.Usb(0x04b8, 0x0e02, 5)
-        Epson.set(align='center')
-        # Epson.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
-        Epson.text('\n')
-        Epson.text('Mixtas El Costeno\n')
-        Epson.text('----------------------\n')
-        Epson.text('\n')
-        Epson.set(width=2)
-        Epson.set(height=2)
-        Epson.set(align='center')
-        Epson.text('------Ordenes-------\n')
-        Epson.text(printFinal)
-        Epson.text('------Total-------\n')
-        Epson.text(str(qsTotal))
-        Epson.cut()
+        printer = win32print.OpenPrinter('EPSON TM-T88V 1')
+        jid = win32print.StartDocPrinter(printer, 1, ('TEST DOC', None, 'RAW'))
+        bytes = win32print.WritePrinter(printer, print_final_caja)
+        win32print.EndDocPrinter(printer)
+        win32print.ClosePrinter(printer)
+
+        # Cortar
+        hDC = win32ui.CreateDC()
+        hDC.CreatePrinterDC('EPSON TM-T88V 1')
+        hDC.StartDoc("Test doc")
+        hDC.StartPage()
+        hDC.EndPage()
+        hDC.EndDoc()
+
+
 
     def printOrden(self):
         numTortillas = ''
@@ -117,91 +145,120 @@ class CrearFolio(ModelViewSet):
                 cantidad = platillo.split(' ')[0]
                 if not 'B-' in platillo:
                     if index == last:
-                        totalOrdenTaquero += '{0} \n -------------- \n'.format(platillo)
+                        totalOrdenTaquero += '\n{0} \n--------------\n'.format(platillo)
                     else:
-                        totalOrdenTaquero += '{0} \n'.format(platillo)
+                        totalOrdenTaquero += '\n{0}'.format(platillo)
 
                 if 'Quesadilla' in platillo or 'Q' in platillo:
-                    totalOrdenTotillera += '{0} totillas para Quesadillas \n'.format(cantidad)
+                    totalOrdenTotillera += '\n{0} totillas para Quesadillas'.format(cantidad)
                 elif 'Taco' in platillo or 'Tacos' in platillo or 'T' in platillo:
-                    totalOrdenTotillera += '{0} totillas para Tacos \n'.format(cantidad)
+                    totalOrdenTotillera += '\n{0} totillas para Tacos'.format(cantidad)
                 elif 'B-' in platillo:
-                    totalOrdenTomar += '{0} \n'.format(platillo)
+                    totalOrdenTomar += '\n{0}'.format(platillo)
 
-        import ipdb; ipdb.set_trace()
         # Epson Bebidas y Caja
-        EpsonBC = printer.Usb(0x04b8, 0x0e02, 5)
-        EpsonBC.set(align='center')
-        # EpsonBC.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
-        EpsonBC.text('\n')
-        EpsonBC.text('Mixtas El Costeno\n')
-        EpsonBC.text('----------------------\n')
-        EpsonBC.text('\n')
-        EpsonBC.set(width=2)
-        EpsonBC.set(height=2)
-        EpsonBC.text('Mesa #{}'.format(mesa))
-        EpsonBC.text('\n')
-        EpsonBC.text('\n')
-        EpsonBC.set(width=1)
-        EpsonBC.set(height=1)
-        EpsonBC.text('------REFRESCOS-------\n')
-        EpsonBC.text(totalOrdenTomar)
-        EpsonBC.cut()
+        if totalOrdenTomar != '':
+            print_final_bebidas = """
+            \t Mesero: {mesero}
+             Mesa # {mesa}
+            \r ----------------
+            {totalOrdenTomar}
 
 
-        # Epson Taquero
-        EpsonTq = printer.Usb(0x04b8, 0x0e02, 4)
-        EpsonTq.set(align='center')
-        # EpsonTq.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
-        EpsonTq.text('\n')
-        EpsonTq.text('Mixtas El Costeno\n')
-        EpsonTq.text('----------------------\n')
-        EpsonTq.text('\n')
-        EpsonTq.set(width=2)
-        EpsonTq.set(height=2)
-        EpsonTq.text('Mesa #{}'.format(mesa))
-        EpsonTq.text('\n')
-        EpsonTq.text('\n')
-        EpsonTq.set(width=1)
-        EpsonTq.set(height=1)
-        EpsonTq.text('Mesero: {0}'.format(mesero))
-        EpsonTq.text('\n')
-        EpsonTq.text('\n')
-        EpsonTq.set(align='center')
-        EpsonTq.text('--------TAQUERO--------\n')
-        EpsonTq.text(totalOrdenTaquero)
-        EpsonTq.cut()
 
-        # Epson Tortillera
-        EpsonTort = printer.Usb(0x04b8, 0x0e02, 6)
-        EpsonTort.set(align='center')
-        # EpsonTort.image('/Users/AntonioBermudez/.virtualenvs/project-resturant-mixtas/stad-mixtas/mixtas/mixtas/menu/static/src/img/logo-circle.png')
-        EpsonTort.text('\n')
-        EpsonTort.text('Mixtas El Costeno\n')
-        EpsonTort.text('----------------------\n')
-        EpsonTort.text('\n')
-        EpsonTort.set(width=2)
-        EpsonTort.set(height=2)
-        EpsonTort.text('Mesa #{}'.format(mesa))
-        EpsonTort.text('\n')
-        EpsonTort.text('\n')
-        EpsonTort.set(width=1)
-        EpsonTort.set(height=1)
-        EpsonTort.text('Mesero: {0}'.format(mesero))
-        EpsonTort.text('\n')
-        EpsonTort.text('\n')
-        EpsonTort.set(align='center')
-        EpsonTort.text('------TORTILLERA-------\n')
-        EpsonTort.text(totalOrdenTotillera)
-        EpsonTort.cut()
+
+            """.format(
+                mesero=mesero,
+                mesa=mesa,
+                totalOrdenTomar=totalOrdenTomar
+            )
+
+            printer = win32print.OpenPrinter('EPSON TM-T88V 1')
+            jid = win32print.StartDocPrinter(printer, 1, ('TEST DOC', None, 'RAW'))
+            bytes = win32print.WritePrinter(printer, print_final_bebidas)
+            win32print.EndDocPrinter(printer)
+            win32print.ClosePrinter(printer)
+
+            # Cortar
+            hDC = win32ui.CreateDC()
+            hDC.CreatePrinterDC('EPSON TM-T88V 1')
+            hDC.StartDoc("Test doc")
+            hDC.StartPage()
+            hDC.EndPage()
+            hDC.EndDoc()
+
+
+        if totalOrdenTaquero != '':
+            print_final_taquero = """
+            \t Mesero: {mesero}
+             Mesa # {mesa}
+            \r ----------------
+            {totalOrdenTaquero}
+
+
+
+
+            """.format(
+                mesero=mesero,
+                mesa=mesa,
+                totalOrdenTaquero=totalOrdenTaquero
+            )
+
+            # Epson Taquero
+            printer = win32print.OpenPrinter('EPSON TM-T88V 3')
+            jid = win32print.StartDocPrinter(printer, 1, ('TEST DOC', None, 'RAW'))
+            bytes = win32print.WritePrinter(printer, print_final_taquero)
+            win32print.EndDocPrinter(printer)
+            win32print.ClosePrinter(printer)
+
+            # Cortar
+            hDC = win32ui.CreateDC()
+            hDC.CreatePrinterDC('EPSON TM-T88V 3')
+            hDC.StartDoc("Test doc")
+            hDC.StartPage()
+            hDC.EndPage()
+            hDC.EndDoc()
+
+
+        if totalOrdenTotillera != '':
+            print_final_tortillera = """
+            \t Mesero: {mesero}
+             Mesa # {mesa}
+            \r ----------------
+            {totalOrdenTotillera}
+
+
+
+
+            """.format(
+                mesero=mesero,
+                mesa=mesa,
+                totalOrdenTotillera=totalOrdenTotillera
+            )
+            # Epson Tortillera
+            printer = win32print.OpenPrinter('EPSON TM-T88V 2')
+            jid = win32print.StartDocPrinter(printer, 1, ('TEST DOC', None, 'RAW'))
+            bytes = win32print.WritePrinter(printer, print_final_tortillera)
+            win32print.EndDocPrinter(printer)
+            win32print.ClosePrinter(printer)
+
+            # Cortar
+            hDC = win32ui.CreateDC()
+            hDC.CreatePrinterDC('EPSON TM-T88V 2')
+            hDC.StartDoc("Test doc")
+            hDC.StartPage()
+            hDC.EndPage()
+            hDC.EndDoc()
 
     def perform_create(self, serializer):
         self.printOrden()
         serializer.save()
 
     def perform_update(self, serializer):
-        if not self.request.data.get('pagado'):
+        if not self.request.data.get('pagado') and not self.request.data.get('print') == 'imprimir':
             self.printOrden()
+        elif self.request.data.get('print') == 'imprimir':
+            self.printCobrar()
         else:
             self.printCobrar()
         serializer.save()
@@ -212,7 +269,7 @@ class CrearFolio(ModelViewSet):
         date = self.request.query_params.get('date')
         if date:
             objDate = datetime.strptime(date, '%b-%d-%Y')
-            qs = qs.filter(fecha__day=objDate.day, fecha__month=objDate.month, fecha__year=objDate.year)
+            qs = qs.filter(fecha__gte=objDate)
 
         return qs
 
