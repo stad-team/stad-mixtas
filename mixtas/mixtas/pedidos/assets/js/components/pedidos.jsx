@@ -152,52 +152,71 @@ class Simbolos extends React.Component {
 			ordenLista: false,
 			listaOrdenes: [],
 			ordenesUsuarios: [],
-			precio: 0
+			precio: 0,
+			counter: 0
 		};
 
 	}
 
 	setSinbolo(simbolo, precioIngrediente=0, tipo) {
-		const { ordenCompuesta, precio } = this.state;
+		const { ordenCompuesta, precio, counter } = this.state;
+		const platillos = ['Entradas', 'Quesadillas', 'Tacos',
+			'Chavindecas', 'Alambres-Volcanes', 'Postres', 'Bebidas'];
 
-		let simboloVar;
-		if (parseInt(simbolo) % 1 == 0) {
-			simboloVar = simbolo;
-		} else {
-			simboloVar = ` ${ simbolo }`;
-		}
+		debugger;
+		if (
+			(tipo == 'numero' && counter == 0) ||
+			($.inArray(tipo, platillos) > -1 && counter == 1) ||
+			(counter == 2 && !($.inArray(tipo, platillos) > -1) && tipo != 'numero')
+		) {
+			if (!(counter == 2 && !($.inArray(tipo, platillos) > -1) && tipo != 'numero')) {
+				this.setState({
+					counter: counter + 1
+				});
+			}
 
-		if (precioIngrediente > 0) {
-			if (ordenCompuesta.indexOf('  Extra') > 1) {
-				this.setState({
-					ordenCompuesta: ordenCompuesta.concat(simboloVar),
-					ordenLista: false,
-					precio: precio + precioIngrediente
-				});
-			} else if (tipo !== 'Ingredientes'){
-				this.setState({
-					ordenCompuesta: ordenCompuesta.concat(simboloVar),
-					ordenLista: false,
-					precio: precioIngrediente
-				});
+			let simboloVar;
+			if (parseInt(simbolo) % 1 == 0) {
+				simboloVar = simbolo;
 			} else {
+				simboloVar = ` ${ simbolo }`;
+			}
+
+			if (precioIngrediente > 0) {
+				if (ordenCompuesta.indexOf('  Extra') > 1) {
+					this.setState({
+						ordenCompuesta: ordenCompuesta.concat(simboloVar),
+						ordenLista: false,
+						precio: precio + precioIngrediente
+					});
+				} else if (tipo !== 'Ingredientes'){
+					this.setState({
+						ordenCompuesta: ordenCompuesta.concat(simboloVar),
+						ordenLista: false,
+						precio: precioIngrediente
+					});
+				} else {
+					this.setState({
+						ordenCompuesta: ordenCompuesta.concat(simboloVar),
+						ordenLista: false
+					});
+				}
+
+			} else {
+				if (parseInt(simboloVar) % 1 >= 0 && ordenCompuesta.length > 0 && tipo === 'numero') {
+					simboloVar = ordenCompuesta[0] + simboloVar;
+					ordenCompuesta.shift();
+
+				}
 				this.setState({
 					ordenCompuesta: ordenCompuesta.concat(simboloVar),
 					ordenLista: false
 				});
 			}
-
 		} else {
-			if (parseInt(simboloVar) % 1 >= 0 && ordenCompuesta.length > 0 && tipo === 'numero') {
-				simboloVar = ordenCompuesta[0] + simboloVar;
-				ordenCompuesta.shift();
-
-			}
-			this.setState({
-				ordenCompuesta: ordenCompuesta.concat(simboloVar),
-				ordenLista: false
-			});
+			alert('Por favor primero siga el orden correcto numero-platillo-ingredientes');
 		}
+
 
 	}
 
@@ -217,7 +236,8 @@ class Simbolos extends React.Component {
 		if (parseInt(ordenCompuesta[0]) % 1 === 0) {
 			this.setState({
 				listaOrdenes: this.state.listaOrdenes.concat(ordenCompuesta.join('') + ` ${ precioPlato }`),
-				ordenCompuesta: []
+				ordenCompuesta: [],
+				counter: 0
 			});
 		}
 	}
@@ -245,7 +265,7 @@ class Simbolos extends React.Component {
 
 			for (var i = 0; i <= ordenesUsuarios.length; i++) {
 				if (ordenesUsuarios[i].props.orden === ordenesActualizar) {
-					elementosLista.splice(i, 1);
+					ordenesUsuarios.splice(i, 1);
 					this.setState({
 						ordenesUsuarios: ordenesUsuarios
 					});
@@ -256,53 +276,58 @@ class Simbolos extends React.Component {
 	}
 
 	agregarOrdenUsuario(){
-		const { listaOrdenes, ordenesUsuarios } = this.state;
+		const { listaOrdenes, ordenesUsuarios, ordenCompuesta } = this.state;
 
-		let ordenSimplificada;
-		let indexPrecio = 0;
-		let precioFinal = 0;
-		let precioFinalOrden = 0;
+		if (this.state.listaOrdenes.length === 0) {
+			alert('Finalice la orden del usuario antes de agregar');
+		} else {
+			let ordenSimplificada;
+			let indexPrecio = 0;
+			let precioFinal = 0;
+			let precioFinalOrden = 0;
 
-		ordenSimplificada = (
-			<div className='orden-personalizada plato' orden={ listaOrdenes } onClick={ this.editarOrdenPersonal.bind(this, listaOrdenes) }>
-				{
-					listaOrdenes.map((orden, index) => {
+			ordenSimplificada = (
+				<div className='orden-personalizada plato' orden={ listaOrdenes } onClick={ this.editarOrdenPersonal.bind(this, listaOrdenes) }>
+					{
+						listaOrdenes.map((orden, index) => {
 
-						indexPrecio = orden.split(' ').length;
-						precioFinal += parseInt(orden.split(' ')[indexPrecio - 1]);
-						precioFinalOrden = (
-							<div className='costo-por-persona pull-right'>
-								{ precioFinal }
-							</div>
-						);
+							indexPrecio = orden.split(' ').length;
+							precioFinal += parseInt(orden.split(' ')[indexPrecio - 1]);
+							precioFinalOrden = (
+								<div className='costo-por-persona pull-right'>
+									{ precioFinal }
+								</div>
+							);
 
-						const ord = (
-							<div className='orden-simple-x-usuario' key={ `orden-simple-${ index }`}>
-								{ orden }
-							</div>
-						);
+							const ord = (
+								<div className='orden-simple-x-usuario' key={ `orden-simple-${ index }`}>
+									{ orden }
+								</div>
+							);
 
-						return (
-							<div>
-								{ orden }
-								<hr />
-									{
-										index + 1 === listaOrdenes.length ?
-										precioFinalOrden : ''
-									}
-							</div>
-						);
-					})
-				}
-			</div>
-		);
+							return (
+								<div>
+									{ orden }
+									<hr />
+										{
+											index + 1 === listaOrdenes.length ?
+											precioFinalOrden : ''
+										}
+								</div>
+							);
+						})
+					}
+				</div>
+			);
 
 
-		this.setState({
-			ordenesUsuarios: [ordenSimplificada].concat(ordenesUsuarios),
-			ordenCompuesta: [],
-			listaOrdenes: []
-		});
+			this.setState({
+				ordenesUsuarios: [ordenSimplificada].concat(ordenesUsuarios),
+				ordenCompuesta: [],
+				listaOrdenes: []
+			});
+		}
+
 	}
 
 	listadosMenus(tipos, menus) {
